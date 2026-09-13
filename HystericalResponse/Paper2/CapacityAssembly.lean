@@ -19,16 +19,13 @@ namespace Paper2
 noncomputable section
 
 /--
-PHYSICS CONJECTURE (TeX conj:capacity).
-Formation / mature retention requires response capacity
-`Q ≳ O(√M)` (equivalently a capacity ceiling `M ≲ Q²/A²` for some `A > 0`,
-i.e. `Q ≥ A √M` whenever the filling `y ≤ 1`).
-This is *not* the square-root attractor; the attractor is `cor:sqrt-sat` given the
-capacity–filling hypotheses, and is not conjectural.
+PHYSICS CONJECTURE marker (TeX conj:capacity).
+Formation / mature retention is proposed to require response capacity
+`Q ≳ O(√M)` (equivalently a capacity ceiling `M ≲ Q²/A²`).
+This is an opaque tagged conjecture — **not** a mathematical assertion that
+`∀ A M Q, Q ≥ A √M`, and not the square-root attractor (`cor:sqrt-sat`).
 -/
-axiom physics_capacity_conjecture
-    (A M Q : ℝ) :
-    0 ≤ A → 0 ≤ M → Q ≥ A * Real.sqrt M
+axiom physics_capacity_conjecture : Prop
 
 def maxSupportedMass (A Q : ℝ) : ℝ :=
   Q^2 / A^2

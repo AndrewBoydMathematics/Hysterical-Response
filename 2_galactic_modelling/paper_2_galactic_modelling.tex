@@ -165,6 +165,12 @@ Single-scale concentration means the radial measure $\tilde\sigma(s)\,4\pi s^{2}
 The factorization $S=J\sigma$ then gives the stated production law.
 \end{proof}
 
+\begin{remark}[Lean status]
+\label{rem:ir-shell-lean}
+Lean records Assumption~\ref{ass:ir-ballistic} as \texttt{IRBallisticRealization} and packages the on-shell production law as \texttt{prop\_ir\_shell}.
+Reduced abstraction: the Dirac radial measure is carried by the TeX single-scale hypothesis; Lean certifies the angular-density factorization on $|u|=v$, not a measure-theoretic Dirac construction.
+\end{remark}
+
 \noindent
 Thus isotropic production at common speed~$v$ is the infrared realization of residual-response packaging under local isotropy and a single retained ballistic scale---not an independent morphological assumption about galaxies.
 (The spatial profile~$J$ may still be flattened; isotropy here refers only to the velocity kernel~$\sigma$.)

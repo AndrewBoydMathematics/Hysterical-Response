@@ -1,5 +1,6 @@
 import Mathlib
 import HystericalResponse.Paper2.BallisticHalo
+import HystericalResponse.Paper2.ResponseClosure
 
 /-
 TeX: `2_galactic_modelling/paper_2_galactic_modelling.tex`, Section “Asymptotic oblate geometry”.
@@ -19,10 +20,9 @@ noncomputable section
 
 /--
 PHYSICS: linear Poisson response closure ∇²Φ = κ n (TeX Assumption poisson).
-Same primary IR closure used for g_resp = C Q / r in ResponseClosure; not a
-separate co-equal CQ/r postulate.
+Same primary IR closure as `physics_poisson_response_closure` in ResponseClosure.
 -/
-axiom physics_linear_response_closure : Prop
+abbrev physics_linear_response_closure : Prop := physics_poisson_response_closure
 
 /-- Legendre P₂(μ) = (3μ² − 1)/2. -/
 def P2 (μ : ℝ) : ℝ :=
