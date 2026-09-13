@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Ad}{\operatorname{Ad}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\K}{\mathbf{K}}
+\newcommand{\Gm}{\Gamma}
+\newcommand{\chiR}{\chi_{R}}
+\newcommand{\chiH}{\chi_{H}}
+\title{\textbf{Synopsis: Hysterical Response in Open Quantum Systems}\\[0.35em]
+\large What the theorems say (without the proofs)}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This is a short guide to the main claims of the technical paper.
+Each section says \emph{why} the claim matters, then states the result.
+The proofs live in the full paper.
+\end{abstract}
+
+\section{What we are talking about}
+Decoherence makes distinct quantum alternatives (informally, Everett branches) behave, for local observations, as if they were separate classical possibilities.
+Coherent interference among those alternatives is erased from the reduced description; a residual, history-dependent contribution to the response of an already-existing interaction can remain.
+That leftover force is the Hysterical Response: a dynamical kick carried by ordinary gravity, electromagnetism, and the other forces under open-system evolution.
+
+In a finite-dimensional matrix representation with ordered basis $\{\ket{i}\}$, the force operator has entries $F_{ij}=\bra{i}F\ket{j}$.
+The \emph{diagonal} pieces are the $i=j$ entries; the \emph{off-diagonal} pieces are the $i\neq j$ entries.
+Relative to a decoherence-selected pointer basis, those off-diagonal blocks are the natural home for coherences between approximately classical alternatives---and the language of ``off-diagonal force'' refers to that matrix structure.
+
+The name nods at \emph{hysteresis}: the present depends on the past.
+The textbook adjective would be \emph{hysteretic}; we use \emph{Hysterical} because life is short and whimsy matters.
+
+Once the reduced dynamics settle, the leftover force is
+\begin{equation}
+  F_H=-\Tr\!\left(F\mathcal L^{-1}\mathcal S\right).
+  \label{eq:FH}
+\end{equation}
+Here $F$ is the usual force observable of the interaction already under study, $\mathcal L$ is the open-system generator (relaxation / decoherence), and $\mathcal S$ is a \emph{residual drive}: an additive source in the linearized master equation $\dot{\delta\rho}=\mathcal L\,\delta\rho+\mathcal S$ that keeps feeding the reduced state after ordinary coherent interference has been washed out.
+Its detailed operator form is system-dependent; the theorems take an admissible $\mathcal S$ as input.
+The same formula written as $F_{\mathrm{resp}}=-\Tr[F\mathcal L^{-1}\mathcal S]$ is not a second object---$F_H$ is just that response once it is identified as the Hysterical component of the interaction.
+Geometry still comes from ordinary Newtonian densities when we need masses and distances.
+
+\subsection*{Toy model: three particles and correlations}
+A probe $A$ feels two sources $B$ and $C$, each near or far from $A$. Compare the joint states
+\begin{align}
+  \ket{\Psi_+}&=\frac{1}{\sqrt2}\bigl(\ket{B_NC_N}+\ket{B_FC_F}\bigr),&
+  \ket{\Psi_-}&=\frac{1}{\sqrt2}\bigl(\ket{B_NC_F}+\ket{B_FC_N}\bigr).
+\end{align}
+Look at $B$ alone: both states give fifty-fifty near/far. The same for $C$. So every one-particle statistic matches.
+What differs is the \emph{correlation}: in $\Psi_+$ the sources are both-near or both-far together; in $\Psi_-$ they are opposite.
+
+In a symmetric geometry that matters for the force history at $A$. Writing $F_N$ and $F_F$ for one near or far source's contribution,
+\begin{equation}
+  \Delta F_+=2(F_N-F_F),\qquad \Delta F_-=0:
+\end{equation}
+$\Psi_+$ exposes a large near/far contrast between alternatives; $\Psi_-$ exposes none.
+A leftover response that remembers those joint histories can therefore satisfy
+\begin{equation}
+  F_H^{(A)}[\Psi_+]\neq F_H^{(A)}[\Psi_-]
+\end{equation}
+even though $B$ and $C$ look identical one at a time.
+That is the concrete picture of a residual drive: not ``an extra force from every unrealized particle position,'' but a kick that can depend on how alternatives of different particles are correlated.
+The abstract $\mathcal S$ in~\eqref{eq:FH} is whatever open-system source encodes that leftover-feeding structure in a given model; the theorems keep it general.
+
+\section{Does the answer depend on which basis we write in?}
+``Off-diagonal force'' sounds basis-dependent: rename the axes and the diagonals move.
+The environment already picks which descriptions count as approximately classical.
+That choice is encoded as a \emph{classicalization map} $\Delta_{\mathrm{cl}}$ (a dephasing / coarse-graining on states).
+It enters the story wherever one splits ``classical-like'' versus ``off-classical'' pieces of a state or force; the response formula~\eqref{eq:FH} itself is written for the full force observable $F$, and is basis-covariant once $\Delta_{\mathrm{cl}}$ transforms with everything else under a passive unitary rewrite.
+
+\begin{theorem}[Basis Covariance]
+If you passively rewrite every piece of the description (state, force, dynamics, source, and the classicalization map) with the same unitary, the predicted leftover force $F_H$ is unchanged.
+\end{theorem}
+
+Changing the actual physical state, or swapping which classicalization map the environment uses, can change the answer: those are active / model changes, not mere renamings of axes.
+
+\section{How do you actually compute a response?}
+If disturbances die exponentially, the steady leftover state is the time-integral of how those disturbances would have evolved---the Laplace picture of a stable semigroup.
+That turns the abstract inverse $\mathcal L^{-1}$ into an explicit integral and a usable bound on the response size.
+
+\begin{theorem}[Resolvent response]
+Under exponential stability,
+\begin{equation}
+  -\mathcal L^{-1}X=\int_0^\infty e^{t\mathcal L}X\,\dd t,
+\end{equation}
+so again $F_H=F_{\mathrm{resp}}=-\Tr[F\mathcal L^{-1}\mathcal S]$.
+\end{theorem}
+
+If independent channels do not talk to each other, their contributions add.
+When the semigroup decays as $M e^{-\gamma t}$, the same integral yields $|\chiH|\lesssim (M/\gamma)\,C_{OS}$, where $\chiH$ is the Hysterical susceptibility (response of leftover force to a unit drive in the residual channel) and $C_{OS}$ collects the relevant force-observable and source norms.
+
+\paragraph{From leftover force to closed-loop gain.}
+Suppose the ordinary interaction also responds linearly to a small order parameter $Y$ (bias, displacement, \ldots), with reaction susceptibility $\chiR:=\partial\langle F_{\mathrm{ord}}\rangle/\partial Y$, while the Hysterical channel responds with $\chiH:=\partial F_H/\partial Y$ obtained from~\eqref{eq:FH} by differentiating under the resolvent.
+Physically, $Y$ feels the leftover force and the leftover feels $Y$: that mutual coupling is the closed loop.
+In the reciprocal scalar reduction their product is the loop gain $K=\chiR\chiH$.
+With ordinary damping rate $\Gm>0$ (a positive scalar or positive-definite matrix), the closed-loop Jacobian is $J=-\Gm(I-K)$.
+Its spectral abscissa $\alpha(J)$ (or, when everything reduces to scalars, the sign of $1-K$) decides inert / critical / unstable below.
+
+\section{Why electromagnetism cancels and gravity can remain}
+We do not feel a long-range electric field from the Earth: roughly as many protons as electrons, and they cancel.
+Electromagnetism is the motivating example for the Neutrality Theorem: when the \emph{composite} external force vanishes, a controlled Hysterical response vanishes with it.
+The same theorem applies to any interaction channel whose composites neutralize or screen macroscopically (colour confinement, short weak range, \ldots)---that is the sense of ``Hysterical inheritance,'' not a separate dynamical law.
+Gravity is different---mass attracts mass---so the outside gravitational force of an ordinary body stays nonzero, and the Neutrality Theorem's hypothesis fails.
+
+``Response susceptibility stays under control'' means the resolvent envelope $M/\gamma$ (and the implied $|\chiH|$) does not diverge hard enough to cancel the vanishing of the ordinary external force.
+
+\begin{theorem}[Hysterical Neutrality]
+If the external force of a family of composites tends to zero, while residual sources stay bounded and the response susceptibility stays under control, then the external Hysterical force tends to zero as well.
+\end{theorem}
+
+\begin{corollary}[Gravitational survival]
+Gravity is not bound by the Neutrality Theorem when the outside gravitational force fails to neutralize, so a nonzero leftover $F_H$ is \emph{permitted}, not forced.
+``Nondegenerate gravitational channel'' means the composite keeps a nonzero external gravitational monopole (or equivalent retained coupling) rather than an accidental cancellation; under that hypothesis one may \emph{expect} $F_H\neq0$, still as physics rather than a proved amplitude.
+\end{corollary}
+
+A smooth ``Hysterical field'' $\Phi_H$ is the continuum packaging of that gravitational leftover after coarse graining: define $\mathbf g_H=-\nabla\Phi_H$ and an effective density from $\nabla^2\Phi_H$.
+It is not a new microscopic force carrier; it is the retained IR response written as a potential.
+
+\section{When cancellation fails: tipping into instability}
+The Neutrality Theorem assumes the response stays under control.
+If the leftover feeds back into the same interaction hard enough, the quiet neutral point can tip: stable, critical, or runaway---exactly according to the spectral abscissa of $J=-\Gm(I-K)$ from above.
+
+\begin{theorem}[Hysterical Neutrality--Instability]
+Around exact neutrality, a single spectral number for the closed-loop dynamics decides the fate: decay (inert), growth (unstable), or sitting on the edge (critical).
+\end{theorem}
+
+\begin{theorem}[Scalar Hysterical Instability]
+In a simple scalar model there is an explicit inequality for when growth wins; noise can start it, and ordinary nonlinearities can saturate it and pick a sign.
+\end{theorem}
+
+The exact test is the closed-loop gain: whether leftover response feeding back into the ordinary interaction sits below, at, or above the threshold where the quiet point loses stability (gain less than, equal to, or greater than one).
+Density enters as a common physical knob on that threshold.
+
+\subsection*{Soup versus meatballs}
+A useful analogy of the usual ``more collisions $\to$ faster forgetting'' picture:
+\begin{itemize}
+\item \textbf{Soup} --- a low-density, nearly homogeneous state.
+  Forgetting is slow, so residual response can feed back hard enough to destabilize the quiet state.
+\item \textbf{Meatballs} --- dense clumps.
+  The environment is thick, forgetting is fast, and the leftover tends to look inert.
+  The clumps themselves are better read as a saturated end-state after growth.
+\end{itemize}
+
+Conceptually---as a picture---soup behaves \emph{more quantumly} and meatballs \emph{more classically}.
+In the soup, the environment is thin: history-dependent leftovers from quantum alternatives still have time to matter, so the open-system response can tip the dynamics.
+In the meatballs, the environment is thick: fast classicalization and relaxation drown those leftovers, and what you see is ordinary dense matter sitting near inert neutrality.
+The contrast is how loud the leftover is relative to environmental forgetting---which is exactly what the closed-loop gain measures.
+
+So dilute soup can tip; dense meatballs tend to calm the leftover locally.
+Density is only a proxy when collisions control the relevant mode; a dense medium with a slow collective gap can still be critical.
+Response can also care about \emph{configuration} (correlations, geometry), not only mean density---so two soups with the same density need not behave alike (as the three-particle toy already shows: identical one-body statistics, different joint force histories).
+
+Every interaction treated in the framework carries a Hysterical component $F_{H,X}$ on its own force observable; which of those components stay visible on human scales is decided by the Neutrality Theorem and the closed-loop dynamics.
+
+\section{Does it matter if gravity is ``really'' quantum?}
+For weak-field questions we mostly care about the potential we keep after coarse graining.
+If semiclassical geometry sourced by quantum matter and a quantum-gravitational description leave the same leftover potential $\Phi_H$, they make the same weak-field predictions---accelerations, effective densities, and other continuous functionals of $\Phi_H$ through second derivatives.
+
+\begin{theorem}[Infrared Equivalence]
+If two microscopic stories agree on the retained weak-field Hysterical potential up to a negligible error, they agree on the leftover acceleration, the effective density built from that potential, and the usual weak-field observables built from it.
+\end{theorem}
+
+\section{Where to read what}
+\begin{center}
+\begin{tabular}{@{}llp{0.46\linewidth}@{}}
+\toprule
+Document & Proofs? & What it is for \\
+\midrule
+This synopsis & no & The claims, with just enough maths \\
+Full paper & yes & The actual arguments \\
+Lean specs & yes (machine-checked) & Formal statements and proofs for the full paper, under \texttt{HystericalResponse/Paper1/} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+Something history-dependent sits on ordinary forces after decoherence.
+Passive renaming of the basis leaves that leftover force unchanged.
+When the outside force of a composite vanishes and the response stays calm, the leftover vanishes with it---so electromagnetism, colour, and the weak force can be hysterically quiet, while gravity can keep a macroscopic response.
+Push the feedback too hard and the quiet point can go unstable: dilute ``soup'' behaves more quantumly and can tip, while dense ``meatballs'' behave more classically and tend to damp the leftover locally.
+For weak-field gravity, semiclassical and quantum-gravitational routes share the infrared story once their retained potentials agree.
+
+\end{document}

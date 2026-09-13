@@ -1,0 +1,1426 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,graphicx,xcolor,enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}{Conjecture}
+\newcommand{\FH}{\mathbf F_{\!H}}
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\braket}[2]{\left\langle#1\middle|#2\right\rangle}
+\newcommand{\Msun}{M_\odot}
+\newcommand{\kms}{\mathrm{km\,s^{-1}}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Qbar}{\overline{Q}}
+\newcommand{\rhobar}{\overline{\rho}}
+\newcommand{\dd}{\mathrm{d}}
+
+\newcommand{\AU}{\mathrm{AU}}
+\newenvironment{model}[1][]{\par\medskip\noindent\textbf{Model#1.}\itshape\quad}{\upshape\par\medskip}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\h}{\mathbf{h}}
+\newcommand{\K}{\mathbf{K}}
+\newcommand{\Gm}{\Gamma}
+\newcommand{\chiR}{\chi_{R}}
+\newcommand{\chiH}{\chi_{H}}
+\newcommand{\Ad}{\operatorname{Ad}}
+\title{\textbf{Hysterical Response in Open Quantum Systems}\\[0.45em]
+\large Response theory, basis covariance, neutrality, instability, and infrared equivalence}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the companion specifications, as faithful ports of the TeX arguments at the abstractions recorded there, except results explicitly tagged as \emph{literature hypotheses} (standard theorems cited from the literature and not re-proved here) or \emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+We develop the open-system mathematics of the Hysterical Response: the residual response of an already-existing interaction under exponentially stable reduced dynamics.
+After setting the response functional and Newtonian channel geometry, we prove basis covariance relative to a physical classicalization map, so that ``off-diagonal'' language is representation-relative while the scalar response is invariant.
+We then give the constructive resolvent formulae, prove the Hysterical Neutrality Theorem and a gravitational survival corollary, classify neutral/critical/unstable closed-loop regimes, and show that semiclassical and quantum-gravitational routes share the same weak-field infrared phenomenology when they retain the same potential.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Decoherence makes distinct quantum alternatives (informally, Everett branches) behave, for local observations, as if they were separate classical possibilities.
+Coherent interference among those alternatives is erased from the reduced description; a residual, history-dependent contribution to the response of ordinary forces under open-system dynamics can remain.
+Hysterical Response is that residual contribution: a dynamical modification of an already-existing interaction.
+The response exhibits \emph{hysteresis}---dependence on its history.
+The correct adjective would be \emph{hysteretic}, but we have chosen \emph{Hysterical}, since life is short, and whimsy is important.
+This paper supplies the mathematical core of that idea.
+
+Statements are labelled as follows.
+\begin{center}
+\begin{tabular}{>{\bfseries}p{0.22\linewidth}p{0.68\linewidth}}
+Theorem & Consequence of the mathematical assumptions stated here.\\
+Modeling assumption & Closure connecting the abstract response to a physical channel or order parameter.\\
+Physical input & Property of the underlying interaction, not derived here.\\
+Conjecture & Proposed extension requiring further microscopic derivation.\\
+\end{tabular}
+\end{center}
+No Everett branch count or branch metric is assumed.
+The reduced dynamics are those of an open quantum system in the sense of quantum dynamical semigroups~\cite{lindblad1976,gks1976,breuerPetruccione2002}; classicalization structure is motivated by environment-induced superselection~\cite{zurek1982,schlosshauer2007}.
+
+\section{Setup: states, dephasing, and Newtonian geometry}
+\subsection{State space, localization, and force observables}
+
+\begin{assumption}[State space]
+Let $\mathcal H$ be a separable complex Hilbert space.
+States are positive trace-class operators $\rho\in\mathcal T_1(\mathcal H)$ with $\Tr\rho=1$.
+\end{assumption}
+
+\begin{definition}[Localization dephasing]
+A physically selected localization/configuration structure is represented by mutually orthogonal projections $\{E_a\}$ with $\sum_a E_a=I$ strongly, or by a spectral measure together with a finite-resolution measurable partition.
+Define
+\begin{equation}
+  \Delta_{\mathrm{loc}}(X)=\sum_a E_a X E_a,
+\end{equation}
+with trace-norm convergence on the trace class.
+A second dephasing map $\Delta_{\mathrm{coh}}$ may be specified when the model asks for coherence relative to a conjugate, mixed, or otherwise physically chosen diagnostic decomposition; it need not coincide with $\Delta_{\mathrm{loc}}$.
+\end{definition}
+
+\begin{definition}[Force expectation and dephasing-relative coherence]
+For a bounded vector force $F\in\mathcal B(\mathcal H)^3$ define
+\begin{equation}
+  F(\rho)=\Tr(F\rho),\qquad
+  F^{(\Delta)}_{\mathrm{coh}}(\rho)=\Tr\bigl[F(I-\Delta)\rho\bigr].
+\end{equation}
+Thus $F^{(\Delta)}_{\mathrm{coh}}(\rho)=F(\rho)-F(\Delta\rho)$.
+For unbounded force operators, subsequent statements are understood on an admissible domain on which the indicated force pairings and resolvent integrals exist.
+In a finite-dimensional matrix representation with ordered basis $\{\ket{i}\}$, the entries are $F_{ij}=\bra{i}F\ket{j}$: the \emph{diagonal} pieces are the $i=j$ entries and the \emph{off-diagonal} pieces are the $i\neq j$ entries.
+Relative to a decoherence-selected pointer basis, those off-diagonal blocks are the natural home for coherences between approximately classical alternatives, and ``off-diagonal force'' refers to that matrix structure (or its continuum analogue).
+\end{definition}
+
+\begin{proposition}[Dephasing no-go identity]
+Let $\Delta^\dagger$ be the adjoint of $\Delta$ on observables.
+If $\Delta^\dagger(F)=F$, then $F^{(\Delta)}_{\mathrm{coh}}(\rho)=0$ for every admissible $\rho$.
+\end{proposition}
+\begin{proof}
+$\Tr(F\Delta\rho)=\Tr(\Delta^\dagger F\,\rho)=\Tr(F\rho)$.
+\end{proof}
+
+\begin{remark}[Why two structures may be needed]
+For a Newtonian force diagonal in the same localization algebra preserved by $\Delta_{\mathrm{loc}}$, the coherence contribution relative to $\Delta_{\mathrm{loc}}$ vanishes identically.
+A nonzero ``off-diagonal force'' then refers either to a distinct diagnostic dephasing $\Delta_{\mathrm{coh}}$, or to a transformed representation in which the force is not fixed by that dephasing.
+The total source-induced force response defined below is independent of any separate coherence decomposition.
+\end{remark}
+
+\begin{lemma}[Ensemble linearity]
+For any admissible ensemble,
+\begin{equation}
+  \mathbb E\,F(\rho_\omega)=F(\mathbb E\rho_\omega),\qquad
+  \mathbb E\,F^{(\Delta)}_{\mathrm{coh}}(\rho_\omega)=F^{(\Delta)}_{\mathrm{coh}}(\mathbb E\rho_\omega).
+\end{equation}
+\end{lemma}
+
+\subsection{Newtonian geometry from particle number density}
+
+\begin{definition}[Number density]
+$K(x)\ge 0$ denotes particles per unit volume. Hence
+\begin{equation}
+  N=\int_{\R^3} K(x)\,\dd^3x.
+\end{equation}
+For identical constituent mass $m$, the mass density is $\rho_m=mK$.
+For an observation point $x$,
+\begin{equation}
+  \Phi(x)=-Gm\int\frac{K(y)}{\lvert x-y\rvert}\,\dd^3y,\qquad
+  g(x)=-Gm\int K(y)\,\frac{x-y}{\lvert x-y\rvert^3}\,\dd^3y.
+\end{equation}
+A test particle of mass $m_t$ experiences $f=m_t g$.
+\end{definition}
+
+\begin{assumption}[Force-integrable density]
+We assume $K\in L^1(\R^3)$ and, at each observation point used in the model,
+\begin{equation}
+  \int_{\lvert x-y\rvert<1}\frac{K(y)}{\lvert x-y\rvert^2}\,\dd^3y<\infty.
+\end{equation}
+Locally bounded $K$ satisfies this; singular sheets or point components require a stated regularization.
+\end{assumption}
+
+\subsubsection{Spherical number density}
+For $K(x)=K(r)$,
+\begin{equation}
+  N=4\pi\int_0^\infty K(r)\,r^2\,\dd r,\qquad
+  M(<r)=4\pi m\int_0^r K(s)\,s^2\,\dd s,
+\end{equation}
+and the shell theorem gives
+\begin{equation}
+  g(r)=-\frac{4\pi G m}{r^2}\Bigl(\int_0^r K(s)\,s^2\,\dd s\Bigr)\hat r.
+\end{equation}
+
+\subsubsection{Axisymmetric cylindrical number density}
+For $K=K(r,h)$,
+\begin{equation}
+  N=2\pi\int_0^\infty r\,\dd r\int_{-\infty}^\infty K(r,h)\,\dd h.
+\end{equation}
+At $(R,0,Z)$ the exact components are
+\begin{align}
+  g_R(R,Z)
+  &=-Gm\int_0^\infty\mathrm{d}r\int_{-\infty}^\infty\mathrm{d}h\,
+    r K(r,h)
+    \int_0^{2\pi}\frac{R-r\cos\phi}{\bigl[R^2+r^2-2Rr\cos\phi+(Z-h)^2\bigr]^{3/2}}\,\mathrm{d}\phi,
+  \\
+  g_Z(R,Z)
+  &=-Gm\int_0^\infty\mathrm{d}r\int_{-\infty}^\infty\mathrm{d}h\,
+    r K(r,h)
+    \int_0^{2\pi}\frac{Z-h}{\bigl[R^2+r^2-2Rr\cos\phi+(Z-h)^2\bigr]^{3/2}}\,\mathrm{d}\phi.
+\end{align}
+Equivalently,
+\begin{equation}
+  \Phi(R,Z)
+  =-4Gm\int_0^\infty\mathrm{d}r\int_{-\infty}^\infty\mathrm{d}h\,
+    \frac{r K(r,h)}{\sqrt{(R+r)^2+(Z-h)^2}}\,\mathcal{K}(k),
+\end{equation}
+where $\mathcal K(k)$ is the complete elliptic integral of the first kind and
+\begin{equation}
+  k^2=\frac{4Rr}{(R+r)^2+(Z-h)^2}.
+\end{equation}
+Then $g=-\nabla\Phi$. If $K(r,h)=K(r,-h)$, then $g_Z(R,0)=0$.
+
+\subsection{Hamiltonian structure and gravitational channel data}
+Let $H=T+V$ and $F=-\nabla_q V$ for a chosen test/configuration coordinate $q$.
+For two configurations separated symmetrically by $\ell$, define
+\begin{equation}
+  \Delta=U(q-\ell/2)-U(q+\ell/2),\qquad
+  \delta f=f(q-\ell/2)-f(q+\ell/2).
+\end{equation}
+If the required derivatives exist and are continuous near $q$,
+\begin{equation}
+  \Delta=\ell\cdot f(q)+O(\lvert\ell\rvert^3),\qquad
+  \delta f=-(\ell\cdot\nabla)f(q)+O(\lvert\ell\rvert^3).
+\end{equation}
+Thus the local force contrast is controlled by a tidal gradient rather than automatically by the absolute field.
+(Here $f=-\nabla V$ when $U$ denotes the same potential as $V$.)
+
+
+\subsection{Response functional}
+For an interaction force observable $F$, open-system generator $\mathcal L$, and admissible source $\mathcal S$ on a stable response subspace, the stationary Hysterical response is
+\begin{equation}
+  \delta\rho_H=-\mathcal L^{-1}\mathcal S,\qquad
+  F_H=-\Tr\!\left(F\mathcal L^{-1}\mathcal S\right).
+  \label{eq:response-def}
+\end{equation}
+No new force carrier is introduced: $F_H$ is a component of the response of $F$ itself.
+The constructive theory of Section~\ref{sec:constructive} identifies $-\mathcal L^{-1}$ with the Laplace integral of the semigroup under exponential stability.
+
+\section{Basis covariance}
+\label{sec:basis}
+The central distinction is
+\begin{equation}
+ \boxed{\text{arbitrary coordinate basis}\neq\text{physical decoherence-selected classical structure}.}
+ \label{eq:keydist}
+\end{equation}
+No exact preferred orthonormal branch basis is required. In realistic systems the classical structure may be approximate, redundant, block-valued, or described by a pointer algebra rather than by exact rank-one projectors. For the theorem we use a linear idempotent classicalization map, which includes ordinary projective dephasing as the simplest case.
+
+\subsection{The physical classicalization map}
+Let $\mathcal H$ be a Hilbert space and let $\mathcal T_1(\mathcal H)$ denote the trace-class operators. Let
+\begin{equation}
+ \Delta_{\rm cl}:\mathcal T_1(\mathcal H)\to\mathcal T_1(\mathcal H)
+\end{equation}
+be a bounded linear, trace-preserving, idempotent map,
+\begin{equation}
+ \Delta_{\rm cl}^2=\Delta_{\rm cl},
+ \label{eq:idempotent}
+\end{equation}
+representing the approximately classical sector selected by environmental dynamics.
+
+For a simple pointer decomposition with projectors $P_a$,
+\begin{equation}
+ \Delta_{\rm cl}(X)=\sum_a P_a X P_a.
+ \label{eq:projectivedephasing}
+\end{equation}
+The corresponding off-classical projector on operator space is
+\begin{equation}
+ Q_{\rm cl}:=I-\Delta_{\rm cl}.
+ \label{eq:Q}
+\end{equation}
+
+\begin{definition}[Off-classical component]
+For any trace-class operator $X$, define
+\begin{equation}
+ X_{\rm off}:=Q_{\rm cl}X=(I-\Delta_{\rm cl})X.
+ \label{eq:offclassical}
+\end{equation}
+When \eqref{eq:projectivedephasing} applies, this coincides with the matrix off-diagonal part in the pointer representation. Equation \eqref{eq:offclassical}, rather than matrix off-diagonality in an arbitrary coordinate basis, is the invariant definition used here.
+\end{definition}
+
+\begin{remark}[Everett terminology]
+The phrase ``off the diagonal relative to classical-like Everett timelines'' means precisely ``outside the image of $\Delta_{\rm cl}$,'' with the latter supplied by decoherence. The formal results require neither a branch count nor a metric on branches, and they remain meaningful without Everett language.
+\end{remark}
+
+\subsection{Passive unitary changes of representation}
+For a unitary $U$ define
+\begin{equation}
+ \Ad_U(X):=UXU^\dagger.
+\end{equation}
+A passive change of representation carries every physical object into its new matrix representation. Thus
+\begin{align}
+ \rho'&=\Ad_U(\rho),\\
+ F'&=\Ad_U(F),\\
+ \mathcal S'&=\Ad_U(\mathcal S),
+ \label{eq:basictransforms}
+\end{align}
+and superoperators transform by conjugation,
+\begin{align}
+ \Delta_{\rm cl}'
+ &=\Ad_U\circ\Delta_{\rm cl}\circ\Ad_{U^\dagger},
+ \label{eq:deltatransform}\\
+ \mathcal L'
+ &=\Ad_U\circ\mathcal L\circ\Ad_{U^\dagger}.
+ \label{eq:Ltransform}
+\end{align}
+
+\begin{lemma}[Covariance of the off-classical sector]
+Let $Q_{\rm cl}=I-\Delta_{\rm cl}$ and $Q_{\rm cl}'=I-\Delta_{\rm cl}'$. Then for every trace-class $X$,
+\begin{equation}
+ \boxed{Q_{\rm cl}'\,\Ad_U(X)=\Ad_U(Q_{\rm cl}X).}
+ \label{eq:Qcov}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Using \eqref{eq:deltatransform},
+\begin{align}
+ Q_{\rm cl}'\Ad_U(X)
+ &=\Ad_U(X)-\Delta_{\rm cl}'\Ad_U(X)\\
+ &=\Ad_U(X)-\Ad_U\Delta_{\rm cl}(X)\\
+ &=\Ad_U[(I-\Delta_{\rm cl})X].
+\end{align}
+\end{proof}
+
+Thus an operator may cease to look matrix off-diagonal after a basis change, but it remains the same off-classical physical operator relative to the transformed classicalization map.
+
+\subsection{Basis covariance theorem for Hysterical Response}
+On the stable response subspace,
+\begin{equation}
+ \delta\rho_H=-\mathcal L^{-1}\mathcal S_H,
+ \qquad
+ F_H=-\Tr(F\mathcal L^{-1}\mathcal S_H).
+ \label{eq:paper1response}
+\end{equation}
+Here $F$ is an existing interaction observable.
+The source $\mathcal S_H$ is \emph{system-dependent}: its construction, support, and normalization depend on the interaction, environment, coarse-graining, and state under study.
+It may be fed by the off-classical sector, replenishment, correlations, or other open-system structure; no new fundamental force observable is introduced.
+The present paper develops the response calculus for an admissible $\mathcal S_H$; deriving a concrete source for a given microscopic model is a separate modeling task.
+
+\begin{assumption}[Covariant source construction]
+If the entire physical description is passively transformed by $U$, the response source transforms as
+\begin{equation}
+ \mathcal S_H'=\Ad_U(\mathcal S_H).
+ \label{eq:sourcecov}
+\end{equation}
+In particular, any source constructed covariantly from $Q_{\rm cl}\rho$, the interaction, and environmental data satisfies this requirement.
+\end{assumption}
+
+\begin{lemma}[Covariance of the inverse generator]
+If $\mathcal L$ is invertible on the retained response subspace and $\mathcal L'$ is given by \eqref{eq:Ltransform}, then
+\begin{equation}
+ (\mathcal L')^{-1}
+ =\Ad_U\circ\mathcal L^{-1}\circ\Ad_{U^\dagger}.
+ \label{eq:inversecov}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Composition of the right-hand side with $\mathcal L'$ gives the identity on the transformed response subspace, since $\Ad_{U^\dagger}\circ\Ad_U=I$.
+\end{proof}
+
+\begin{theorem}[Basis Covariance Theorem for Hysterical Response]\label{thm:basis-covariance}
+Let $U$ be unitary and transform $F,\mathcal L,\mathcal S_H,$ and $\Delta_{\rm cl}$ passively according to \eqref{eq:basictransforms}--\eqref{eq:sourcecov}. Then
+\begin{equation}
+ \boxed{\delta\rho_H'=\Ad_U(\delta\rho_H)}
+ \label{eq:rhocov}
+\end{equation}
+and the predicted leftover force is invariant (componentwise if $F$ is vector-valued),
+\begin{equation}
+ \boxed{F_H'=F_H.}
+ \label{eq:FHinvariant}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:inversecov} and \eqref{eq:sourcecov},
+\begin{align}
+ \delta\rho_H'
+ &=-(\mathcal L')^{-1}\mathcal S_H'\\
+ &=-\Ad_U\mathcal L^{-1}\Ad_{U^\dagger}\Ad_U(\mathcal S_H)\\
+ &=\Ad_U(-\mathcal L^{-1}\mathcal S_H).
+\end{align}
+For the observable response,
+\begin{align}
+ F_H'
+ &=-\Tr\!\left[UFU^\dagger\,U(\mathcal L^{-1}\mathcal S_H)U^\dagger\right]\\
+ &=-\Tr\!\left[U F(\mathcal L^{-1}\mathcal S_H)U^\dagger\right]\\
+ &=-\Tr\!\left[F\mathcal L^{-1}\mathcal S_H\right],
+\end{align}
+using unitary invariance/cyclicity of the trace.
+\end{proof}
+
+\begin{corollary}[No arbitrary basis ambiguity]
+A passive basis change cannot create, destroy, or alter a Hysterical response. It can only change how the same physical response is represented.
+\end{corollary}
+
+\subsection{What is basis-relative and what is physical}
+The theorem does \emph{not} say that the words ``diagonal'' and ``off-diagonal'' are representation invariant. They are not. It says that the off-classical decomposition is covariant once the physical map $\Delta_{\rm cl}$ is transformed together with the state.
+
+\begin{proposition}[Pointer-structure distinction]
+Replacing $\Delta_{\rm cl}$ by a different map $\widetilde\Delta_{\rm cl}$ while keeping the physical state and interaction fixed is not a passive basis change unless
+\begin{equation}
+ \widetilde\Delta_{\rm cl}=\Ad_U\circ\Delta_{\rm cl}\circ\Ad_{U^\dagger}
+\end{equation}
+for the same passive representation transformation applied to all physical objects. In general, changing $\Delta_{\rm cl}$ changes the physical coarse-graining model.
+\end{proposition}
+
+This is the precise sense in which the classical-like Everett decomposition is physical but not a mathematically preferred coordinate basis. The environment selects the relevant approximately classical algebra; a theorist is free to represent that algebra in any basis.
+
+\subsection{Active versus passive unitaries}
+A passive unitary changes coordinates. An active unitary changes the physical state while leaving the measuring apparatus, force observable, and environmental structure fixed.
+
+\begin{definition}[Active transformation]
+For fixed $F,\mathcal L,\mathcal S_H$-construction, and $\Delta_{\rm cl}$, an active transformation sends
+\begin{equation}
+ \rho\mapsto U\rho U^\dagger
+\end{equation}
+without simultaneously conjugating the rest of the physical description.
+\end{definition}
+
+There is no invariance theorem for an active transformation. Indeed, physically moving a source from a near to a far configuration, or changing a correlation, should generally change the force response.
+
+\begin{center}
+\begin{tabular}{p{0.20\linewidth}p{0.36\linewidth}p{0.34\linewidth}}
+\toprule
+Operation & What changes & Physical prediction \\
+\midrule
+Passive basis change & all state/observable/dynamical objects covariantly & unchanged \\
+Active unitary & state/configuration, with apparatus/dynamics fixed & may change \\
+Pointer-map replacement & environmental classicalization structure & may change \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Application: three-particle correlation diagnostics}
+Let $A$ be a probe and $B,C$ near/far sources. Compare
+\begin{align}
+  \ket{\Psi_+}&=\frac{1}{\sqrt2}\bigl(\ket{B_NC_N}+\ket{B_FC_F}\bigr),&
+  \ket{\Psi_-}&=\frac{1}{\sqrt2}\bigl(\ket{B_NC_F}+\ket{B_FC_N}\bigr).
+\end{align}
+Both states have identical one-body marginals $P(B_N)=P(B_F)=P(C_N)=P(C_F)=\tfrac12$, yet opposite near/far correlation.
+With equal source masses and a symmetric geometry, writing $F_N$ and $F_F$ for the force contribution of one near or far source at $A$, the branch force contrasts are
+\begin{equation}
+  \Delta F_+=2(F_N-F_F),\qquad \Delta F_-=0.
+\end{equation}
+Thus a history-dependent response can satisfy $F_H^{(A)}[\Psi_+]\neq F_H^{(A)}[\Psi_-]$ even though the separate statistics of $B$ and $C$ are unchanged.
+With $Z=|N\rangle\langle N|-|F\rangle\langle F|$ one has $\langle Z_B\rangle=\langle Z_C\rangle=0$ while $\langle Z_BZ_C\rangle_{\pm}=\pm1$; a correlation-sensitive probe observable therefore sees a nonzero discriminator $2r_{BC}$ between the two states.
+Under a simultaneous passive unitary change of representation that discriminator is unchanged (in a Hadamard frame it may appear as a relative phase).
+This is why Theorem~\ref{thm:basis-covariance} is required: ``off-diagonal'' language is relative to a physically selected classicalization map, not to an arbitrary coordinate basis.
+
+\subsection{Why ``off-diagonal'' remains useful}
+The preceding theorem does not require abandoning the original intuition. In the physically selected near/far pointer representation, the object
+\begin{equation}
+ Q_{\rm cl}\rho=(I-\Delta_{\rm cl})\rho
+\end{equation}
+is literally represented by off-diagonal blocks between approximately classical configurations. Thus the phrase ``off-diagonal response'' is legitimate shorthand when the pointer representation has already been specified.
+
+The mature statement is therefore
+\begin{equation}
+ \boxed{
+ \begin{minipage}{0.84\linewidth}
+ Hysterical Response is the dynamical response of an existing interaction under open-system drive.
+ When that drive is fed by structure outside the decoherence-selected approximately classical sector, the leftover is history-dependent in the sense of the present framework.
+ Matrix diagonal vs.\ off-diagonal language is representation-dependent; the relation to the physical classicalization map is not.
+ \end{minipage}}
+ \label{eq:mature}
+\end{equation}
+
+This also clarifies the static dephasing no-go. The instantaneous quantity
+\begin{equation}
+ \Tr[F(I-\Delta_{\rm cl})\rho]
+\end{equation}
+may vanish when $\Delta_{\rm cl}^\dagger(F)=F$. Hysterical Response is not identified with that instantaneous matrix element. Rather, a system-dependent source $\mathcal S_H$---which \emph{may} carry off-classical, correlational, or replenishment structure---produces
+\begin{equation}
+ F_H=-\Tr(F\mathcal L^{-1}\mathcal S_H),
+\end{equation}
+which need not vanish even when the static coherence pairing does.
+\subsection{Open physical questions}
+The theorem resolves the representation problem but deliberately leaves the following system-dependent questions open:
+\begin{enumerate}
+\item the microscopic derivation of $\Delta_{\rm cl}$ or the pointer algebra for a given environment;
+\item how accurately the classicalization map is idempotent when decoherence is only approximate;
+\item the concrete construction and normalization of the system-dependent source $\mathcal S_H$ in particular interactions and states;
+\item the magnitude and spectrum of the associated Hysterical susceptibility;
+\item whether the response is neutral, critical, or unstable under the instability criterion of Section~\ref{sec:instability};
+\item whether a surviving response remains macroscopic after coarse graining.
+\end{enumerate}
+None of these is an arbitrary-basis ambiguity.
+
+\section{Constructive response theory}
+\label{sec:constructive}
+\subsection{Exact open-system response on a general Hilbert space}
+Let $\mathcal L$ generate a strongly continuous quantum dynamical semigroup on the trace class.
+Let $\rho_0$ be a stationary reference state, $\mathcal L\rho_0=0$, and write $\rho=\rho_0+\delta\rho$.
+
+\begin{assumption}[Stable trace-zero response]
+On an invariant trace-zero subspace $\mathcal X\subset\mathcal T_1(\mathcal H)$ assume
+\begin{equation}
+  \norm{e^{t\mathcal L}X}_1\le M e^{-\gamma t}\norm{X}_1,
+  \qquad X\in\mathcal X,\quad M\ge 1,\quad \gamma>0,
+\end{equation}
+and let the source $\mathcal S\in\mathcal X$.
+The driven perturbation obeys $\dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S$.
+\end{assumption}
+
+\begin{theorem}[Resolvent response]\label{thm:resolvent-response}
+On $\mathcal X$,
+\begin{equation}
+  -\mathcal L^{-1}X=\int_0^\infty e^{t\mathcal L}X\,\dd t,\qquad
+  \delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S.
+\end{equation}
+Hence the source-induced force response is
+\begin{equation}
+  F_{\mathrm{resp}}=-\Tr\bigl[F\mathcal L^{-1}\mathcal S\bigr],
+\end{equation}
+and, for any separately specified diagnostic dephasing $\Delta$,
+\begin{equation}
+  F^{(\Delta),\mathrm{ss}}_{\mathrm{coh}}=-\Tr\bigl[F(I-\Delta)\mathcal L^{-1}\mathcal S\bigr].
+\end{equation}
+\end{theorem}
+\begin{proof}[Proof sketch]
+Exponential stability gives Bochner convergence of the integral.
+The force identities follow by linearity of the trace pairing.
+\end{proof}
+
+\begin{remark}[Literature hypothesis: $C_0$ resolvent--Laplace identity]
+\label{rem:lit-resolvent}
+On a Banach space, if $T(t)$ is a $C_0$-semigroup with generator $A$ and growth bound $\omega_0$, then
+\begin{equation}
+  R(\lambda,A)=\int_0^\infty e^{-\lambda t}T(t)\,\dd t
+  \qquad(\operatorname{Re}\lambda>\omega_0)
+\end{equation}
+\cite{pazy1983,engelNagel2000}.
+Under the exponential stability assumed here ($\omega_0<0$), this specializes to
+$(-A)^{-1}=\int_0^\infty T(t)\,\dd t$.
+We use that identity as a \emph{literature hypothesis}: it is a standard theorem of semigroup theory, cited rather than re-proved.
+In the companion Lean development the stable Laplace integral is constructed and bounded directly; identifying it with the resolvent of an unbounded generator remains this literature hypothesis (not a silent gap).
+The formula is stated with the growth bound $\omega_0$, not the spectral bound $s(A)$; exponential stability of the semigroup is exactly the hypothesis we assume.
+\end{remark}
+
+\begin{remark}[Physical stationary state and unbounded forces]
+The total candidate stationary state $\rho_{\mathrm{ss}}=\rho_0-\mathcal L^{-1}\mathcal S$ must be positive as well as trace one.
+Positivity is automatic only when the source is incorporated through a completely positive physical driving model; for an abstract additive source it is an additional admissibility requirement.
+For unbounded $F$, the theorem is asserted only on an invariant domain where $X\mapsto\Tr(FX)$ and the resolvent integral are well defined and finite.
+\end{remark}
+
+\begin{proposition}[Dynamical relevance]
+An initial coherent perturbation $X$ is force-invisible for all subsequent times precisely when
+$\Tr\bigl[F P_{\mathrm{coh}} e^{t\mathcal L}X\bigr]=0$ for all $t\ge 0$.
+In finite dimension, if $\Tr\bigl(F P_{\mathrm{coh}}\mathcal L^k X\bigr)\ne 0$ for some $k$, then $X$ is dynamically force-relevant.
+\end{proposition}
+
+\subsection{Source-channel susceptibility}
+Let $(\Xi,\mu)$ be a channel space and
+\begin{equation}
+  \mathcal S=\int_\Xi J(\xi)\,S_\xi\,\dd\mu(\xi),\qquad J(\xi)\ge 0.
+\end{equation}
+If the integral may be interchanged with the admissible response functional, then
+\begin{equation}
+  F_{\mathrm{resp}}=\int_\Xi J(\xi)\,\chi(\xi)\,\dd\mu(\xi),\qquad
+  \chi(\xi)=-\Tr\bigl[F\mathcal L^{-1}S_\xi\bigr].
+\end{equation}
+A coherence-resolved susceptibility is obtained, when desired, by replacing $F$ with
+$X\mapsto\Tr\bigl[F(I-\Delta)X\bigr]$.
+The generator may retain system-dependent dissipative parameters explicitly:
+\begin{equation}
+  \mathcal L
+  =\mathcal L_0
+  +\int \Gamma_{\mathrm{fr}}(\eta)\,D_{\mathrm{fr},\eta}\,\dd\nu(\eta)
+  +\int \Gamma_{\mathrm{em}}(\zeta)\,D_{\mathrm{em},\zeta}\,\dd\lambda(\zeta).
+\end{equation}
+
+\begin{theorem}[Invariant channel sectors]
+If $\mathcal X=\bigoplus_a\mathcal X_a$, $\mathcal L\mathcal X_a\subseteq\mathcal X_a$, and
+$\mathcal S=\sum_a J_a S_a$ with $S_a\in\mathcal X_a$, then
+\begin{equation}
+  F_{\mathrm{resp}}=\sum_a J_a\chi_a,\qquad
+  \chi_a=-\Tr\bigl[F(\mathcal L|_{\mathcal X_a})^{-1}S_a\bigr].
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Weak channel mixing]
+If $\mathcal L=\mathcal L_0+V$, $\mathcal L_0$ is block diagonal, the inverses are taken on the stable response subspace, and $\norm{\mathcal L_0^{-1}V}<1$, then
+\begin{equation}
+  \mathcal L^{-1}=\sum_{n=0}^\infty\bigl(-\mathcal L_0^{-1}V\bigr)^n\mathcal L_0^{-1},
+\end{equation}
+with
+\begin{equation}
+  \norm{\mathcal L^{-1}-\mathcal L_0^{-1}}
+  \le\frac{\norm{\mathcal L_0^{-1}}^2\norm{V}}{1-\norm{\mathcal L_0^{-1}V}}.
+\end{equation}
+\end{corollary}
+
+\subsection{Random-phase arrivals}
+For
+\begin{equation}
+  \ket{\psi_\phi}=\frac{\ket{n}+e^{i\phi}\ket{f}}{\sqrt{2}},\qquad
+  \phi\sim\mathrm{Unif}[0,2\pi),
+\end{equation}
+with orthonormal $\{\ket{n},\ket{f}\}$ spanning a two-dimensional subspace $\mathcal H_2\subseteq\mathcal H$, phase averaging gives
+\begin{equation}
+  \sigma_{\mathrm{in}}
+  =\frac{1}{2\pi}\int_0^{2\pi}\ket{\psi_\phi}\bra{\psi_\phi}\,\dd\phi
+  =\frac{P_2}{2},
+\end{equation}
+where $P_2$ is the projector onto $\mathcal H_2$ (equivalently $I/2$ when working entirely inside that qubit).
+Therefore direct linear phase-sensitive coherence vanishes in the ensemble mean on $\mathcal H_2$.
+A phase-independent dissipative population alignment can nevertheless be generated later.
+Mean force must consequently be computed from the linear density-matrix dynamics, not inferred from a nonlinear coherence norm.
+At incorporation we assume the incoming degree of freedom is unentangled with the system,
+$\rho_{N+1}(0^+)=\rho_N\otimes\sigma_{\mathrm{in}}$; subsequent dynamics may entangle it.
+
+\subsection{Symmetry and vector cancellation}
+
+\begin{theorem}[Symmetry restriction]
+Let a group act by unitaries $U_g$ and spatial rotations $R_g$.
+If $U_g\rho U_g^\dagger=\rho$ and $U_g^\dagger F U_g=R_g F$, then
+$R_g\Tr(\rho F)=\Tr(\rho F)$ for every $g$.
+Hence the expected force lies in the invariant vector subspace.
+For axial symmetry it lies along the symmetry axis; for spherical geometry about a distinguished observation point it is radial.
+\end{theorem}
+
+\subsection{Finite-dimensional motivating example}
+The general response theory does not require $\dim\mathcal H<\infty$.
+The following calculation illustrates one mechanism only.
+
+\subsubsection{Scalar coherence does not control force}
+In a $D$-dimensional localization basis,
+$F_{\mathrm{coh}}=\sum_{i\neq j}\rho_{ij}F_{ji}$.
+Define $O(\rho)=\sum_{i\neq j}\lvert\rho_{ij}\rvert$.
+There is no universal positive lower bound on $\lvert F_{\mathrm{coh}}\rvert$ in terms of $O$ alone.
+
+\begin{proposition}[Coherence norm does not control force]\label{prop:coherence-norm}
+For $D\ge 2$ and any fixed Hermitian $F$, there exist density matrices with $O>0$ but $F_{\mathrm{coh}}=0$.
+\end{proposition}
+\begin{proof}
+The real vector space of Hermitian zero-diagonal matrices has dimension $D(D-1)$.
+The real linear functional $Q\mapsto\Tr(QF)$ has a nontrivial kernel.
+Choose nonzero Hermitian zero-diagonal $Q$ in that kernel and normalize its entrywise off-diagonal $\ell^1$ norm to one.
+For sufficiently small $\epsilon>0$, $\rho_\epsilon=I/D+\epsilon Q$ is positive.
+Then $O(\rho_\epsilon)=\epsilon$ while $F_{\mathrm{coh}}=\epsilon\Tr(QF)=0$.
+\end{proof}
+
+\section{Hysterical neutrality and gravitational survival}
+\label{sec:neutrality}
+\subsection{Response framework developed above}
+Let $\mathcal H$ be a separable Hilbert space and let $\mathcal T_1(\mathcal H)$ denote trace-class operators.  The linearized open-system response is
+\begin{equation}
+ \dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S.
+\end{equation}
+On the stable response subspace, the stationary correction is
+\begin{equation}
+ \delta\rho_H=-\mathcal L^{-1}\mathcal S,
+ \qquad
+ F_H=-\Tr\!\left(F\mathcal L^{-1}\mathcal S\right).
+ \label{eq:response}
+\end{equation}
+Here $F$ is the externally measured force observable for the \emph{underlying interaction}.  Equation~\eqref{eq:response} introduces no new force carrier.
+
+\begin{assumption}[Exponential response stability]\label{ass:stability}
+For $X$ in the stable trace-class response subspace,
+\begin{equation}
+ \norm{e^{t\mathcal L}X}_1\le M e^{-\gamma t}\norm{X}_1,
+ \qquad M\ge1,\quad\gamma>0.
+ \label{eq:stability}
+\end{equation}
+\end{assumption}
+
+\begin{lemma}[Resolvent susceptibility bound]\label{lem:resolvent}
+Under Assumption~\ref{ass:stability}, for bounded $F$ and trace-class $\mathcal S$,
+\begin{equation}
+ |F_H|\le \frac{M}{\gamma}\norm{F}_\infty\norm{\mathcal S}_1.
+ \label{eq:masterbound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On the stable subspace,
+\begin{equation}
+ -\mathcal L^{-1}\mathcal S=\int_0^\infty e^{t\mathcal L}\mathcal S\,dt.
+\end{equation}
+Trace duality and Eq.~\eqref{eq:stability} therefore give
+\begin{align}
+ |F_H|
+ &\le\int_0^\infty\left|\Tr(F e^{t\mathcal L}\mathcal S)\right|dt\\
+ &\le\norm F_\infty\int_0^\infty\norm{e^{t\mathcal L}\mathcal S}_1dt\\
+ &\le\norm F_\infty M\norm{\mathcal S}_1\int_0^\infty e^{-\gamma t}dt,
+\end{align}
+which is Eq.~\eqref{eq:masterbound}.
+\end{proof}
+
+The factor $M/\gamma$ is a response susceptibility scale.  The theorem below fails if this susceptibility diverges rapidly enough to compensate neutralization.  This is not a technical nuisance: it identifies a genuine critical-response loophole that must be tested in any application.
+
+\subsection{Neutrality must be defined for the composite channel}
+Classically we do not feel a long-range electromagnetic field from the Earth: it carries (to excellent approximation) as many protons as electrons, and opposite charges cancel.
+Electromagnetism is the familiar \emph{motivating example} for the theorem below, not a special case carved into the mathematics.
+Macroscopically, in the present universe, one expects every non-gravitational long-range channel of ordinary bulk matter---electromagnetic, strong (confined colour), and weak (short-ranged)---to satisfy the external-force hypothesis of the theorem, each for its own physical reason.
+Gravity is different: every mass attracts, so the contributions add, and on large scales gravity dominates the composite body.
+The same inheritance applies to residual responses from quantum alternatives (informally, Everett branches): when a typical alternative looks force-quiet from outside, controlled Hysterical leftovers inherit that quietness.
+
+A neutral macroscopic body is therefore not a collection of independently observed constituents.
+The relevant object is its externally visible composite interaction.
+
+\begin{definition}[Response-visible neutrality]
+Consider a sequence of composites indexed by size $N$.  Let $F_N^{\rm ext}$ denote the force observable coupling the entire composite to a specified external probe, after internal degrees of freedom have been included in the channel description.
+The indicated operator norm is that of this probe-channel observable on the retained response space for the asymptotic question under study (for electromagnetism: typically the long-range / monopole sector seen by a distant test charge, not every near-zone multipole).
+The interaction is \emph{response-visibly neutral} if
+\begin{equation}
+ \norm{F_N^{\rm ext}}_\infty\longrightarrow0
+ \label{eq:neutrality}
+\end{equation}
+in the macroscopic/asymptotic regime being studied.
+\end{definition}
+
+This is intentionally stronger and cleaner than saying that a signed scalar charge happens to sum to zero.  It is the externally measurable interaction that must neutralize.
+Charge neutrality is only a motivating reason why the electromagnetic instance of $\norm{F_N^{\rm ext}}_\infty\to0$ may hold at long range; the theorem itself is stated for any interaction channel that meets \eqref{eq:neutrality} under controlled response.
+A surviving monopole field would mean the composite is \emph{not} response-visibly neutral in that channel.
+Net charge zero alone is not a substitute for \eqref{eq:neutrality}: multipoles or other residual couplings may keep $\norm{F_N^{\rm ext}}_\infty$ from vanishing unless the asymptotic probe and observable are chosen so that those contributions drop out.
+
+\begin{theorem}[Hysterical Neutrality Theorem]\label{thm:neutrality}
+For a sequence of composite channels, suppose:
+\begin{enumerate}[label=(\roman*)]
+\item $\norm{F_N^{\rm ext}}_\infty\to0$;
+\item $\norm{\mathcal S_N}_1\le S_*$ uniformly;
+\item the stable semigroups satisfy Eq.~\eqref{eq:stability} with $M_N/\gamma_N\le C_*$ uniformly.
+\end{enumerate}
+Then the corresponding Hysterical force satisfies
+\begin{equation}
+ \boxed{F_{H,N}^{\rm ext}\longrightarrow0.}
+\end{equation}
+More quantitatively,
+\begin{equation}
+ |F_{H,N}^{\rm ext}|
+ \le C_*S_*\norm{F_N^{\rm ext}}_\infty.
+ \label{eq:neutralbound}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:resolvent} to each composite channel and use assumptions (ii)--(iii):
+\begin{equation}
+ |F_{H,N}^{\rm ext}|
+ \le \frac{M_N}{\gamma_N}\norm{F_N^{\rm ext}}_\infty\norm{\mathcal S_N}_1
+ \le C_*S_*\norm{F_N^{\rm ext}}_\infty.
+\end{equation}
+Assumption (i) then gives the result.
+\end{proof}
+
+\begin{remark}[What the theorem does not assume]
+The theorem does not assume a finite number of alternatives, bounded branch weights, a branch-counting measure, or a fundamental Hysterical field.  It is a continuity theorem for an open-system response functional.
+\end{remark}
+
+\begin{remark}[Critical loophole]
+Neutrality need not be inherited if $M_N/\gamma_N$ or $\norm{\mathcal S_N}_1$ diverges quickly enough that their product overwhelms $\norm{F_N^{\rm ext}}_\infty$.  Thus ``ordinary neutrality implies Hysterical neutrality'' is a theorem only in a controlled response phase.  A divergent susceptibility is precisely the kind of behavior expected near a critical point and must not be silently excluded when studying the onset of macroscopic response.
+\end{remark}
+
+\subsection{Application remark: two-level force-contrast bound}
+\label{sec:twolevel-remark}
+In a two-level renewal reduction with force contrast $\delta f$ between decoherence-selected alternatives, the steady leftover is controlled by a population bias $B$ obeying
+\begin{equation}
+ \boxed{|B|\le\frac{|\delta f|}{2}.}
+ \label{eq:Bbound}
+\end{equation}
+Thus $\delta f\to0$ forces $B\to0$ (and, under nondegenerate renewal weighting, forces the steady leftover to vanish) with no further restriction on splitting or temperature.
+We record only this compact formal statement; the pedagogical two-level gravitational toy is not developed here.
+The same bound shows why the order of coarse-graining matters: independently summing opposite-sign constituent biases need not cancel, whereas forming the composite force contrast first does.
+
+\subsection{Relation to symmetry cancellation}
+Symmetry remains a useful sufficient mechanism for establishing neutrality, but it is not the theorem itself.
+
+\begin{lemma}[Odd-observable cancellation]
+If a unitary involution $C$ leaves a stationary state invariant,
+\begin{equation}
+ C\rho_{\rm ss}C^\dagger=\rho_{\rm ss},
+\end{equation}
+and reverses an interaction force,
+\begin{equation}
+ C^\dagger F C=-F,
+\end{equation}
+then
+\begin{equation}
+ \Tr(\rho_{\rm ss}F)=0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Cyclicity of the trace gives
+\begin{equation}
+ \Tr(\rho_{\rm ss}F)
+ =\Tr(\rho_{\rm ss}C^\dagger FC)
+ =-\Tr(\rho_{\rm ss}F).
+\end{equation}
+\end{proof}
+
+Thus a conjugation symmetry can establish exact cancellation for a neutral electromagnetic composite.  The broader Hysterical Neutrality Theorem does not require that particular symmetry and therefore need not force the strong and weak interactions into the same microscopic explanation.
+
+\subsection{Interaction-specific physical inputs}
+The Neutrality Theorem is interaction-agnostic once $\norm{F_N^{\rm ext}}_\infty\to0$ holds under controlled susceptibility.
+Electromagnetism motivates the statement; in macroscopic bulk matter today one expects the same external quietness---and therefore the same Hysterical inheritance---for every non-gravitational channel, each for its own reason.
+
+\subsubsection{Electromagnetism}
+\textbf{Physical input.} Ordinary bulk matter is often electrically neutral to high accuracy, and electromagnetic charge has both signs.  That is the usual reason the electromagnetic instance of $\norm{F_N^{\rm ext}}_\infty\to0$ holds at long range.  Under controlled susceptibility, Theorem~\ref{thm:neutrality} then forces the Hysterical electromagnetic response to vanish with it.
+
+\subsubsection{Strong interaction}
+\textbf{Physical input.} QCD physical states are color singlets at macroscopic distances and color is confined, so the externally visible long-range color force vanishes.  That vanishing is the neutrality input to which Theorem~\ref{thm:neutrality} applies.  A dedicated gauge-theoretic treatment would be required to derive confinement itself from the response formalism.
+
+\subsubsection{Weak interaction}
+\textbf{Physical input.} The low-energy weak interaction is mediated by massive $W^\pm$ and $Z$ bosons and is short-ranged.  Its large-distance suppression is therefore not primarily an application of charge neutrality.  A Hysterical correction that remains tied to the underlying weak propagating channel inherits that lack of an unscreened macroscopic range.  The italicized condition is a modeling assumption, not proved here.
+
+\subsubsection{Gravity}
+\textbf{Physical input.} Ordinary nonrelativistic matter carries positive gravitational mass-energy and has no observed opposite-sign gravitational charge sector that neutralizes ordinary macroscopic bodies.  Gravity is also long-ranged in the regime considered here.  Therefore the neutralization hypothesis of Theorem~\ref{thm:neutrality} is not generically available to ordinary gravitating matter.
+
+\subsection{Gravitational survival as a corollary}
+\begin{corollary}[Gravitational survival]\label{cor:gravity-survival}
+Gravity is not bound by Theorem~\ref{thm:neutrality} whenever the externally visible gravitational force fails to neutralize.
+The Neutrality Theorem therefore does not force $F_H\to0$ in that channel, so a nonzero gravitational leftover is permitted.
+When a gravitational response channel is also nondegenerate (nonzero force contrast and energetic splitting, nondegenerate susceptibility), the force-contrast bound~\eqref{eq:Bbound} is compatible with a nonzero population bias, and one may expect $F_H\neq0$ if the measured pairing does not cancel for independent dynamical reasons.
+\end{corollary}
+
+\begin{remark}
+This is only a corollary of escaping the neutrality hypothesis---not a derivation of amplitude or macroscopic normalization.
+\end{remark}
+
+\subsection{Ontology: response of an existing interaction}
+The fundamental mathematical structure is
+\begin{equation}
+ \boxed{
+ \text{underlying interaction}
+ +\text{ open-system dynamics}
+ \longrightarrow
+ \text{Hysterical modification of its response}.}
+\end{equation}
+For an interaction $X$ one may write schematically
+\begin{equation}
+ F_X^{\rm obs}=F_X+F_{H,X},
+\end{equation}
+with $F_{H,X}$ generated by $(F_X,\mathcal L_X,\mathcal S_X)$.
+The same mechanism applies to every interaction in the framework; it does not proliferate independent microscopic ``Hysteria fields.''
+
+\subsubsection{Why macroscopic field language remains legitimate}
+In applications one may introduce a smooth effective acceleration or potential,
+\begin{equation}
+ \mathbf g_H=-\nabla\Phi_H,
+\end{equation}
+and sometimes an effective density through
+\begin{equation}
+ \nabla^2\Phi_H=4\pi G\rho_H^{\rm eff}.
+\end{equation}
+These equations are a continuum closure for a coarse-grained gravitational response.  Accordingly:
+\begin{quote}
+The term \emph{Hysterical Response field} denotes an effective macroscopic representation of the Hysterical modification of the gravitational interaction.
+\end{quote}
+
+\section{Critical instability}
+\label{sec:instability}
+The neutrality theorem of Section~\ref{sec:neutrality} assumes controlled susceptibility.
+The present section treats neutrality and instability as the subcritical and supercritical regimes of one closed-loop response problem.
+\subsection{Definitional interaction universality}\label{sec:defuniv}
+Let $X$ denote any interaction to which the response decomposition is applied, with interaction observable $F_X$, open-system generator $\mathcal L_X$, and admissible response source $\mathcal S_X$. Hysterical Response is \emph{defined} to be the residual/open-system component of the response of this already-existing interaction. In the steady linear-response representation developed above,
+\begin{equation}
+ \boxed{F_{H,X}:=-\Tr\!\left[F_X\mathcal L_X^{-1}\mathcal S_X\right].}
+ \label{eq:defHX}
+\end{equation}
+Whenever exponential stability permits the resolvent representation,
+\begin{equation}
+ F_{H,X}=\int_0^\infty \Tr\!\left[F_X e^{t\mathcal L_X}\mathcal S_X\right]dt.
+ \label{eq:defHXtime}
+\end{equation}
+No new microscopic force, mediator, or interaction-specific ``Hysteria field'' is added by these equations. They isolate a component of the response of $F_X$ itself.
+
+\begin{definition}[Interaction universality of Hysterical Response]\label{def:univ}
+For every interaction $X$ in the domain of the response decomposition, the quantity $F_{H,X}$ defined by \eqref{eq:defHX} is called the Hysterical component of the response of $X$.
+Whether $F_{H,X}$ is nonzero, long-lived, or macroscopic is decided by the Neutrality Theorem and the closed-loop dynamics of Section~\ref{sec:instability}.
+\end{definition}
+
+\begin{remark}[What remains physical]
+Once an interaction is represented in the present framework, no additional ``universality hypothesis'' is required.
+The values and signs of susceptibilities, and the faithfulness of a chosen open-system model to a particular microscopic quantum field theory, remain physical inputs.
+\end{remark}
+
+\subsection{Local response structure near neutrality}
+Let $\Y\in\R^m$ denote a vector of externally visible charges, order parameters, or force-producing coordinates.  Let $\h\in\R^m$ denote the corresponding effective Hysterical response coordinates after projection onto the same response sector.
+
+\begin{assumption}[Exact conjugation symmetry]\label{ass:symmetry}
+There is a local involution under which $(\Y,\h)\mapsto(-\Y,-\h)$.  Consequently $\Y=\h=0$ is an exact neutral state and the local constitutive maps are odd.
+\end{assumption}
+
+Thus, near neutrality,
+\begin{align}
+ \h &= \chiH\Y+O(\norm{\Y}^3), \label{eq:hchi}\\
+ \Y_{\rm eq}(\h) &= \chiR\h+O(\norm{\h}^3). \label{eq:rchi}
+\end{align}
+The matrices $\chiH$ and $\chiR$ are respectively the Hysterical and ordinary interaction susceptibilities.
+
+\begin{assumption}[Relaxational closure]\label{ass:relax}
+The ordinary interaction relaxes toward $\Y_{\rm eq}(\h)$ according to
+\begin{equation}
+ \dot{\Y}=-\Gm\bigl[\Y-\Y_{\rm eq}(\h)\bigr]+O(\norm{\Y}^3),
+ \label{eq:relax}
+\end{equation}
+where $\Gm$ is positive stable; in the reciprocal class used for the simple eigenvalue criterion below it is symmetric positive definite.
+\end{assumption}
+
+\begin{definition}[Closed-loop Hysterical gain]
+The dimensionless linear gain is
+\begin{equation}
+ \boxed{\K:=\chiR\chiH.}
+ \label{eq:gain}
+\end{equation}
+\end{definition}
+
+Substitution of \eqref{eq:hchi}--\eqref{eq:rchi} into \eqref{eq:relax} gives
+\begin{equation}
+ \dot{\Y}=J\Y+O(\norm{\Y}^3),\qquad
+ \boxed{J=-\Gm(I-\K).}
+ \label{eq:J}
+\end{equation}
+
+\subsection{The master neutrality--instability theorem}\label{sec:master}
+\begin{theorem}[Hysterical Neutrality--Instability Theorem]\label{thm:master}
+Under Assumptions~\ref{ass:symmetry}--\ref{ass:relax}, the neutral state $\Y=\h=0$ is an exact fixed point.  Let
+\begin{equation}
+ \alpha(J):=\max\{\operatorname{Re}\lambda:\lambda\in\operatorname{spec}(J)\}
+\end{equation}
+be the spectral abscissa of the linearized closed-loop generator $J=-\Gm(I-\K)$.  Then:
+\begin{enumerate}[label=(\roman*)]
+ \item if $\alpha(J)<0$, neutrality is locally linearly asymptotically stable;
+ \item if $\alpha(J)>0$, neutrality is linearly unstable and there exists an arbitrarily small perturbation that grows exponentially at linear order;
+ \item if $\alpha(J)=0$, the system lies on the linear critical surface and linear theory alone does not decide nonlinear stability.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Exact neutrality follows from oddness of the constitutive maps.  Equation~\eqref{eq:J} is the Fr\'echet linearization at the fixed point.
+In finite dimension every solution of the linearization $\dot y=Jy$ is a linear combination of Jordan modes $t^k e^{\lambda t}v$ associated with eigenvalues $\lambda\in\operatorname{spec}(J)$.
+Writing $\alpha(J)=\max\operatorname{Re}\lambda$, one therefore has the elementary alternatives:
+\begin{enumerate}[label=(\roman*)]
+ \item if $\alpha(J)<0$, every mode decays exponentially, so the origin is locally linearly asymptotically stable;
+ \item if $\alpha(J)>0$, some mode grows as $e^{\alpha t}$ (up to a polynomial prefactor), so an arbitrarily small projection onto that generalized eigenspace is linearly unstable;
+ \item if $\alpha(J)=0$, center or purely oscillatory modes remain and linear theory alone does not decide nonlinear stability.
+\end{enumerate}
+(The same trichotomy is the finite-dimensional linear-stability classification in standard ODE texts~\cite{perko2001}.)
+\end{proof}
+
+\begin{definition}[Three response phases]
+We call $\alpha(J)<0$ the \emph{inert Hysterical-neutral phase}, $\alpha(J)=0$ the \emph{Hysterical critical surface}, and $\alpha(J)>0$ the \emph{Hysterical-unstable phase}.
+\end{definition}
+
+\begin{corollary}[Reciprocal gain criterion]\label{cor:reciprocal}
+Suppose there exists a positive-definite susceptibility metric in which $\Gm$ is positive definite and $\K$ is self-adjoint, with the linearized dynamics similar to
+\begin{equation}
+ -\Gm^{1/2}(I-\widetilde K)\Gm^{1/2},
+\end{equation}
+where $\widetilde K$ is self-adjoint and has the same relevant gain eigenvalues.  Then
+\begin{align}
+ \lambda_{\max}(\widetilde K)<1 &\quad\Longrightarrow\quad \text{inert neutrality},\\
+ \lambda_{\max}(\widetilde K)=1 &\quad\Longrightarrow\quad \text{criticality},\\
+ \lambda_{\max}(\widetilde K)>1 &\quad\Longrightarrow\quad \text{linear instability}.
+\end{align}
+In the commuting symmetric case $\widetilde K=\K$.
+\end{corollary}
+\begin{proof}
+The congruence by $\Gm^{1/2}$ preserves the inertia of the self-adjoint factor.  Hence the sign of the least restoring eigenvalue changes precisely when the largest gain eigenvalue crosses unity.
+\end{proof}
+
+\begin{remark}[Why the general theorem is stated using $\alpha(J)$]
+For non-normal, nonreciprocal response matrices, $\rho(\K)$ or $\lambda_{\max}(\K)$ alone need not characterize stability because $\Gm$ and $\K$ need not commute.  The spectral abscissa of the actual Jacobian is the exact linear criterion.  The unity-gain criterion is a corollary for the reciprocal/detailed-balance class.
+\end{remark}
+
+\subsection{Connection to the Liouvillian}
+The constructive theory gives the stationary response
+\begin{equation}
+ \delta\rho_H=-\mathcal L^{-1}\mathcal S.
+\end{equation}
+If the source is odd in the order parameter,
+\begin{equation}
+ \mathcal S(\Y)=\sum_a Y_a\mathcal S_a+O(\norm{\Y}^3),
+\end{equation}
+and $O_b$ are projected response observables, then
+\begin{equation}
+ (\chiH)_{ba}=-\Tr\!\left(O_b\mathcal L^{-1}\mathcal S_a\right).
+ \label{eq:paper1chi}
+\end{equation}
+Thus the master theorem is directly a theorem about the feedback generated by the response susceptibility once a physical interaction supplies $\chiR$ and $\Gm$.
+
+\subsubsection{Controlled response and neutrality}
+If the stable response semigroup satisfies
+\begin{equation}
+ \norm{e^{t\mathcal L}X}_1\le M e^{-\gamma t}\norm{X}_1,
+\end{equation}
+then the resolvent theory gives
+\begin{equation}
+ \norm{\chiH}\lesssim \frac{M}{\gamma}\,C_{OS},
+ \label{eq:boundchi}
+\end{equation}
+where $C_{OS}$ collects the relevant observable and source norms.  Consequently, sufficiently strong relaxation bounds the loop gain.
+
+\begin{corollary}[Subcritical sufficient condition]\label{cor:subcrit}
+In any operator norm compatible with the chosen finite-dimensional projection, if
+\begin{equation}
+ \norm{\chiR}\,\frac{M}{\gamma}C_{OS}<1,
+ \label{eq:subcrit}
+\end{equation}
+then $\norm{\K}<1$.  In the reciprocal class this is sufficient for inert neutrality.
+\end{corollary}
+
+The same susceptibility scale $M/\gamma$ that enters the Neutrality Theorem therefore also bounds the closed-loop gain: controlled relaxation keeps the response subcritical, while a closing gap can push it through criticality.
+
+\subsubsection{Slow modes and the critical loophole}
+Let the relevant Liouvillian spectral decomposition be formally
+\begin{equation}
+ \mathcal L R_j=-\gamma_jR_j,
+\end{equation}
+with dual modes $L_j$.  A scalar projected susceptibility has the form
+\begin{equation}
+ \chi_H=\sum_j\frac{(O_H|R_j)(L_j|\mathcal S_Y)}{\gamma_j}.
+\end{equation}
+For one dominant slow mode,
+\begin{equation}
+ \boxed{\chi_H=\frac{\mathcal R_0}{\gamma_0}+O(1)},\qquad
+ \mathcal R_0=(O_H|R_0)(L_0|\mathcal S_Y).
+ \label{eq:slow}
+\end{equation}
+If $\mathcal R_0>0$, then $\gamma_0\to0^+$ produces a positive divergent susceptibility.  If the ordinary scalar susceptibility is $\chi_R>0$, the leading critical gap is
+\begin{equation}
+ \boxed{\gamma_c\simeq\chi_R\mathcal R_0.}
+ \label{eq:gammac}
+\end{equation}
+Thus the critical-response loophole retained in the Neutrality Theorem---divergent $M/\gamma$ defeating neutralization---is the same slow-mode mechanism that drives the closed-loop gain through unity.
+
+\subsection{Scalar dynamical theorem}\label{sec:scalar}
+A useful realization keeps the Hysterical coordinate dynamical rather than eliminating it quasistatically:
+\begin{align}
+ \dot Y&=-\Gamma Y+\alpha h,\label{eq:scalarY}\\
+ \dot h&=\sigma Y-\gamma h,\label{eq:scalarh}
+\end{align}
+with $\Gamma,\gamma>0$.  The characteristic polynomial is
+\begin{equation}
+ P(\lambda)=(\lambda+\Gamma)(\lambda+\gamma)-\alpha\sigma.
+\end{equation}
+
+\begin{theorem}[Scalar Hysterical Instability Theorem]\label{thm:scalar}
+For \eqref{eq:scalarY}--\eqref{eq:scalarh} with $\Gamma,\gamma>0$:
+\begin{align}
+ \alpha\sigma<\Gamma\gamma &\Longrightarrow (Y,h)=(0,0)\text{ is asymptotically stable},\\
+ \alpha\sigma=\Gamma\gamma &\Longrightarrow \lambda_+=0,\\
+ \alpha\sigma>\Gamma\gamma &\Longrightarrow (0,0)\text{ is linearly unstable}.
+\end{align}
+The growing exponent, when the discriminant is nonnegative, is
+\begin{equation}
+ \boxed{\lambda_+=-\frac{\Gamma+\gamma}{2}
+ +\frac12\sqrt{(\Gamma-\gamma)^2+4\alpha\sigma}.}
+ \label{eq:lplus}
+\end{equation}
+In particular, under the supercritical hypothesis $\alpha\sigma>\Gamma\gamma$ one has $(\Gamma-\gamma)^2+4\alpha\sigma>(\Gamma+\gamma)^2$, so the square root is real and $\lambda_+>0$.
+\end{theorem}
+\begin{proof}
+The characteristic roots are
+\begin{equation}
+ \lambda_{\pm}=-\frac{\Gamma+\gamma}{2}
+ \pm\frac12\sqrt{(\Gamma-\gamma)^2+4\alpha\sigma}
+\end{equation}
+whenever the discriminant is nonnegative.
+Stability follows from $\operatorname{tr}=-\Gamma-\gamma<0$ and $\det=\Gamma\gamma-\alpha\sigma$: the origin is asymptotically stable when $\det>0$, critical when $\det=0$, and unstable when $\det<0$.
+When $\alpha\sigma>\Gamma\gamma$ the discriminant exceeds $(\Gamma+\gamma)^2$, so $\lambda_+$ is real and positive.
+\end{proof}
+
+The quasistatic susceptibility is $\chi_H=\sigma/\gamma$ and the ordinary response susceptibility is $\chi_R=\alpha/\Gamma$.  Therefore
+\begin{equation}
+ \boxed{G=\chi_R\chi_H=\frac{\alpha\sigma}{\Gamma\gamma},}
+\end{equation}
+so Theorem~\ref{thm:scalar} is exactly the scalar unity-gain criterion.
+
+\begin{corollary}[Finite threshold time]\label{cor:threshold}
+If $\lambda_+>0$ and the initial condition has nonzero projection $A_+$ onto the unstable mode, then for any finite linear threshold $X_*>|A_+|$ the unstable component reaches it after
+\begin{equation}
+ \boxed{t_*={1\over\lambda_+}\log\!\left({X_*\over |A_+|}\right).}
+\end{equation}
+Hence every nonzero unstable seed reaches a finite threshold in finite time; the delay diverges only logarithmically as the seed tends to zero.
+\end{corollary}
+
+\subsection{Noise removes the need for an imposed seed}
+Physical reaction networks are stochastic.  Add zero-mean noise to the ordinary coordinate:
+\begin{align}
+ dY&=(-\Gamma Y+\alpha h)dt+\sqrt{2D}\,dW_t,\label{eq:sdeY}\\
+ dh&=(\sigma Y-\gamma h)dt.\label{eq:sdeh}
+\end{align}
+The symmetry of the drift and noise implies that symmetric initial data retain zero ensemble mean.
+
+\begin{proposition}[Stochastic excitation of the unstable mode]\label{prop:noise}
+Assume $D>0$, $\sigma\ne0$, and $\lambda_+>0$.  Let $l_+$ be a left eigenvector of the drift matrix for $\lambda_+$ and set $Z=l_+^T(Y,h)^T$.  The $Y$ component of $l_+$ is nonzero, so the reaction noise projects onto $Z$.  After normalization,
+\begin{equation}
+ dZ=\lambda_+Z\,dt+\sqrt{2D_+}\,dW_t,
+\end{equation}
+with $D_+>0$, and for $Z(0)=0$,
+\begin{equation}
+ \boxed{\mathbb E[Z^2(t)]={D_+\over\lambda_+}\left(e^{2\lambda_+t}-1\right).}
+ \label{eq:variance}
+\end{equation}
+Meanwhile $\mathbb E[Y]=\mathbb E[h]=0$.
+\end{proposition}
+\begin{proof}
+If the $Y$ component of $l_+$ vanished, the left-eigenvector equations with $\sigma\ne0$ would force the remaining component to vanish, contradicting nonzero $l_+$.  Ito's formula gives $d\mathbb E[Z^2]/dt=2\lambda_+\mathbb E[Z^2]+2D_+$, whose solution is \eqref{eq:variance}.  Odd symmetry preserves zero first moments.
+\end{proof}
+
+Thus an exactly symmetric ensemble can undergo instability without an externally imposed sign: the mean remains zero while the variance grows exponentially.
+
+\subsection{Nonlinear saturation and spontaneous sign selection}
+The linear theorem establishes loss of stability but not the final state.  A generic scalar odd normal form near a supercritical pitchfork is
+\begin{equation}
+ \dot Y=rY-uY^3+O(Y^5),\qquad u>0.
+ \label{eq:pitch}
+\end{equation}
+
+\begin{proposition}[Supercritical pitchfork]
+For the cubic truncation of \eqref{eq:pitch}, $r<0$ has one stable fixed point $Y=0$.  For $r>0$, $Y=0$ is unstable and two stable fixed points appear:
+\begin{equation}
+ \boxed{Y_\pm=\pm\sqrt{r/u}.}
+\end{equation}
+The associated potential is $V(Y)=-rY^2/2+uY^4/4$.
+\end{proposition}
+
+With additive noise,
+\begin{equation}
+ dY=(rY-uY^3)dt+\sqrt{2D}\,dW_t,
+\end{equation}
+the zero-current stationary density is
+\begin{equation}
+ \boxed{P_{\rm st}(Y)={1\over Z}\exp\!\left({rY^2\over2D}-{uY^4\over4D}\right).}
+\end{equation}
+For $r>0$ it is exactly symmetric and bimodal.  Hence spontaneous sign selection does not require an explicit symmetry-breaking term.
+
+\subsection{Finite-temperature reaction corollary}
+Consider a two-state conjugate reaction coordinate with effective bias energy $gh$.  Detailed balance may be parametrized by
+\begin{equation}
+ W_{-\to+}=\Gamma e^{\beta gh},\qquad
+ W_{+\to-}=\Gamma e^{-\beta gh}.
+\end{equation}
+For $Y=p_+-p_-$,
+\begin{equation}
+ \dot Y=2\Gamma\left[\sinh(\beta gh)-Y\cosh(\beta gh)\right],
+\end{equation}
+and therefore
+\begin{equation}
+ \boxed{Y_{\rm eq}(h)=\tanh(gh/T),\qquad \chi_R={g\over T}.}
+\end{equation}
+If $h=\chi_HY$ quasistatically, the exact fixed-point equation is
+\begin{equation}
+ \boxed{Y=\tanh(GY),\qquad G={g\chi_H\over T}.}
+ \label{eq:tanh}
+\end{equation}
+For $G\le1$, $Y=0$ is the only solution.  For $G>1$, two nonzero symmetry-related solutions appear.  Near threshold,
+\begin{equation}
+ \boxed{Y_\pm^2={3(G-1)\over G^3}+O((G-1)^2).}
+\end{equation}
+This finite-temperature model supplies a concrete nonlinear realization of Theorem~\ref{thm:master}; it does not establish that any particular microscopic interaction attains $G>1$.
+
+\subsection{All interactions are subject to the same phase criterion}
+Definition~\ref{def:univ} supplies the interaction-universal Hysterical component; Theorem~\ref{thm:master} supplies its local phase classification when a response sector closes a feedback loop. There is therefore no separate conjecture that electromagnetic, strong, weak, or gravitational interactions ``possess'' Hysterical Response. For every interaction in the response framework, the substantive question is instead which of the following occurs in the physical state under study:
+\begin{equation}
+ \boxed{\text{Hysterical component}\quad\longrightarrow\quad
+ \begin{cases}
+ \text{neutral/inert}, & \alpha(J)<0,\\
+ \text{critical}, & \alpha(J)=0,\\
+ \text{unstable/symmetry breaking}, & \alpha(J)>0.
+ \end{cases}}
+ \label{eq:univphase}
+\end{equation}
+A vanishing or neutralized Hysterical component is therefore a dynamical outcome inside the universal decomposition: under controlled susceptibility it is exactly what Theorem~\ref{thm:neutrality} predicts when the outside force is quiet.
+Instability requires the closed-loop spectral condition of Theorem~\ref{thm:master}.
+
+\subsection{Neutralization, interaction dependence, and gravitational survival}
+Microscopic universality and macroscopic survival are linked by the same theorem: each interaction's reason for looking quiet on a typical branch is the neutrality input that decides whether its leftover survives. 
+\begin{center}
+\begin{tabular}{p{0.18\linewidth}p{0.35\linewidth}p{0.35\linewidth}}
+\toprule
+Interaction & Ordinary macroscopic mechanism & Hysterical consequence under controlled response\\
+\midrule
+Electromagnetic & charge-neutral composites / conjugation symmetry & inherits neutrality\\
+Strong & color singlets and confinement & externally visible color response neutralizes\\
+Weak & short range and massive mediators; reaction-specific neutral sectors & no generic long-range macroscopic survival\\
+Gravity & positive mass-energy; no known opposite-sign ordinary mass sector & neutrality hypothesis generally fails\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{corollary}[Gravitational survival from failure of neutrality]\label{cor:gravity-failure}
+Gravity escapes Theorem~\ref{thm:neutrality} for ordinary positive-mass composites whenever the externally visible gravitational force fails to neutralize, so a nonzero Hysterical response is permitted and one may expect $F_H\neq0$ when a concrete nondegenerate channel supplies a nonzero measured pairing.
+\end{corollary}
+
+The resulting architecture is therefore
+\begin{equation}
+ \boxed{\text{Hysterical component of each interaction (definition)}\quad\longrightarrow\quad
+ \begin{cases}
+ \text{neutral/inert}, & \alpha(J)<0,\\
+ \text{critical}, & \alpha(J)=0,\\
+ \text{unstable/symmetry breaking}, & \alpha(J)>0,
+ \end{cases}}
+\end{equation}
+followed, after the system settles into its macroscopic state, by interaction-specific neutralization.  Gravity is exceptional not because it alone has microscopic Hysterical Response, but because ordinary positive mass-energy does not supply the neutralizing sign structure available to other interactions.
+
+\subsection{Density is a physical control parameter, not the theorem variable}
+The master theorem is spectral, not a density theorem.  In a collision-dominated environment one often has schematically
+\begin{equation}
+ \gamma_{\rm coll}\sim n\langle\sigma v\rangle.
+\end{equation}
+If this rate controls the relevant Hysterical mode and the residue varies slowly, then
+\begin{equation}
+ n\downarrow\ \Longrightarrow\ \gamma\downarrow\ \Longrightarrow\
+ \chi_H\uparrow\ \Longrightarrow\ G\uparrow.
+\end{equation}
+Under those additional physical assumptions, diffuse states are naturally driven toward large Hysterical susceptibility while dense, rapidly equilibrating states tend toward inert neutrality.
+
+A helpful visualization is a \emph{soup} versus \emph{meatballs} cartoon.
+Low-density, nearly homogeneous soup has a thin environment: residual open-system structure from quantum alternatives has more time to matter, so the medium behaves \emph{more quantumly} in the limited sense that history-dependent leftovers can tip the closed-loop gain.
+Dense meatballs have a thick environment: fast classicalization and relaxation drown those leftovers, so locally the response looks \emph{more classical}---ordinary dense matter near inert neutrality.
+The meatballs are better read as a saturated end-state after growth than as ``the unstable phase.''
+The quantitative object behind the picture remains $G=\chi_R\chi_H$ (or $\alpha(J)$), not a quantum-versus-classical label on the equation of state.
+
+\begin{remark}[Critical slowing down at high density]
+Low density is not necessary.  A dense plasma can possess a collective mode whose relaxation gap becomes small near a phase transition.  The theorem follows the relevant eigenvalue of the response generator, not the total collision rate of the medium.
+\end{remark}
+
+\subsection{How to apply the instability theorems}
+To use the generic instability results in a concrete model it is enough to specify physical variables and identify the linearized Jacobian as an instance of Theorem~\ref{thm:master} or Theorem~\ref{thm:scalar}.
+
+For example, if a model has a matter perturbation $\delta$ and response coordinate $q$ with
+\begin{equation}
+ \dot q+\gamma q=\sigma\delta,
+\end{equation}
+and the matter equation feeds $q$ back into the growth of $\delta$, one should: (i) construct the finite-dimensional first-order state vector; (ii) identify the resulting closed-loop Jacobian; and (iii) invoke Theorem~\ref{thm:master} when its spectral abscissa is positive.  Growth rates, thresholds, and observational consequences are then properties of that model.  The generic facts that a positive eigenvalue gives exponential growth, finite threshold time for a nonzero projection, and stochastic excitation when noise projects onto the unstable mode are already supplied here.
+
+\subsection{What is proved and what remains physical}
+The mathematical results of this paper are:
+\begin{enumerate}
+ \item exact neutrality and its complete local linear classification by $\alpha(J)$;
+ \item the reciprocal unity-gain criterion;
+ \item the relation of the gain to the Liouvillian susceptibility;
+ \item the one-slow-mode critical scaling $\chi_H\sim\mathcal R_0/\gamma_0$;
+ \item the scalar instability condition $\alpha\sigma>\Gamma\gamma$ and its exact growth exponent;
+ \item finite threshold time for nonzero unstable projection;
+ \item stochastic excitation of an unstable mode without a preferred sign;
+ \item generic pitchfork saturation (Lean); the finite-temperature $Y=\tanh(GY)$ fixed-point formula is an explicit physical realization, not a separately Lean-certified theorem.
+\end{enumerate}
+
+Interaction universality is not on this list: within the response framework it is Definition~\ref{def:univ}. The following remain physical inputs or modeling questions rather than consequences of the theorem: whether a chosen open-system representation faithfully captures a particular microscopic quantum field theory; the values and signs of its susceptibilities; the dependence of the relevant Liouvillian spectrum on density, temperature, and cosmological epoch; whether a given system actually crosses the critical surface; the nonlinear macroscopic amplitude after a particular physical instability; and the empirical claim that ordinary gravity lacks a macroscopic positive-mass neutralizing sector in the regime of interest.
+
+
+\section{Infrared equivalence}
+\label{sec:ir}
+Weak-field macroscopic predictions depend on the retained Hysterical potential $\Phi_H$, not on whether gravity is treated as semiclassical geometry sourced by quantum matter or as quantum before coarse graining.
+Both routes define the gravitational Hysterical component by the same response construction~\eqref{eq:response} applied to an existing gravitational observable; neither invents a second gravitational interaction.
+
+\begin{assumption}[Weak-field infrared limit]\label{ass:ir}
+On scales $L$ in the regime of interest, the retained gravitational response admits an effective metric
+\begin{equation}
+ g_{\mu\nu}^{\rm eff}=\eta_{\mu\nu}+h_{\mu\nu}^{\rm ord}+h_{\mu\nu}^{H}+r_{\mu\nu}^{\rm UV},
+\end{equation}
+with $\norm{h^{\rm ord}},\norm{h^H}\ll1$ and a remainder satisfying
+\begin{equation}
+ \frac{\norm{r^{\rm UV}}}{\norm{h^{\rm ord}}+\norm{h^H}}\longrightarrow0
+\end{equation}
+as the infrared limit is taken within the stated regime.
+\end{assumption}
+
+\begin{assumption}[Newtonian scalar sector]\label{ass:newton}
+For slowly moving probes and quasi-static sources, the leading retained Hysterical acceleration is conservative on the domain $\Omega\subseteq\R^3$:
+\begin{equation}
+ \mathbf g_H=-\nabla\Phi_H,
+ \label{eq:potential}
+\end{equation}
+with $\Phi_H\in C^2(\Omega)$.
+\end{assumption}
+
+\begin{assumption}[Finite coarse-grained response]\label{ass:finite}
+The microscopic response has a finite retained infrared projection, so that $\Phi_H$ exists at the order kept in Assumption~\ref{ass:ir}.
+\end{assumption}
+
+\begin{assumption}[Common ordinary infrared gravity]\label{ass:ordinary}
+Both microscopic descriptions reproduce the same leading ordinary weak-field gravitational law on the domain being compared.
+\end{assumption}
+
+\begin{definition}[Effective Hysterical density]\label{def:rho}
+For any $C^2$ potential $\Phi_H$ satisfying Assumption~\ref{ass:newton}, define
+\begin{equation}
+ \boxed{\rho_H^{\rm eff}:=\frac{1}{4\pi G}\nabla^2\Phi_H.}
+ \label{eq:rhoeff}
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Effective-source representation]\label{lem:representation}
+Under Assumption~\ref{ass:newton},
+\begin{equation}
+ \boxed{\mathbf g_H=-\nabla\Phi_H,\qquad
+ \nabla^2\Phi_H=4\pi G\rho_H^{\rm eff}.}
+ \label{eq:poissonH}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first identity is Assumption~\ref{ass:newton}. The second is Definition~\ref{def:rho}. No claim that $\rho_H^{\rm eff}$ is a new microscopic material density is required.
+\end{proof}
+
+\begin{definition}[Infrared response equivalence]
+Descriptions $A$ and $B$ satisfy $A\sim_{\rm IR}B$ to retained order if, after coarse graining onto the common weak-field domain,
+\begin{equation}
+ \Phi_H^A-\Phi_H^B=r_H,
+ \qquad
+ \norm{r_H}_{C^2}=o(\epsilon),
+ \label{eq:ireq}
+\end{equation}
+where $\epsilon$ denotes the retained weak-field response order.
+\end{definition}
+
+\begin{theorem}[Hysterical Gravitational Infrared Equivalence Theorem]\label{thm:main}
+Suppose descriptions $A$ and $B$ (for example a semiclassical theory and a quantum-gravitational theory) satisfy Assumptions~\ref{ass:ir}--\ref{ass:ordinary} on the same weak-field domain and are infrared response equivalent in the sense of \eqref{eq:ireq}. Then, to retained order:
+\begin{enumerate}[label=(\roman*)]
+ \item $\mathbf g_H^A-\mathbf g_H^B=o(\epsilon)$;
+ \item $\rho_{H,A}^{\rm eff}-\rho_{H,B}^{\rm eff}=o(\epsilon)$;
+ \item every leading weak-field observable that is a continuous functional of $\Phi_H$ and its derivatives through second order agrees to the same retained order.
+\end{enumerate}
+Consequently, once the retained potentials agree, the leading macroscopic Hysterical gravitational predictions are independent of whether the microscopic description is semiclassical or fundamentally quantum.
+\end{theorem}
+\begin{proof}
+From \eqref{eq:ireq} and $\mathbf g_H=-\nabla\Phi_H$,
+$\mathbf g_H^A-\mathbf g_H^B=-\nabla r_H=o(\epsilon)$. Applying Definition~\ref{def:rho} gives
+$\rho_{H,A}^{\rm eff}-\rho_{H,B}^{\rm eff}=(4\pi G)^{-1}\nabla^2r_H=o(\epsilon)$. The final statement follows by continuity of any retained observable functional in the $C^2$ topology.
+\end{proof}
+
+\begin{corollary}[Exact infrared agreement]
+If $\Phi_H^A=\Phi_H^B$ on the domain, then $\mathbf g_H^A=\mathbf g_H^B$ and $\rho_{H,A}^{\rm eff}=\rho_{H,B}^{\rm eff}$ exactly there.
+\end{corollary}
+
+\begin{remark}[What the equivalence does not require]
+The two microscopic density operators, Hilbert spaces, generators, or ultraviolet field contents need not be equal. Only the retained infrared gravitational response must agree. This is an equivalence of phenomenology at a specified order, not an equivalence of microscopic theories.
+\end{remark}
+
+\subsection{Static dephasing and dynamical response are logically distinct}\label{sec:nogo}
+The static coherence contribution relative to a dephasing map $\Delta$ is
+\begin{equation}
+ F_{\rm coh}^{(\Delta)}(\rho)=\Tr\!\left[F(I-\Delta)\rho\right].
+\end{equation}
+If $\Delta^\dagger(F)=F$, then $F_{\rm coh}^{(\Delta)}(\rho)=0$.
+This statement is sometimes tempting to overinterpret.
+
+\begin{proposition}[No-go independence]\label{prop:independence}
+The condition $\Delta^\dagger(F)=F$ and the vanishing of $F_{\rm coh}^{(\Delta)}$ do not, by themselves, imply
+\begin{equation}
+ F_H=-\Tr\!\left[F\mathcal L^{-1}\mathcal S\right]=0.
+\end{equation}
+Indeed, there exist finite-dimensional choices for which the static coherence term vanishes while $F_H\neq0$.
+\end{proposition}
+\begin{proof}
+Take a two-dimensional real diagonal sector represented by vectors. Let $F=(1,0)$ and let $\Delta$ be the identity map. Then the static off-diagonal/coherence contribution vanishes identically. Let $\mathcal L=-I$ and $\mathcal S=(1,0)$. Hence $\mathcal L^{-1}=-I$ and
+\begin{equation}
+ F_H=-F\cdot\mathcal L^{-1}\mathcal S=F\cdot\mathcal S=1\neq0.
+\end{equation}
+Thus the static dephasing condition is not sufficient to annihilate the dynamical response functional. The example proves logical independence; physical models impose additional structure.
+\end{proof}
+
+\begin{corollary}[Semiclassical decoherence objection]
+Elimination of a chosen static off-diagonal expectation value does not establish elimination of the integrated open-system response. A semiclassical calculation must evaluate the response dynamics, not infer $F_H=0$ solely from dephasing.
+\end{corollary}
+
+\begin{remark}[Infrared inheritance]
+Any retained weak-field observable that is a continuous functional of $\Phi_H$ (accelerations, effective densities, local weak-field tests) is therefore shared by infrared-equivalent microscopic descriptions.
+The theorem does not apply if the descriptions lack a common weak-field limit, if the response lacks a finite infrared projection, if the leading response is intrinsically nonconservative beyond the scalar approximation, or if ultraviolet corrections remain of the same order as the claimed effect.
+Conversely, a vanishing gravitational Hysterical susceptibility, or observations that exclude the resulting $\Phi_H$, constrain the physical realization: infrared agnosticism about quantization is not immunity from empirical testing.
+\end{remark}
+
+\section{Conclusion}
+\label{sec:conclusion}
+The picture is simple to state, even if the proofs are not.
+Decoherence erases coherent interference among quantum alternatives from the reduced description; a history-dependent leftover can remain on ordinary forces.
+That leftover is covariant under passive renaming of the basis once the environment's classical map transforms with everything else.
+When a whole body is force-neutral from the outside and the response stays under control, the leftover vanishes with the outside force---so electromagnetism, colour, and the weak interaction can be hysterically quiet on large scales.
+Gravity keeps a nonzero outside force for ordinary positive-mass bodies, so the Neutrality Theorem leaves a gravitational leftover in play.
+If that leftover feeds back hard enough, the quiet neutral point can tip into growth instead of decay.
+For the weak-field infrared story, semiclassical and quantum-gravitational accounts share the predictions once they keep the same leftover potential.
+
+What remains for physics or further modelling includes how strong the gravitational leftover is, how the environment chooses its classical map, and whether real systems sit near a critical tipping point.
+
+\subsection*{Lean status and literature hypotheses}
+Companion Lean specifications live under \texttt{HystericalResponse/Paper1/}, structured as the TeX section route (modules and theorem names follow the paper; the umbrella import file is the map).
+They are faithful ports of the TeX proofs at the stated algebraic / Banach abstraction; \texttt{lake build} of the companion umbrella module is the machine check.
+In particular the constructive response lemmas, neutrality inheritance, reciprocal/mode closed-loop criteria, scalar $\lambda_\pm$ signs, threshold hitting time, noise variance ODE, pitchfork linearization rates, and infrared Lipschitz/linear observable continuity are Lean-proved.
+The following are \emph{not} claimed as Lean-proved originals:
+\begin{itemize}
+  \item the unbounded $C_0$ generator resolvent--Laplace identification of Remark~\ref{rem:lit-resolvent}~\cite{pazy1983,engelNagel2000};
+  \item the Jordan-mode linear ODE stability dictionary used when reading Theorem~\ref{thm:master}'s spectral abscissa $\alpha(J)$ as asymptotic stability of $\dot y=Jy$ for a general finite-dimensional generator~\cite{perko2001} (the elementary $\alpha$ trichotomy and the reciprocal/scalar reductions are proved directly);
+  \item physical inputs such as applicability of a chosen open-system model to Nature, and the system-dependent construction of $\mathcal S_H$.
+\end{itemize}
+
+\begin{remark}[Unrelated]
+The collective noun for Sugar Tongs is a ``Monopsony.''
+\end{remark}
+
+\begin{thebibliography}{99}
+
+\bibitem{pazy1983}
+A.~Pazy,
+\textit{Semigroups of Linear Operators and Applications to Partial Differential Equations},
+Applied Mathematical Sciences Vol.~44,
+Springer-Verlag, New York, 1983.
+
+\bibitem{engelNagel2000}
+K.-J.~Engel and R.~Nagel,
+\textit{One-Parameter Semigroups for Linear Evolution Equations},
+Graduate Texts in Mathematics~194,
+Springer, New York, 2000.
+
+\bibitem{lindblad1976}
+G.~Lindblad,
+On the generators of quantum dynamical semigroups,
+\textit{Communications in Mathematical Physics} \textbf{48} (1976) 119--130.
+
+\bibitem{gks1976}
+V.~Gorini, A.~Kossakowski, and E.~C.~G.~Sudarshan,
+Completely positive dynamical semigroups of $N$-level systems,
+\textit{Journal of Mathematical Physics} \textbf{17} (1976) 821--825.
+
+\bibitem{breuerPetruccione2002}
+H.-P.~Breuer and F.~Petruccione,
+\textit{The Theory of Open Quantum Systems},
+Oxford University Press, Oxford, 2002.
+
+\bibitem{zurek1982}
+W.~H.~Zurek,
+Environment-induced superselection rules,
+\textit{Physical Review D} \textbf{26} (1982) 1862--1880.
+
+\bibitem{schlosshauer2007}
+M.~Schlosshauer,
+\textit{Decoherence and the Quantum-to-Classical Transition},
+Springer, Berlin, 2007.
+
+\bibitem{perko2001}
+L.~Perko,
+\textit{Differential Equations and Dynamical Systems}, 3rd~ed.,
+Springer, New York, 2001.
+
+\end{thebibliography}
+
+\end{document}
