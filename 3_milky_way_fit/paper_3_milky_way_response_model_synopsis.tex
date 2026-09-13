@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Msun}{M_\odot}
+\newcommand{\kms}{\mathrm{km\,s^{-1}}}
+\newcommand{\Mb}{M_{\mathrm{b}}}
+\newcommand{\qeff}{q_{\mathrm{eff}}}
+\newcommand{\qth}{q_{\mathrm{th}}}
+\newcommand{\qfit}{q_{\mathrm{fit}}}
+
+\title{\textbf{Synopsis: A Milky Way Realization of the Hysterical Response Halo}\\[0.35em]
+\large What the theorems and experiments say (without the proofs)}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This is a short guide to the Milky Way application of the Hysterical Response Halo.
+It assumes the response-theory and galactic-modelling papers.
+Each section says \emph{why} the claim matters, then states the result.
+Proofs and experimental detail live in the full paper.
+\end{abstract}
+
+\section{Why a Galactic realization}
+The galactic-modelling paper supplies $g_{\mathrm{resp}}=CQ/r$, a BTFR attractor, and an asymptotic oblate quadrupole.
+Those are scaling theorems, not a fitted Galaxy.
+The present paper asks what happens when the same laws are inserted into a fixed McMillan-type Milky Way baryonic model and compared with published Gaia-based constraints---without fitting a dark-halo density profile.
+
+\section{Axisymmetric radial response}
+Paper~2's $g_{\mathrm{resp}}=CQ/r$ integrated against a razor-thin axisymmetric production surface $\Sigma_J$ yields a mid-plane double integral.
+A classical thin-disc angular identity (literature: contour evaluation) collapses it to enclosed production only.
+
+\begin{proposition}[Axisymmetric radial response]
+\[
+  g_R(R)=\frac{\mathcal C Q(<R)}{R},
+  \qquad
+  Q(<R)=2\pi\int_0^R R'\Sigma_J(R')\,dR'.
+\]
+\end{proposition}
+
+For an exponential source this is $V_{\mathrm{resp}}^2(R)=V_Q^2\mathcal T_d(R/R_d)$ with $\mathcal T_d(x)=1-(1+x)e^{-x}$ (cumulative kernel: literature / classical incomplete-Gamma identity).
+A mass-weighted multi-component McMillan-type source gives $\mathcal T(R_0)=0.822$ at $R_0=8.2\,$kpc.
+
+\section{Solar-circle prediction}
+Paper~2 fixes the BTFR \emph{exponent} but not the zero point.
+Adopting the empirical BTFR normalization $V_Q^4=Ga_0\Mb$ with $a_0=1.20\times10^{-10}\,\mathrm{m\,s^{-2}}$ and $\Mb=6.65\times10^{10}\Msun$,
+\[
+  V_Q=180.4\,\kms.
+\]
+With the adopted baryonic speed $V_b(R_0)=176.5\,\kms$,
+\[
+  V_c(R_0)=\sqrt{V_b^2+V_{\mathrm{resp}}^2}=240.6\,\kms,
+\]
+compared with the published Cepheid value $236.8\pm0.8\,\kms$.
+
+\section{Radial curve vs published Cepheid bins}
+Against Feng et al.'s 12 published bins ($6<R<18\,$kpc), the BTFR-normalized smooth realization has RMS residual $6.25\,\kms$.
+It does \emph{not} reproduce the observed dip-and-bump structure, and is not statistically adequate under the quoted bin errors.
+The empirical MOND/RAR interpolation with the same baryons has RMS $20.1\,\kms$.
+
+\section{Oblate geometry}
+The galactic-modelling quadrupole specializes to an exponential disc as follows.
+
+\begin{corollary}[Exponential-disc Solar estimate]
+\[
+  \qeff(R)\simeq\Bigl[1+6(R_d/R)^2\Bigr]^{-1/2}.
+\]
+With $R_d=2.5\,$kpc and $R_0=8.2\,$kpc one has $\qth\simeq0.80$.
+\end{corollary}
+
+\section{Vertical density cross-check}
+From Paper~2's Poisson closure with an oblate logarithmic response potential, near-plane $K_z\simeq V_{\mathrm{resp}}^2 z/(q^2 R_0^2)$ identifies an equivalent density
+\[
+  \rho_{\mathrm{eff}}(q)=\frac{V_{\mathrm{resp}}^2(R_0)}{4\pi G q^2 R_0^2}.
+\]
+Holding the radial response fixed at the Solar-normalized value and using the published local density $0.0117\pm0.0035\,\Msun\,\mathrm{pc}^{-3}$
+gives a geometric fit $\qfit=0.766$ and $1\sigma$-equivalent interval $0.672<q<0.915$.
+At $\qth=0.80$ the predicted density is only $0.29\sigma$ from the reported central value.
+
+\section{What is and is not claimed}
+Baryonic parameters and $V_b(R_0)$ are inputs.
+$V_Q^4=Ga_0\Mb$ is a phenomenological normalization (Paper~2 left the BTFR zero point open).
+The axisymmetric radial reduction after the literature angular kernel, and the exponential $\mathcal T_d$ algebra after the literature cumulative identity, are Lean-checked.
+Radial $\chi^2$ and $\qfit$ are diagnostics, not proofs.
+A raw Gaia catalogue re-reduction is deferred; the full paper uses published summary constraints.
+
+\end{document}
