@@ -1,0 +1,513 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}{Conjecture}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Mb}{M_{\mathrm{b}}}
+\newcommand{\vf}{v_{\mathrm{f}}}
+\newcommand{\qeff}{q_{\mathrm{eff}}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\FH}{F_H}
+\title{\textbf{Hysterical Response Halo and Galactic Scaling}\\[0.45em]
+\large Flat rotation curves, a BTFR attractor, late-time size--mass scaling, and asymptotic oblate geometry}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+We develop an analytic galactic continuation of the open-system gravitational Hysterical Response: the residual force of ordinary gravity under exponentially stable reduced dynamics, as isolated in the companion response-theory paper.
+No new force carrier is introduced; the galactic acceleration is that Hysterical Response, organized spatially.
+A ballistic Wigner-space representation of the residual response yields, under an infrared realization with local velocity isotropy and a single characteristic speed~$v$ (and constant loss rate~$\Gamma$), a leading far-field response density $n=Q/(4\pi v r^{2})+O(r^{-4})$ inside the propagation length $\lambda=v/\Gamma$.
+Under the primary infrared closure $\nabla^{2}\Phi_{\mathrm{resp}}=\kappa n$, that halo yields $g_{\mathrm{resp}}=CQ/r$ and flat response-dominated rotation curves $\vf^{2}=CQ$.
+Given a capacity inequality and response-limited filling dynamics, mature systems are driven to a stable attractor $Q^{2}\propto\Mb$ and hence the baryonic Tully--Fisher exponent $\vf^{4}\propto\Mb$.
+If residual-response production is the ballistic packaging of Paper~1's unentangled-incoming drive, then $Q$ is proportional to the total incoming rate $J_{\mathrm{in}}$ and hence to the baryonic accretion rate that supplies that channel (up to a per-arrival conversion factor).
+Separately, formation/retention is conjectured to require capacity $\boxed{Q\gtrsim O(\sqrt{\Mb})}$; that selection rule is not a transport theorem.
+Under isotropic accretion---physically motivated by late-time feeding from a homogeneous intergalactic dust/gas reservoir---with virial specific angular momentum $j\propto\Mb^{2/3}$ and size proxy $R\sim j/\vf$, the same attractor implies the late-time size--mass law $R\propto\Mb^{5/12}$.
+We compare this exponent with observed late-type size--mass slopes.
+Finally, the first nonspherical correction to the ballistic halo is a response quadrupole that produces asymptotically oblate geometry under the same linear Poisson closure, with effective flattening $\qeff^{-2}(R)=1+s/R^{2}+O(R^{-4})$.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+Galactic rotation curves display two related regularities.
+First, the circular velocity of many rotationally supported galaxies approaches an approximately constant value at radii where the Newtonian field of a finite baryonic mass would ordinarily become Keplerian.
+Second, that asymptotic velocity is strongly correlated with total baryonic mass through the baryonic Tully--Fisher relation (BTFR)
+\begin{equation}
+  \Mb\propto\vf^{4},
+  \label{eq:btfr-obs}
+\end{equation}
+with small scatter in gas-rich samples~\cite{mcgaugh2012,lelli2016}.
+These facts impose two distinct theoretical requirements: an extended gravitational contribution with leading radial dependence $g_{\mathrm{resp}}(r)\propto 1/r$, and a normalization linked to baryonic mass so that~\eqref{eq:btfr-obs} follows.
+
+The companion response-theory paper~\cite{boyd2026response} isolates the Hysterical Response
+\begin{equation}
+  \FH=-\Tr\!\bigl(F\,\mathcal L^{-1}\mathcal S\bigr),
+  \qquad\delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S,
+\end{equation}
+under exponentially stable reduced dynamics: a residual component of an already-existing interaction force~$F$, not a new messenger.
+Here $F$ is ordinary gravity; galactic accelerations in this paper are that gravitational Hysterical Response, continued into an explicit spatial halo.
+We separate the spatial organization of the residual response from galactic selection: the radial form of the response halo does not depend on a baryonic mass--size relation, while the BTFR exponent and a late-time size--mass law arise only after a capacity setup and assembly hypotheses are stated.
+A forthcoming Galactic realization will apply the same theorems to the Milky Way; that application is outside the present scope.
+
+Statements are labelled as follows.
+\begin{center}
+\begin{tabular}{>{\bfseries}p{0.22\linewidth}p{0.68\linewidth}}
+Theorem & Consequence of the mathematical assumptions stated here.\\
+Modeling assumption & Infrared closure relating residual response density to the response potential.\\
+Physical input & Property of accretion or capacity setup not derived from the spatial response model.\\
+Conjecture & Proposed formation/retention requirement not proved from that spatial model.\\
+\end{tabular}
+\end{center}
+
+\section{Stationary Hysterical Response and its ballistic spatial model}
+\label{sec:carrier}
+\label{sec:response-sector}
+Let $\mathcal H$ be a separable Hilbert space and let $\rho$ be a density operator.
+A linearized open-system perturbation $\delta\rho$ is assumed to obey
+\begin{equation}
+  \frac{\dd}{\dd t}(\delta\rho)=\mathcal L\,\delta\rho+\mathcal S,
+\end{equation}
+with generator $\mathcal L$ exponentially stable on the response subspace.
+Then
+\begin{equation}
+  \delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S=\int_{0}^{\infty}e^{t\mathcal L}\mathcal S\,\dd t,
+\end{equation}
+as in the response-theory paper~\cite{boyd2026response}, and the associated force is the Hysterical Response $\FH=-\Tr(F\mathcal L^{-1}\mathcal S)$ of the underlying interaction~$F$.
+
+No new force carrier appears at this step, or below.
+To extract a galactic halo we represent the residual response in a ballistic long-wavelength sector by a Wigner density $f(x,v)$ on position--velocity space.
+This is a phase-space bookkeeping for how the Hysterical residue is organized spatially; it is not a claim that gravity is mediated by a new particle species.
+The production source $S(x,v)$ in that representation is the ballistic image of the Paper~1 residual drive~$\mathcal S$ (the unentangled-incoming / off-classical source that forces a nonzero stable leftover $\delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S$).
+In that representation the stationary transport equation with constant loss rate $\Gamma>0$ reads
+\begin{equation}
+  v\cdot\nabla_{x}f=S-\Gamma f,
+  \label{eq:transport}
+\end{equation}
+where $S(x,v)$ is that residual-response production source.
+The retarded solution along characteristics is
+\begin{equation}
+  f(x,v)=\int_{0}^{\infty}e^{-\Gamma t}\,S(x-tv,v)\,\dd t.
+  \label{eq:retarded}
+\end{equation}
+\begin{remark}[Lean status]
+\label{rem:transport-lean}
+Lean proves that~\eqref{eq:retarded} solves~\eqref{eq:transport} in the characteristic sense (\texttt{thm\_retarded\_solves\_transport}): under $C^{1}$ regularity of the pullback $t\mapsto S(x-tv,v)$, integrability against $e^{-\Gamma t}$, and decay at infinity, integration by parts on $(0,\infty)$ yields
+$v\cdot\nabla_{x}f=S-\Gamma f$ with the directional derivative identified by the chain rule under the integral.
+\end{remark}
+This retarded formula is the only general open-system spatial input used below; the infrared Poisson closure and capacity hypotheses are stated separately.
+
+\section{Ballistic response-halo theorem}
+\label{sec:halo}
+The isotropic fixed-speed production law used below is not an extra free galactic postulate; it is the mono-scale infrared realization of the ballistic packaging of~$\mathcal S$.
+
+\begin{assumption}[Infrared ballistic realization]
+\label{ass:ir-ballistic}
+In the long-wavelength sector the residual-response production source factorizes as
+\begin{equation}
+  S(x,u)=J(x)\,\sigma(u),
+  \qquad\int\sigma(u)\,\dd^{3}u=1,
+\end{equation}
+with a universal velocity kernel~$\sigma$ independent of the slowly varying spatial profile~$J$.
+Moreover:
+\begin{enumerate}
+\item \emph{Local isotropy.} At each production point the infrared residual sector has no preferred direction, so $\sigma(Ru)=\sigma(u)$ for every rotation $R\in\mathrm{SO}(3)$.
+\item \emph{Single infrared scale.} The only characteristic residual-propagation speed retained by the infrared truncation is a value $v>0$, so the radial speed measure concentrates at~$v$.
+\end{enumerate}
+\end{assumption}
+
+\begin{proposition}[Isotropic monoenergetic shell]
+\label{prop:ir-shell}
+Under Assumption~\ref{ass:ir-ballistic}, the velocity kernel is necessarily of the form $\sigma(u)=\tilde\sigma(|u|)$.
+The single-scale concentration at speed~$v$ then forces the normalized shell
+\begin{equation}
+  \sigma(u)=\frac{\delta(|u|-v)}{4\pi v^{2}},
+\end{equation}
+and therefore
+\begin{equation}
+  S(x,u)=J(x)\,\frac{\delta(|u|-v)}{4\pi v^{2}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Rotational invariance implies that $\sigma$ is constant on spheres, hence $\sigma(u)=\tilde\sigma(|u|)$.
+Writing the normalization in spherical coordinates,
+\[
+  \int_{0}^{\infty}\tilde\sigma(s)\,4\pi s^{2}\,\dd s=1.
+\]
+Single-scale concentration means the radial measure $\tilde\sigma(s)\,4\pi s^{2}\,\dd s$ is a unit Dirac mass at $s=v$, which is equivalent to $\tilde\sigma(s)=\delta(s-v)/(4\pi v^{2})$ and yields the displayed shell.
+The factorization $S=J\sigma$ then gives the stated production law.
+\end{proof}
+
+\noindent
+Thus isotropic production at common speed~$v$ is the infrared realization of residual-response packaging under local isotropy and a single retained ballistic scale---not an independent morphological assumption about galaxies.
+(The spatial profile~$J$ may still be flattened; isotropy here refers only to the velocity kernel~$\sigma$.)
+
+Let $J(x)$ denote the total production rate per unit volume, so that Proposition~\ref{prop:ir-shell} gives
+\begin{equation}
+  S(x,u)=J(x)\,\frac{\delta(|u|-v)}{4\pi v^{2}}.
+\end{equation}
+Integrating~\eqref{eq:retarded} over directions yields the stationary residual-response density
+\begin{equation}
+  n(x)=\frac{1}{4\pi v}\int\frac{J(y)\,e^{-|x-y|/\lambda}}{|x-y|^{2}}\,\dd^{3}y,
+  \qquad\lambda=\frac{v}{\Gamma}.
+  \label{eq:kernel}
+\end{equation}
+\begin{proposition}[Accretion supplies $Q$ via $J_{\mathrm{in}}$]
+\label{prop:accretion-Q}
+In Paper~1 the residual drive scales as $\mathcal S=\nu\bigl(\mathcal E(\rho_0)-\rho_0\bigr)$ with arrival rate $\nu\propto J_{\mathrm{in}}$.
+Here $J$ is the spatial packaging of that same residual production, so the integrated amplitude
+$Q=\int J$ is proportional to the total incoming residual-production budget:
+\begin{equation}
+  Q=\alpha\,J_{\mathrm{in}}^{\mathrm{tot}}
+\end{equation}
+for a positive conversion factor $\alpha$ set by the per-arrival kick into the residual sector.
+If baryonic accretion is the channel that supplies those unentangled arrivals at particle rate $\dot N_{\mathrm{acc}}$ (equivalently mass accretion $\dot\Mb$ at fixed mean particle mass), then $J_{\mathrm{in}}^{\mathrm{tot}}=\dot N_{\mathrm{acc}}$ and
+\begin{equation}
+  Q=\alpha\,\dot N_{\mathrm{acc}}.
+\end{equation}
+Thus baryonic accretion \emph{gives} $Q$ through Paper~1's $J_{\mathrm{in}}$ bookkeeping.
+What is not forced is the unit identity ``$Q=\dot\Mb$'' without $\alpha$; the conversion remains model-dependent.
+\end{proposition}
+
+\begin{theorem}[Ballistic response halo]
+\label{thm:ballistic-halo}
+Let $J$ be localized and integrable, define $Q=\int J(y)\,\dd^{3}y$, and choose the origin so that $\int y\,J(y)\,\dd^{3}y=0$.
+In the long-range regime $r\ll\lambda$ and outside the source support,
+\begin{equation}
+  n(r,\theta,\phi)=\frac{Q}{4\pi v r^{2}}+O(r^{-4}).
+  \label{eq:halo}
+\end{equation}
+The leading response halo is therefore spherical and proportional to $r^{-2}$.
+\end{theorem}
+
+\begin{remark}[Lean status]
+\label{rem:halo-lean}
+Lean certifies the multipole argument through dipole order: after centering, the integrated kernel polynomial reduces to the spherical monopole $Q/(4\pi v r^{2})$ (\texttt{thm\_ballistic\_halo}).
+The continuum remainder $O(r^{-4})$ is the usual far-field truncation beyond that algebraic step.
+\end{remark}
+
+\begin{proof}
+In the lossless far-field limit write $\hat n=x/r$ and expand
+\begin{equation}
+  \frac{1}{|x-y|^{2}}=\frac{1}{r^{2}}+\frac{2\hat n\cdot y}{r^{3}}+\frac{4(\hat n\cdot y)^{2}-y^{2}}{r^{4}}+O(r^{-5}).
+\end{equation}
+Substitution into~\eqref{eq:kernel} with $e^{-|x-y|/\lambda}\to1$ for $r\ll\lambda$ produces a monopole $Q/(4\pi v r^{2})$.
+The coefficient of $r^{-3}$ is proportional to $\hat n\cdot\int y\,J(y)\,\dd^{3}y$ and vanishes by centering.
+Source geometry therefore first appears at $O(r^{-4})$.
+\end{proof}
+
+\section{Finite lifetime and the propagation length}
+\label{sec:lifetime}
+Finite $\Gamma$ introduces the scale $\lambda=v/\Gamma$.
+Inside $r\ll\lambda$ the lossless halo~\eqref{eq:halo} applies.
+At $r\gg\lambda$ the enclosed response saturates and the induced field returns toward an inverse-square falloff under the closures of Sec.~\ref{sec:closure}.
+Thus the same construction permits extended approximately flat regimes without altering the intermediate-radius analytic result.
+No Galactic numerical bound on $\lambda$ is imposed here.
+
+\section{Long-range response closure and flat rotation}
+\label{sec:closure}
+The ballistic model determines the residual-response density~$n$ but not, by itself, the map from that density to the acceleration felt by baryons.
+That acceleration is the Hysterical Response of gravity; the primary infrared closure used throughout is a linear Poisson-type equation for the associated response potential.
+
+\begin{assumption}[Linear Poisson response closure]
+\label{ass:poisson}
+In the regime of interest the response potential satisfies
+\begin{equation}
+  \nabla^{2}\Phi_{\mathrm{resp}}=\kappa n
+\end{equation}
+with constant $\kappa>0$.
+\end{assumption}
+
+In the ballistic halo of Theorem~\ref{thm:ballistic-halo} one has $n=Q/(4\pi v r^{2})+O(r^{-4})$.
+Matching to the classical identity $\nabla^{2}\ln r=r^{-2}$ yields a leading logarithmic potential
+$\Phi_{\mathrm{resp}}=V_{Q}^{2}\ln r+O(r^{-2})$ with $V_{Q}^{2}=\kappa Q/(4\pi v)$, and therefore a long-range response acceleration of magnitude
+\begin{equation}
+  g_{\mathrm{resp}}=\frac{CQ}{r},\qquad C=\frac{\kappa}{4\pi v}.
+  \label{eq:gresp}
+\end{equation}
+Thus $g_{\mathrm{resp}}=CQ/r$ is a consequence of Assumption~\ref{ass:poisson} plus the $r^{-2}$ halo, not an independent free radial law.
+
+\begin{remark}[Physical readings]
+\label{rem:closure-readings}
+The same infrared relation~\eqref{eq:gresp} admits brief separate-field or unified-field readings
+(an auxiliary response potential coupled to $n$, or a single modified Poisson equation with source $\propto\rho_{\mathrm{b}}+n$).
+Those readings reinterpret the same IR law; they are not co-equal modelling hypotheses that each independently introduce $CQ/r$.
+\end{remark}
+
+Circular balance $v_{c}^{2}/r=CQ/r$ for a response-dominated orbit then implies flat rotation.
+
+\begin{theorem}[Flat response rotation]
+\label{thm:flat-rotation}
+If $r\neq0$ and $v_{c}^{2}/r=CQ/r$, then $v_{c}^{2}=CQ$.
+In particular, the asymptotic response-dominated speed satisfies $\vf^{2}=CQ$.
+\end{theorem}
+
+\begin{proof}
+Cancel $r\neq0$.
+\end{proof}
+
+\section{Capacity setup, assembly attractor, and formation conjecture}
+\label{sec:capacity}
+Transport alone does not fix $Q$ in terms of baryonic mass $\Mb$.
+Introduce a capacity coefficient $A>0$ and the associated filling fraction
+\begin{equation}
+  y=\frac{A^{2}\Mb}{Q^{2}}.
+\end{equation}
+Equivalently, $y\le1$ is the capacity inequality $\Mb\le Q^{2}/A^{2}$ (or $Q\ge A\sqrt{\Mb}$).
+Under response-limited assembly with environmental drain rate $\nu$ and capacity-relaxation rate $\mu>0$, we take the autonomous dynamics
+\begin{equation}
+  \dot y=y\bigl(\mu(1-y)-2\nu\bigr)=\mu y\bigl(y_{\ast}-y\bigr),
+  \qquad y_{\ast}=1-\frac{2\nu}{\mu},
+  \label{eq:filling}
+\end{equation}
+whenever $\mu\neq0$.
+
+\begin{theorem}[Stable filling fixed point]
+\label{thm:filling-stable}
+If $\mu>0$ and $2\nu<\mu$, then $y_{\ast}=1-2\nu/\mu\in(0,1]$ is a positive fixed point of~\eqref{eq:filling}.
+Moreover $\dot y=\mu y(y_{\ast}-y)$, so $y$ increases on $(0,y_{\ast})$ and decreases on $(y_{\ast},\infty)$.
+Linearization $y=y_{\ast}+\delta$ yields $\dot\delta=-\mu y_{\ast}\delta+O(\delta^{2})$ with $\mu y_{\ast}>0$, hence local exponential attraction.
+\end{theorem}
+
+\begin{corollary}[Square-root attractor]
+\label{cor:sqrt-sat}
+Given the capacity inequality / filling setup above and the stable dynamics of Theorem~\ref{thm:filling-stable}, at the fixed filling $y_{\ast}\neq0$ one has
+\begin{equation}
+  Q^{2}=\frac{A^{2}}{y_{\ast}}\Mb.
+\end{equation}
+In the quasi-stationary environmental limit $\nu/\mu\to0$ one has $y_{\ast}\to1$ and $Q\to A\sqrt{\Mb}$.
+\end{corollary}
+
+The square-root attractor is therefore a theorem/corollary of the capacity--filling hypotheses, not a conjecture.
+
+\begin{conjecture}[Formation / retention capacity requirement]
+\label{conj:capacity}
+Galactic formation and mature retention require response capacity at least of square-root order in baryonic mass:
+\begin{equation}
+  \boxed{Q\gtrsim O\bigl(\sqrt{\Mb}\bigr)}
+\end{equation}
+(equivalently, a capacity ceiling $\Mb\lesssim Q^{2}/A^{2}$ for some $A>0$ that is not wildly exceeded; cf.\ $Q\ge A\sqrt{\Mb}$ whenever $y\le1$).
+This is a proposed physical selection rule for which systems can assemble and remain mature; it is \emph{not} derived from the ballistic spatial model of the Hysterical Response, and it is distinct from the attractor corollary above (which places mature systems \emph{on} $Q\sim\sqrt{\Mb}$ once the capacity--filling ODE is assumed).
+\end{conjecture}
+
+\section{Analytic baryonic Tully--Fisher scaling}
+\label{sec:btfr}
+Combining Theorem~\ref{thm:flat-rotation} with Corollary~\ref{cor:sqrt-sat} gives
+\begin{equation}
+  \vf^{4}=C^{2}Q^{2}=\frac{C^{2}A^{2}}{y_{\ast}}\Mb.
+\end{equation}
+
+\begin{corollary}[BTFR exponent]
+\label{cor:btfr}
+Under the ballistic halo assumptions, the Poisson closure of Assumption~\ref{ass:poisson}, and the square-root attractor of Corollary~\ref{cor:sqrt-sat}, the asymptotic circular velocity obeys $\vf^{4}\propto\Mb$.
+The absolute normalization is
+\begin{equation}
+  K=\frac{C^{2}A^{2}}{y_{\ast}},
+  \qquad\vf^{4}=K\Mb,
+\end{equation}
+and remains encoded in $C$, $A$, and $y_{\ast}$.
+\end{corollary}
+
+Writing the empirical BTFR as $\vf^{4}=Ga_{0}\Mb$~\cite{mcgaugh2012,lelli2016} identifies $Ga_{0}=K$ when the mature attractor is realized.
+Microscopic determination of $C$ and $A$ is not attempted here.
+Conjecture~\ref{conj:capacity} supplies the physical reason one expects mature galaxies to sit near that capacity ceiling; it is not used as a mathematical hypothesis in the BTFR algebra above, and it is not proved from the ballistic spatial model.
+
+\section{Late-time size--mass scaling under isotropic accretion}
+\label{sec:size-mass}
+Corollary~\ref{cor:btfr} fixes a mass--velocity relation but not a size.
+We now add an isotropic-accretion hypothesis for late-time, response-mature discs.
+
+\begin{assumption}[Isotropic accretion angular momentum]
+\label{ass:iso-accretion}
+At late times the characteristic specific angular momentum of the baryonic disc scales as the isotropic/spherical virial value
+\begin{equation}
+  j\propto\sqrt{G\Mb R_{\mathrm{vir}}},\qquad R_{\mathrm{vir}}\propto\Mb^{1/3},
+\end{equation}
+hence $j\propto\Mb^{2/3}$.
+\end{assumption}
+
+\noindent\textit{Physical justification.}
+Assumption~\ref{ass:iso-accretion} is motivated by late-time accretion from a spatially homogeneous intergalactic dust/gas reservoir: if the ambient baryonic medium is approximately uniform on the scales that feed the disc, there is no preferred angular direction for the inflow, and the specific angular momentum inherited by the baryons is the isotropic/spherical virial scaling above.
+Strongly filamentary or otherwise anisotropic accretion would replace this input and change the predicted size--mass exponent.
+
+\begin{assumption}[Size proxy]
+\label{ass:size-proxy}
+The characteristic baryonic size satisfies $R\sim j/\vf$.
+\end{assumption}
+
+\begin{theorem}[Late-time size--mass exponent]
+\label{thm:size-mass}
+On the mature BTFR attractor $\vf^{4}=K\Mb$ with $K>0$, and under Assumptions~\ref{ass:iso-accretion}--\ref{ass:size-proxy},
+\begin{equation}
+  R\propto\Mb^{5/12}.
+  \label{eq:size-mass}
+\end{equation}
+Equivalently $R\sim\Mb^{a}$ with $a=5/12$.
+\end{theorem}
+
+\begin{proof}
+From $\vf^{4}=K\Mb$ one has $\vf\propto\Mb^{1/4}$.
+Assumption~\ref{ass:iso-accretion} gives $j\propto\Mb^{2/3}$.
+Assumption~\ref{ass:size-proxy} then yields
+\[
+  R\sim\frac{j}{\vf}\propto\frac{\Mb^{2/3}}{\Mb^{1/4}}=\Mb^{5/12}.
+\]
+\end{proof}
+
+\subsection{Comparison with observed size--mass slopes}
+Late-type / star-forming size--mass relations are shallower or comparable depending on mass bin and size definition.
+Van der Wel et al.~\cite{vanderwel2014} report $R_{e}\propto M_{\star}^{0.22}$ for late-type galaxies above $\sim3\times10^{9}\,M_{\odot}$.
+Shen et al.~\cite{shen2003} find a broken late-type relation in SDSS, with high-mass slope $\sim0.39$ above a characteristic stellar mass $\sim10^{10.6}\,M_{\odot}$.
+For baryonic mass versus stellar-disc scale length, Wu~\cite{wu2018} reports a single power law $R_{\ast}\propto\Mb^{0.385}$.
+
+The predicted exponent $5/12\approx0.417$ lies near the high-mass late-type and baryonic-disc end of that range, and above the shallow low-mass / CANDELS late-type slopes.
+We treat this as a conditional scaling prediction of isotropic accretion on the BTFR attractor, not as a claim that every observational proxy must return $a=5/12$.
+If the ambient intergalactic medium is not homogeneous---e.g.\ anisotropic filamentary accretion, mass-dependent specific angular momentum scatter, or a different size proxy---the exponent $a$ changes.
+
+\section{Asymptotic oblate geometry}
+\label{sec:oblate}
+Theorem~\ref{thm:ballistic-halo} shows that the leading halo is spherical.
+The first surviving angular correction for a planar axisymmetric source is quadrupolar.
+
+Let $J\ge0$ be a localized planar source with total rate $Q$, centered first moment, and finite second radial moment
+\begin{equation}
+  s\equiv\langle R'^{2}\rangle=\frac1Q\int R'^{2}J(y)\,\dd^{3}y.
+\end{equation}
+In the long-lifetime limit the kernel~\eqref{eq:kernel} with $\lambda\to\infty$ expands as in Sec.~\ref{sec:halo}.
+Axisymmetry gives $\langle(\hat r\cdot y)^{2}\rangle=(s/2)\sin^{2}\theta$, and the dipole vanishes by centering.
+
+\begin{theorem}[Response quadrupole]
+\label{thm:transport-quad}
+Under the assumptions above,
+\begin{equation}
+  n(r,\theta)=\frac{Q}{4\pi v r^{2}}\Bigl[1+\frac{s}{r^{2}}(2\sin^{2}\theta-1)\Bigr]+O(r^{-6}).
+  \label{eq:nquad}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[Lean status]
+Lean certifies the planar axisymmetric quadrupole algebra (moment averages $\to$ TeX bracket / $P_{2}$ forms) as \texttt{thm\_transport\_quad}.
+\end{remark}
+
+Define $V_{Q}^{2}=\kappa Q/(4\pi v)$.
+Matching~\eqref{eq:nquad} term by term with the spherical-harmonic Laplacian identities
+$\nabla^{2}\ln r=r^{-2}$, $\nabla^{2}(r^{-2})=2r^{-4}$, and $\nabla^{2}[r^{-2}P_{2}(\cos\theta)]=-4r^{-4}P_{2}(\cos\theta)$ under Assumption~\ref{ass:poisson} yields:
+
+\begin{theorem}[Asymptotic oblate response geometry]
+\label{thm:oblate}
+Under Theorem~\ref{thm:transport-quad} and Assumption~\ref{ass:poisson},
+\begin{equation}
+  \Phi_{\mathrm{resp}}(r,\theta)
+  =V_{Q}^{2}\Bigl[\ln r+\frac{s}{6r^{2}}+\frac{s}{3r^{2}}P_{2}(\cos\theta)\Bigr]+O(r^{-4})
+  =V_{Q}^{2}\Bigl[\ln r+\frac{s}{2r^{2}}\cos^{2}\theta\Bigr]+O(r^{-4}).
+\end{equation}
+The leading nonspherical correction has the oblate sign for a planar source.
+\end{theorem}
+
+\begin{remark}[Lean status]
+Lean certifies the formal Poisson coefficient matching under Assumption~\ref{ass:poisson} as \texttt{thm\_oblate}, together with the algebraic identity of the two writings of $\Phi$ and the midplane $\qeff$ formula.
+The spherical-harmonic Laplacian evaluations $\nabla^{2}\ln r=r^{-2}$, $\nabla^{2}(r^{-2})=2r^{-4}$, $\nabla^{2}[r^{-2}P_{2}]=-4r^{-4}P_{2}$ are the classical identities used by that matching.
+\end{remark}
+
+\begin{definition}[Effective local flattening]
+\label{def:qeff}
+For a smooth axisymmetric potential with $\partial_{R}\Phi(R,0)\neq0$,
+\begin{equation}
+  \qeff^{-2}(R)\equiv\frac{R\,\partial_{z}^{2}\Phi(R,0)}{\partial_{R}\Phi(R,0)}.
+\end{equation}
+\end{definition}
+
+\begin{corollary}[Asymptotic flattening]
+\label{cor:qeff}
+For the potential of Theorem~\ref{thm:oblate},
+\begin{equation}
+  \qeff^{-2}(R)=1+\frac{s}{R^{2}}+O(R^{-4}),
+  \qquad
+  \qeff(R)=\Bigl(1+\frac{s}{R^{2}}\Bigr)^{-1/2}+O(R^{-4}).
+\end{equation}
+Thus $\qeff<1$ at leading nontrivial order and $\qeff\to1$ as $R\to\infty$.
+\end{corollary}
+
+\begin{corollary}[Exponential source disc]
+\label{cor:exp-disc}
+For a razor-thin exponential source $\Sigma_{J}(R')=Q/(2\pi R_{d}^{2})\,e^{-R'/R_{d}}$ one has $s=\langle R'^{2}\rangle=6R_{d}^{2}$, hence
+\begin{equation}
+  \qeff^{-2}(R)=1+6\frac{R_{d}^{2}}{R^{2}}+O(R^{-4}).
+\end{equation}
+\end{corollary}
+
+\section{Logical status of the results}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.44\linewidth}p{0.48\linewidth}@{}}
+\toprule
+\textbf{IR ballistic shell (Prop.~\ref{prop:ir-shell})} & Local velocity isotropy + single IR scale $\Rightarrow$ $S=J\,\delta(|u|-v)/(4\pi v^{2})$ (Ass.~\ref{ass:ir-ballistic}); not an independent galactic morphology postulate.\\
+\textbf{Certified multipole / Poisson algebra} & Halo through dipole (Thm.~\ref{thm:ballistic-halo}); response quadrupole (Thm.~\ref{thm:transport-quad}); oblate coefficient matching and $\qeff$ (Thm.~\ref{thm:oblate}, Cor.~\ref{cor:qeff}).\\
+\textbf{Transport PDE} & Retarded characteristic solution solves $v\cdot\nabla f=S-\Gamma f$ (Remark~\ref{rem:transport-lean}).\\
+\textbf{Classical Laplacian identities} & $\nabla^{2}\ln r=r^{-2}$, $\nabla^{2}(r^{-2})=2r^{-4}$, $\nabla^{2}[r^{-2}P_{2}]=-4r^{-4}P_{2}$ (used by flat IR law and Thm.~\ref{thm:oblate}).\\
+\textbf{Modeling closure} & Primary Poisson $\nabla^{2}\Phi_{\mathrm{resp}}=\kappa n$ (Ass.~\ref{ass:poisson}) $\Rightarrow$ $g_{\mathrm{resp}}=CQ/r$; separate/unified as readings only.\\
+\textbf{ODE / attractor (theorem)} & Given capacity inequality and filling dynamics: stable $y_{\ast}$; $Q^{2}=(A^{2}/y_{\ast})\Mb$; BTFR exponent.\\
+\textbf{Accretion $\to Q$ (Paper~1 link)} & $Q=\alpha J_{\mathrm{in}}^{\mathrm{tot}}=\alpha\dot N_{\mathrm{acc}}$ when accretion supplies the unentangled incoming channel (Prop.~\ref{prop:accretion-Q}); not the unit identity $Q=\dot\Mb$.\\
+\textbf{Conjecture (not from the spatial model)} & Formation/retention requires $\boxed{Q\gtrsim O(\sqrt{\Mb})}$ (Conj.~\ref{conj:capacity}).\\
+\textbf{Literature (Gamma moments)} & Exponential-disc moment $s=6R_{d}^{2}$.\\
+\textbf{Physical inputs (angular momentum)} & Isotropic $j\propto\Mb^{2/3}$ (homogeneous IGM dust/gas) and $R\sim j/\vf$; size--mass exponent $a=5/12$.\\
+\textbf{Not claimed here} & New force carriers; microscopic values of $C,A,\alpha$; Galactic numerical fits; proof of the formation requirement from the spatial model.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Lean companion modules follow the section route above.
+The retarded transport identity is machine-checked; the ballistic-halo and quadrupole theorems are certified at the multipole-coefficient level of the TeX proofs; far-field big-$O$ remainders are the standard truncation beyond those coefficients. Algebraic and ODE scaling theorems are certified.
+
+
+\section{Discussion}
+\label{sec:discussion}
+The central simplification is the separation between the spatial organization of the gravitational Hysterical Response and galactic selection.
+No new force carrier is required: baryons feel the residual response of ordinary gravity, whose leading ballistic far field is spherical even when the baryonic source is flattened, with source shape retained in subleading multipoles that decay as powers of $s/r^{2}$.
+Flat rotation curves follow from the $r^{-2}$ halo plus the Poisson closure, without fitting a radial response weight.
+The BTFR exponent follows from the capacity--filling attractor once that setup is stated.
+Proposition~\ref{prop:accretion-Q} identifies $Q$ with accretion through Paper~1's $J_{\mathrm{in}}$ (up to conversion $\alpha$); the formation/retention requirement $\boxed{Q\gtrsim O(\sqrt{\Mb})}$ remains a conjecture outside the spatial response model.
+The size--mass law~\eqref{eq:size-mass} is a further late-time corollary under isotropic accretion from a homogeneous intergalactic dust/gas reservoir; it is independent of the oblate quadrupole analysis but shares the same mature velocity normalization.
+
+\section{Conclusion}
+\label{sec:conclusion}
+We have presented an analytic route from the gravitational Hysterical Response of the companion paper to halo-like galactic scaling, without introducing a new force carrier.
+Isotropic monoenergetic production of the residual response---the infrared shell of Proposition~\ref{prop:ir-shell}---from a localized centered source produces $n=Q/(4\pi v r^{2})+O(r^{-4})$ within the long-propagation regime.
+Under the primary Poisson closure $\nabla^{2}\Phi_{\mathrm{resp}}=\kappa n$ this yields $g_{\mathrm{resp}}=CQ/r$ and $\vf^{2}=CQ$.
+Given the capacity inequality and response-limited filling dynamics, the stable attractor $Q^{2}\propto\Mb$ produces $\vf^{4}\propto\Mb$.
+Accretion supplies $Q$ via $J_{\mathrm{in}}$ as in Proposition~\ref{prop:accretion-Q}; formation/retention is conjectured to require $\boxed{Q\gtrsim O(\sqrt{\Mb})}$, not proved from the ballistic spatial model.
+Isotropic accretion---motivated by homogeneous intergalactic dust/gas---with $j\propto\Mb^{2/3}$ and $R\sim j/\vf$ then implies $R\propto\Mb^{5/12}$, comparable to the steeper end of observed late-type size--mass slopes.
+The first angular correction is an oblate response quadrupole with $\qeff\to1$ at large radius.
+A forthcoming Galactic realization will test these analytic profiles against Milky Way data without altering the scaling theorems derived here.
+
+\bibliographystyle{plain}
+\bibliography{paper_2_refs}
+\end{document}
