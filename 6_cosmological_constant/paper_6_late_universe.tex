@@ -1,0 +1,803 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\FH}{\mathbf F_{\!H}}
+
+\title{\textbf{Late-Universe Acceleration from Hysterical Response}\\[0.35em]
+\large Eventual criticality, vacuum attractor, and a one-parameter background test}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+We develop the late-universe gravitational consequences of the open-system Hysterical Response isolated in the companion response-theory paper.
+Homogeneity alone does not force criticality; under a homogeneous FLRW dilution of a conserved density together with a relaxation gap that vanishes as a positive power of that density, the closed-loop gain is nevertheless guaranteed to cross the critical surface at a unique finite scale factor.
+Once supercritical, finite-amplitude crossing, a pitchfork attractor, and a minimal fluid completion produce a positive asymptotic density with $w\to-1$ from below.
+A slow-pole closure keeps the physical order parameter bounded and yields $\rho_{H,\infty}=m n_c$.
+Confronting the adiabatic background with a Planck 2018 flat $\Lambda$CDM baseline shows that late criticality ($z_c\sim1$) produces distance-modulus residuals of several hundredths of a magnitude, while $z_c\gtrsim3$--$5$ approaches $\Lambda$CDM at the millimagnitude level---a one-parameter shape test, not a derivation of the observed magnitude from microscopic coefficients.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and status}
+\label{sec:scope}
+The response-theory paper~\cite{boyd2026response} isolates the Hysterical Response as the residual component of an already-existing interaction under exponentially stable reduced dynamics.
+Galactic modelling continues that residual into an explicit spatial halo~\cite{boyd2026galactic}; the Solar-System null test constrains a local subcritical amplitude~\cite{boyd2026solar}.
+The present paper asks a different question: can the same open-system response, once a cosmological channel becomes supercritical under dilution, produce a homogeneous late-time vacuum-like gravitational term?
+
+Four logical layers must be kept separate.
+\begin{center}
+\begin{tabular}{@{}>{\bfseries}p{0.22\linewidth}p{0.70\linewidth}@{}}
+\toprule
+Theorem & Consequence of the mathematical assumptions stated here.\\
+Modelling assumption & Gap--density class, nonlinear normal form, gravitational closure, or fluid action.\\
+Physical input & Expanding FLRW background; non-neutralizing homogeneous mass-energy; conserved number density.\\
+Phenomenological confrontation & One-parameter background comparison to a Planck flat $\Lambda$CDM baseline (Sec.~\ref{sec:background}).\\
+Not claimed & A microscopic derivation of $K$, $\Gamma_*$, or $C_2$; a full SN/BAO/CMB likelihood; or proof that observed acceleration is Hysterical Response.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No new force carrier is introduced.
+The scalar order parameters below are coarse-grained coordinates for the gravitational residual response, not fundamental fields.
+Homogeneity and isotropy are assumptions of the background model: they license a single background density $n(a)$, not by themselves a critical instability.
+
+\section{Finite-amplitude crossing}
+\label{sec:crossing}
+Consider a positive scalar response amplitude $X(t)$ obeying the linear unstable equation
+\begin{equation}
+\label{eq:lin}
+\dot X=\lambda(t)X
+\end{equation}
+with continuous $\lambda$.
+Its solution from an initial time $t_i$ is
+\begin{equation}
+\label{eq:soltime}
+X(t)=X_i\exp\!\left(\int_{t_i}^{t}\lambda(s)\,\dd s\right).
+\end{equation}
+
+\begin{theorem}[Cosmological finite-amplitude crossing]
+\label{thm:crossing}
+Let $X:[t_i,t_f]\to(0,\infty)$ solve~\eqref{eq:lin}.
+Let $X_*>X_i$.
+If
+\begin{equation}
+\label{eq:threshold}
+\int_{t_i}^{t_f}\lambda(s)\,\dd s\ge\ln\frac{X_*}{X_i},
+\end{equation}
+then there exists $t_*\in[t_i,t_f]$ such that $X(t_*)=X_*$.
+If $\lambda(t)>0$ throughout $(t_i,t_f)$ and the inequality in~\eqref{eq:threshold} is strict, the crossing is unique and occurs before $t_f$.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:soltime} gives $X(t_i)=X_i$ and $X(t_f)\ge X_*$.
+Continuity of $X$ and the intermediate-value theorem give existence.
+If $\lambda>0$, then $\dot X>0$, so $X$ is strictly increasing and the crossing is unique.
+Strict inequality places it in the interior.
+\end{proof}
+
+\begin{corollary}[Scale-factor form]
+\label{cor:scale-factor}
+For an expanding background with $H=\dot a/a>0$,
+\begin{equation}
+\label{eq:sola}
+X(a)=X_i\exp\!\left[\int_{a_i}^{a}\frac{\lambda(a')}{a'H(a')}\,\dd a'\right].
+\end{equation}
+A target $X_*>X_i$ is reached by $a_f$ whenever
+\begin{equation}
+\label{eq:mastercross}
+\boxed{\int_{a_i}^{a_f}\frac{\lambda(a)}{aH(a)}\,\dd a\ge\ln\frac{X_*}{X_i}.}
+\end{equation}
+\end{corollary}
+
+\begin{remark}[What exponential growth does not prove]
+\label{rem:crossing-limits}
+The theorem is an existence statement.
+It does not explain why a crossing occurs near $a=1$.
+That requires independent physics for the onset, rate, seed distribution, and nonlinear saturation.
+\end{remark}
+
+For constant positive growth rate $\lambda$, the crossing time is exactly
+\begin{equation}
+t_*=\frac1\lambda\ln\frac{X_*}{X_i},
+\end{equation}
+which is the elementary logarithmic threshold formalized in the companion Lean module.
+
+\section{Dilution-driven criticality}
+\label{sec:dilution}
+The response-theory paper identifies the scalar closed-loop gain $G_H=\chi_R\chi_H$ with criticality at $G_H=1$.
+A one-pole slow mode gives schematically $\chi_H\simeq\mathcal R/\gamma_H$.
+If the relevant relaxation is collision limited, $\gamma_H\sim n\langle\sigma v\rangle$, and for conserved nonrelativistic number density $n(a)=n_0 a^{-3}$ with slowly varying residue and return susceptibility, one obtains the modelling class
+\begin{equation}
+\gamma_H\propto a^{-3},\qquad \chi_H\propto a^3,\qquad G_H\propto a^3.
+\end{equation}
+Thus the cubic law $G=(a/a_c)^3$ is the same closed-loop gain $G_H$ of the response-theory paper, specialized to a density-controlled gap on a homogeneous background---not Newton's constant.
+
+\begin{assumption}[Power-law gap class on a homogeneous background]
+\label{ass:eventual}
+In an expanding FLRW geometry, a conserved rest-frame density satisfies $n(a)=n_0 a^{-3}$ with $n_0>0$.
+On an interval of densities containing the late universe, the slow gap and residue obey
+\begin{equation}
+\gamma(n)=K n^{\alpha},\qquad K>0,\quad\alpha>0,
+\end{equation}
+while $\chi_R(n)\mathcal R(n)$ is approximated by a positive constant $\Gamma_*$.
+Write $G(n):=\Gamma_*/\bigl(K n^{\alpha}\bigr)$.
+\end{assumption}
+
+\begin{theorem}[Eventual dilution criticality]
+\label{thm:eventual}
+Under Assumption~\ref{ass:eventual}:
+\begin{enumerate}
+\item $G:(0,\infty)\to(0,\infty)$ is continuous and strictly decreasing, with
+$\lim_{n\to0^+}G(n)=\infty$ and $\lim_{n\to\infty}G(n)=0$.
+\item There exists a unique critical density $n_c>0$ such that $G(n_c)=1$, namely
+\begin{equation}
+\boxed{n_c=\bigl(\Gamma_*/K\bigr)^{1/\alpha}.}
+\end{equation}
+\item Along the expanding FLRW trajectory $n(a)=n_0 a^{-3}$, there is a unique critical scale factor
+\begin{equation}
+\boxed{a_c=\bigl(n_0/n_c\bigr)^{1/3},}
+\end{equation}
+with $G\bigl(n(a)\bigr)<1$ for $a<a_c$ and $G\bigl(n(a)\bigr)>1$ for $a>a_c$.
+In particular, every expanding homogeneous universe in this class that begins subcritical eventually becomes supercritical at finite $a_c$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Continuity and the limits are elementary for $\alpha>0$.
+Strict decrease follows from $dG/dn=-\alpha\Gamma_*/(K n^{\alpha+1})<0$.
+The intermediate-value theorem gives a unique $n_c$ with $G(n_c)=1$.
+Substituting $n=n_0 a^{-3}$ yields $G\propto a^{3\alpha}$, hence a unique $a_c$ as stated.
+\end{proof}
+
+\begin{remark}[Homogeneity is not enough]
+\label{rem:homo-not-enough}
+Theorem~\ref{thm:eventual} uses homogeneity to reduce the background to a single $n(a)$, but the critical crossing is forced by the gap law $\gamma\to0$ as $n\to0$, not by homogeneity alone.
+A density-independent gap need never cross $G=1$.
+Whether the real gravitational Liouvillian realizes Assumption~\ref{ass:eventual} remains a microscopic input.
+\end{remark}
+
+\begin{assumption}[Cubic dilution model]
+\label{ass:cubic}
+Specialize Theorem~\ref{thm:eventual} to $\alpha=1$, so
+\begin{equation}
+\label{eq:G}
+G(a)=\left(\frac{a}{a_c}\right)^3,
+\end{equation}
+and, in the supercritical regime $a\ge a_c$, approximate the growing eigenvalue by
+\begin{equation}
+\label{eq:lambda}
+\lambda(a)=\eta H(a)\,[G(a)-1],\qquad \eta>0.
+\end{equation}
+\end{assumption}
+
+\begin{theorem}[Closed-form dilution-driven growth]
+\label{thm:closed}
+Under Assumption~\ref{ass:cubic}, a mode with $X(a_c)=X_c>0$ obeys
+\begin{equation}
+\label{eq:closed}
+\boxed{
+X(a)=X_c\exp\!\left\{\eta\left[
+\frac{a^3-a_c^3}{3a_c^3}-\ln\!\left(\frac{a}{a_c}\right)
+\right]\right\},\quad a\ge a_c.}
+\end{equation}
+In particular, at $a_0=1$,
+\begin{equation}
+\label{eq:today}
+\ln\frac{X_0}{X_c}=\eta\left[
+\frac{1-a_c^3}{3a_c^3}-\ln\frac1{a_c}
+\right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From $d\ln a/dt=H$ and~\eqref{eq:lambda},
+\[
+\frac{d\ln X}{d\ln a}=\eta\left[\left(\frac a{a_c}\right)^3-1\right].
+\]
+Integrating from $a_c$ to $a$ and exponentiating yields~\eqref{eq:closed}.
+\end{proof}
+
+\begin{proposition}[Monotonic accumulated growth]
+\label{prop:Phi}
+Define
+\begin{equation}
+\Phi(x):=\frac{x^3-1}{3}-\ln x,\qquad x\ge1.
+\end{equation}
+Then $\Phi(1)=0$ and $\Phi'(x)=x^2-1/x\ge0$, with strict inequality for $x>1$.
+Thus the accumulated exponent in~\eqref{eq:closed} grows strictly after criticality.
+\end{proposition}
+
+Linear growth cannot continue indefinitely.
+A minimal normal form is $\dot X=r(t)X-uX^3$ with $u>0$; for constant $r>0$ the nonzero saturation amplitude is $\sqrt{r/u}$.
+The linear crossing theorem is therefore relevant to a target $X_*$ only while $X_*$ remains below saturation.
+
+\section{Nonlinear cosmological attractor}
+\label{sec:attractor}
+Let $\phi$ be a dimensionless coarse-grained Hysterical order parameter obeying
+\begin{equation}
+\label{eq:normal}
+\dot\phi=r_0[G(a)-1]\phi-u\phi^3,
+\qquad r_0>0,\quad u>0,
+\end{equation}
+with the cubic dilution gain~\eqref{eq:G}.
+At fixed $a$, write $r(a)=r_0[G(a)-1]$.
+
+\begin{theorem}[Nonlinear Hysterical branch]
+\label{thm:pitchfork}
+For fixed $a$, equation~\eqref{eq:normal} has the following equilibria.
+\begin{enumerate}
+\item If $G(a)\le1$, the only real equilibrium is $\phi=0$; it is linearly stable for $G<1$ and critical at $G=1$.
+\item If $G(a)>1$, the neutral equilibrium is unstable and two symmetry-related equilibria exist,
+\begin{equation}
+\label{eq:branches}
+\boxed{\phi_\pm^*(a)=\pm\sqrt{\frac{r_0}{u}[G(a)-1]}.}
+\end{equation}
+Both nonzero equilibria are linearly asymptotically stable.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The right-hand side is $f(\phi)=r\phi-u\phi^3=\phi(r-u\phi^2)$.
+Thus $\phi=0$ always, and for $r>0$ also $\phi^2=r/u$.
+Since $f'(0)=r$, the neutral state changes stability at $r=0$.
+At either nonzero equilibrium, $f'(\phi_\pm^*)=r-3u(r/u)=-2r<0$
+(literature input: elementary pitchfork linearization; cf.~\cite{perko2001}).
+\end{proof}
+
+\begin{remark}[Adiabatic tracking]
+\label{rem:adiabatic}
+Identifying the cosmological solution with $\phi_\pm^*(a)$ assumes that relaxation toward the stable branch is fast compared with the rate at which $G(a)$ changes.
+Near criticality this is least reliable; the full time-dependent equation should be integrated when confronting data.
+\end{remark}
+
+\begin{assumption}[Quadratic gravitational response closure]
+\label{ass:closure}
+On the nonlinear branch, the effective Hysterical gravitational source density is
+\begin{equation}
+\label{eq:rho-closure}
+\boxed{\rho_H=C\rho_m\phi^2,}\qquad C>0,
+\end{equation}
+where $\rho_m(a)=\rho_{m0}a^{-3}$.
+The square makes the macroscopic gravitational source insensitive to the sign of the broken branch.
+This is a modelling assumption, not a consequence yet derived from the response-theory Liouvillian.
+\end{assumption}
+
+\begin{theorem}[Nonlinear cosmological Hysterical attractor]
+\label{thm:attractor}
+Assume~\eqref{eq:G}, Theorem~\ref{thm:pitchfork}, Assumption~\ref{ass:closure}, and adiabatic tracking of either stable branch for $a>a_c$.
+Then
+\begin{equation}
+\label{eq:rhoH}
+\boxed{
+\rho_H^*(a)=C\rho_{m0}\frac{r_0}{u}
+\left(a_c^{-3}-a^{-3}\right),\qquad a>a_c.
+}
+\end{equation}
+In particular, $\rho_H^*(a)>0$, is strictly increasing in $a$, and has the finite limit
+\begin{equation}
+\label{eq:asymptote}
+\boxed{\rho_{H,\infty}=C\rho_{m0}\frac{r_0}{u}a_c^{-3}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:branches}, $\phi_*^2=(r_0/u)[(a/a_c)^3-1]$.
+Multiplying by $C\rho_{m0}a^{-3}$ gives~\eqref{eq:rhoH}.
+Positivity follows from $a>a_c$; differentiation gives $d\rho_H^*/da=3C\rho_{m0}(r_0/u)a^{-4}>0$.
+\end{proof}
+
+\begin{corollary}[Cancellation of dilution]
+\label{cor:cancellation}
+The large-$a$ constancy is produced by $\rho_m\propto a^{-3}$ and $\phi_*^2\sim G\propto a^3$, so that $\rho_m\phi_*^2$ tends to a constant.
+The asymptote is not inserted by hand as a cosmological constant.
+\end{corollary}
+
+Define an effective equation-of-state parameter by the bookkeeping identity
+\begin{equation}
+\label{eq:wdef}
+\frac{d\rho_H}{d\ln a}=-3(1+w_H)\rho_H.
+\end{equation}
+
+\begin{theorem}[Effective equation of state]
+\label{thm:w}
+For the adiabatic attractor~\eqref{eq:rhoH},
+\begin{equation}
+\label{eq:w-attr}
+\boxed{
+w_H(a)=-1-\frac{1}{G(a)-1}
+=-1-\frac{a_c^3}{a^3-a_c^3},\qquad a>a_c.
+}
+\end{equation}
+Consequently $w_H<-1$ at finite $a>a_c$ and $w_H\to-1$ as $a\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Write $\rho_H=A(a_c^{-3}-a^{-3})$ with $A>0$.
+Then $d\rho_H/d\ln a=3Aa^{-3}$, and~\eqref{eq:wdef} yields $1+w_H=-1/(G-1)$.
+\end{proof}
+
+\begin{remark}[No fundamental phantom field]
+\label{rem:phantom}
+The inequality $w_H<-1$ describes an increasing response density approaching a finite asymptote.
+It does not by itself imply a fundamental scalar with wrong-sign kinetic term.
+\end{remark}
+
+At $a_0=1$, writing $X_0:=\rho_{H0}/\rho_{m0}$ and $B:=C r_0/u$ gives the calibration identity
+\begin{equation}
+\label{eq:B-cal}
+\boxed{B=\frac{X_0}{(1+z_c)^3-1}.}
+\end{equation}
+A present density ratio therefore fixes only one dimensionless combination once $z_c$ is specified.
+For the illustrative fractions $X_0\simeq2.295$, critical redshifts $z_c=2$ and $z_c=3$ give $B\simeq0.088$ and $B\simeq0.036$, with present attractor fractions $26/27$ and $63/64$ and effective $w_{H0}\simeq-1.038$ and $-1.016$ respectively.
+These are internal benchmarks, not observational fits.
+
+\section{Critical density and covariant positivity}
+\label{sec:covariant}
+We now rephrase the same attractor in rest-frame density language and promote it to a minimal covariant fluid.
+
+\begin{assumption}[Power-law dilution class]
+\label{ass:powerlaw}
+Assumption~\ref{ass:eventual} (already used for eventual criticality), restated for the covariant section.
+\end{assumption}
+
+\begin{theorem}[Critical density]
+\label{thm:critical-density}
+Under Assumption~\ref{ass:powerlaw}, the critical density and redshift are those of Theorem~\ref{thm:eventual}.
+For $\alpha=1$,
+\begin{equation}
+\label{eq:nc-linear}
+\boxed{n_c=\frac{\Gamma_*}{K},\qquad G(n)=\frac{n_c}{n}=\left(\frac a{a_c}\right)^3.}
+\end{equation}
+\end{theorem}
+
+\begin{assumption}[$\mathbb Z_2$ response symmetry]
+\label{ass:Z2}
+Near the neutral state the deterministic evolution is analytic and invariant under $\phi\mapsto-\phi$.
+\end{assumption}
+
+\begin{theorem}[Odd normal form]
+\label{thm:odd-normal}
+There exist coefficient functions such that
+\begin{equation}
+\dot\phi=r(n)\phi-u(n)\phi^3+O(\phi^5).
+\end{equation}
+If the instability is continuous, $r(n_c)=0$.
+In the linear-gap class a convenient leading parametrization is
+\begin{equation}
+\boxed{r(n)=r_0\left(\frac{n_c}{n}-1\right)+\text{higher-order corrections},\qquad r_0>0.}
+\end{equation}
+If $u_c:=u(n_c)>0$, the supercritical branches satisfy, to leading order,
+\begin{equation}
+\boxed{\phi_*^2=\frac{r_0}{u_c}\left(\frac{n_c}{n}-1\right).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Oddness removes even powers from the Taylor expansion.
+Factoring the cubic truncation gives $\phi[r-u\phi^2]=0$.
+For $r>0$ and $u_c>0$, the nonzero roots are real and have linear derivative $-2r<0$.
+\end{proof}
+\begin{remark}
+\label{rem:odd-normal-lean}
+Reduced Lean abstraction: the cubic equilibrium algebra is ported; the existence of a $C^\infty$ odd normal form on the response manifold is a modelling/symmetry hypothesis, not a Lean theorem.
+\end{remark}
+
+\begin{theorem}[Leading even gravitational response]
+\label{thm:even-coupling}
+Assume $\rho_H(n,\phi)$ is analytic near $\phi=0$, invariant under $\phi\mapsto-\phi$, and vanishes in the neutral phase.
+Then
+\begin{equation}
+\boxed{\rho_H=C_2(n)\rho_m\phi^2+O(\phi^4),}
+\end{equation}
+where $C_2$ is dimensionless when $\phi$ is dimensionless.
+Symmetry does not determine the sign of $C_2$.
+\end{theorem}
+
+\begin{proof}
+Evenness removes odd Taylor coefficients; vanishing at $\phi=0$ removes the constant term.
+\end{proof}
+\begin{remark}
+\label{rem:even-coupling-lean}
+The leading even monomial is a symmetry argument (TeX); Lean ports the quadratic attractor algebra that follows once this form is assumed.
+\end{remark}
+
+Take $\rho_m=mn$ with $m>0$ and approximate $C_2(n)$ by $C_2=C_2(n_c)$ near criticality.
+
+\begin{theorem}[Positive Hysterical attractor density]
+\label{thm:positive-attractor}
+Under adiabatic tracking of the stable cubic branch,
+\begin{equation}
+\label{eq:rhoH-n}
+\boxed{\rho_H(n)=A(n_c-n),\qquad A:=C_2 m\frac{r_0}{u_c}.}
+\end{equation}
+Hence
+\begin{equation}
+\boxed{\rho_{H,\infty}=A n_c=C_2 m\frac{r_0}{u_c}n_c.}
+\end{equation}
+For linear gap scaling,
+\begin{equation}
+\boxed{\rho_{H,\infty}=C_2 m\frac{r_0}{u_c}\frac{\Gamma_*}{K}.}
+\end{equation}
+If $C_2>0$ and $u_c>0$, then $A>0$ and $\rho_H>0$ throughout $0<n<n_c$.
+\end{theorem}
+
+\begin{proof}
+Insert $\phi_*^2=(r_0/u_c)(n_c/n-1)$ into $C_2 m n\phi_*^2$ and cancel $n$.
+\end{proof}
+
+Let $J^\mu=n u^\mu$ be a conserved timelike current with $u^\mu u_\mu=-1$ in $c=1$ units.
+Consider the minimal local isotropic adiabatic fluid action
+\begin{equation}
+\label{eq:action}
+\boxed{S_H=-\int d^4x\sqrt{-g}\,\rho_H(n).}
+\end{equation}
+For such a barotropic current fluid, metric variation yields the standard perfect-fluid identity
+\begin{equation}
+\label{eq:perfect-fluid}
+T_H^{\mu\nu}=(\rho_H+p_H)u^\mu u^\nu+p_H g^{\mu\nu},
+\qquad
+p_H=n\frac{d\rho_H}{dn}-\rho_H
+\end{equation}
+(literature hypothesis: variational identity for a barotropic current fluid; see Remark~\ref{rem:fluid}).
+
+\begin{theorem}[Covariant Hysterical stress tensor]
+\label{thm:stress}
+For $\rho_H=A(n_c-n)$,
+\begin{equation}
+\boxed{p_H=-A n_c=-\rho_{H,\infty}}
+\end{equation}
+and
+\begin{equation}
+\boxed{T_H^{\mu\nu}=-\rho_{H,\infty}g^{\mu\nu}-A n\,u^\mu u^\nu.}
+\end{equation}
+Thus the homogeneous effective sector is exactly a positive vacuum-like term plus a negative dust-like transient whenever $A>0$.
+\end{theorem}
+
+\begin{proof}
+$d\rho_H/dn=-A$, hence $p_H=-An-A(n_c-n)=-An_c$.
+Substitution into~\eqref{eq:perfect-fluid} gives $\rho_H+p_H=-An$.
+\end{proof}
+
+\begin{proposition}[Divergence]
+\label{prop:divergence}
+For constant $A,n_c$ and conserved $J^\mu$,
+\begin{equation}
+\boxed{\nabla_\mu T_H^{\mu\nu}=-A n\,a^\nu,\qquad a^\nu:=u^\mu\nabla_\mu u^\nu.}
+\end{equation}
+Hence the Hysterical sector is separately conserved for geodesic FLRW flow.
+\end{proposition}
+\begin{remark}
+\label{rem:divergence}
+Literature/GR identity for the perfect-fluid divergence under $\nabla_\mu(nu^\mu)=0$; not separately Lean-certified here.
+\end{remark}
+
+\begin{remark}[Fluid variational identity]
+\label{rem:fluid}
+Equation~\eqref{eq:perfect-fluid} is part of the effective covariant completion.
+Deriving that completion from a Schwinger--Keldysh influence functional remains open.
+\end{remark}
+
+\begin{theorem}[Conditional positive cosmological Hysterical attractor]
+\label{thm:Lambda}
+Assume the hypotheses above, with $m,K,\Gamma_*,r_0>0$, stable saturation $u_c>0$, and positive leading gravitational coefficient $C_2>0$.
+For linear density-controlled relaxation,
+\begin{equation}
+\boxed{\Lambda_H=\frac{8\pi G}{c^2}C_2 m\frac{r_0}{u_c}\frac{\Gamma_*}{K}>0.}
+\end{equation}
+Moreover, in the broken phase $0<n<n_c$,
+\begin{equation}
+\boxed{\rho_H+\frac{3p_H}{c^2}=-A(2n_c+n)<0,}
+\end{equation}
+so its FLRW contribution is accelerating.
+\end{theorem}
+
+\begin{corollary}[Effective equation of state in density variables]
+\label{cor:w-n}
+For $0<n<n_c$,
+\begin{equation}
+\boxed{w_H(n)=-\frac{n_c}{n_c-n}<-1,}
+\end{equation}
+with $w_H\to-1$ as $n\to0$.
+\end{corollary}
+
+\section{Slow-pole nonlinear closure}
+\label{sec:slow-pole}
+The Landau branch $\phi_*^2\propto n_c/n-1$ grows without bound as $n\to0$.
+A sharper closure places the required low-density enhancement in a slow Liouvillian pole while keeping the physical order parameter bounded.
+
+Let the coarse-grained gravitational response density be
+\begin{equation}
+\label{eq:response}
+\rho_H(n,Y)=-\Tr\!\bigl[\hat\varepsilon_g\,\mathcal L_g(n,Y)^{-1}\mathcal S_g(n,Y)\bigr].
+\end{equation}
+If $\mathcal L_g$ has a simple slow mode with gap $\gamma(n)$ and pole numerator $\mathcal N(n,Y)$, then
+\begin{equation}
+\label{eq:pole}
+\boxed{\rho_H(n,Y)=\frac{\mathcal N(n,Y)}{\gamma(n)}+\rho_{\mathrm{reg}}(n,Y).}
+\end{equation}
+
+\begin{theorem}[Pole-source matching]
+\label{thm:pole-match}
+Suppose, along a stationary broken branch as $n\to0^+$,
+\begin{equation}
+\gamma(n)=K_p n^p+o(n^p),\qquad
+\mathcal N(n,Y_*)=N_q n^q+o(n^q),
+\end{equation}
+with $K_p\neq0$, and suppose $\rho_{\mathrm{reg}}\to0$.
+Then
+\begin{equation}
+\rho_H(n,Y_*)=\frac{N_q}{K_p}n^{q-p}[1+o(1)].
+\end{equation}
+A finite nonzero pole-generated vacuum limit therefore requires $q=p$, in which case
+\begin{equation}
+\boxed{\rho_{H,\infty}=\frac{N_p}{K_p}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Divide the two asymptotic expansions in~\eqref{eq:pole}; the regular term vanishes by assumption.
+\end{proof}
+
+For linear dilution, $\gamma(n)=Kn+O(n^2)$ and $\mathcal N(n,Y)=N_1 n Y^2+O(n^2)$ with a bounded branch $Y_*^2\to1$ give $\rho_{H,\infty}=N_1/K$.
+
+\begin{assumption}[Two-variable memory closure]
+\label{ass:two-var}
+Let $Y\in[-1,1]$ be a bounded symmetry-breaking response and $q\in\mathbb R$ an unbounded response-memory amplitude, with
+\begin{align}
+\label{eq:Ydyn}
+\tau\dot Y&=-Y+\tanh q,\\
+\label{eq:qdyn}
+\dot q&=-Kn q+\Gamma_* Y,
+\end{align}
+and $\tau,K,\Gamma_*>0$.
+\end{assumption}
+
+\begin{theorem}[Neutral-state threshold]
+\label{thm:neutral-threshold}
+Under Assumption~\ref{ass:two-var}, the neutral state $(Y,q)=(0,0)$ changes linear stability at
+\begin{equation}
+\label{eq:nc}
+\boxed{n_c=\Gamma_*/K.}
+\end{equation}
+It is linearly stable for $n>n_c$ and unstable for $0<n<n_c$.
+\end{theorem}
+
+\begin{proof}
+The Jacobian is
+\[
+J_0=\begin{pmatrix}-1/\tau&1/\tau\\ \Gamma_*&-Kn\end{pmatrix}.
+\]
+Its trace is negative and its determinant is $(Kn-\Gamma_*)/\tau$.
+For a real $2\times2$ system, negative trace and positive determinant imply both eigenvalues have negative real part; a negative determinant gives one positive and one negative real eigenvalue.
+\end{proof}
+
+At a stationary point, $q=(n_c/n)Y$, so
+\begin{equation}
+\label{eq:selfcons}
+\boxed{Y=\tanh(GY),\qquad G:=\frac{n_c}{n}.}
+\end{equation}
+For $G\le1$ the neutral solution is the only stable branch; for $G>1$ the nonzero branches emerge and approach $Y=\pm1$ as $G\to\infty$.
+Near criticality,
+\begin{equation}
+\label{eq:nearY}
+\boxed{Y_*^2=\frac{3(G-1)}{G^3}+O((G-1)^2).}
+\end{equation}
+
+\begin{assumption}[Reciprocal mass projection]
+\label{ass:projection}
+In the minimal closure, take
+\begin{equation}
+\label{eq:projection}
+\boxed{\rho_H=m n q Y,}
+\end{equation}
+where $m>0$ is the conserved gravitating mass per source.
+This reciprocity normalization is a physical modelling assumption, not a theorem of the abstract response-theory framework.
+\end{assumption}
+
+On a stationary branch,~\eqref{eq:projection} becomes $\rho_H=m n_c Y_*^2$.
+
+\begin{corollary}[Amplitude closure]
+\label{cor:amplitude}
+Within Assumptions~\ref{ass:two-var}--\ref{ass:projection},
+\begin{equation}
+\label{eq:rhoInf}
+\boxed{\rho_{H,\infty}=m n_c=m\frac{\Gamma_*}{K}.}
+\end{equation}
+Comparison with the linear-pole vacuum limit gives $N_1=m\Gamma_*$ and residue ratio one.
+Near criticality,~\eqref{eq:nearY} implies
+\begin{equation}
+\rho_H=m n_c\frac{3(G-1)}{G^3}=3m\frac{n_c-n}{G^2},
+\end{equation}
+so the local slope in $\rho_H=B m(n_c-n)+\cdots$ is $\boxed{B=3}$ as $G\to1^+$ (Lean: algebraic identity plus the $G\to1$ limit).
+\end{corollary}
+
+Adopting the constitutive pressure law~\eqref{eq:perfect-fluid}, one finds on a differentiable stable broken branch
+\begin{equation}
+\label{eq:w-pole}
+\boxed{w_H=-1-\frac{2G(1-Y^2)}{1-G(1-Y^2)},}
+\end{equation}
+with $w_H\to-1$ and $T_H^{\mu\nu}\to-\rho_{H,\infty}c^2 g^{\mu\nu}$ as $n\to0$.
+The effective cosmological constant is then
+\begin{equation}
+\label{eq:Lambda-pole}
+\boxed{\Lambda_H=\frac{8\pi G}{c^2}m\frac{\Gamma_*}{K}>0.}
+\end{equation}
+Within this explicit closure the vacuum density and transition density are no longer independent:
+\begin{equation}
+\label{eq:master}
+\boxed{\rho_{H,\infty}=m n_c=m n_0(1+z_c)^3.}
+\end{equation}
+Equation~\eqref{eq:master} is a falsifiable relation of the model, not a model-independent prediction of Hysterical Response.
+The absolute scale $\Gamma_*/K$ remains an irreducible microscopic input.
+
+\section{Gravity versus electromagnetism}
+\label{sec:em}
+The generic instability machinery is interaction-agnostic; macroscopic survival is not.
+
+A homogeneous FLRW matter source has positive ordinary mass-energy density.
+There is no known ordinary opposite-sign gravitational charge sector that neutralizes it in the manner of electric charge.
+Consequently Hysterical neutrality does not force the homogeneous gravitational response to vanish merely because the Universe is homogeneous.
+
+Electromagnetism is different.
+Let $Q(t)$ denote the spatially homogeneous net electric charge in a comoving volume.
+Exact charge conservation implies $\dot Q=0$, hence
+\begin{equation}
+Q(t_i)=0\quad\Longrightarrow\quad Q(t)=0
+\end{equation}
+for all later times under charge-conserving dynamics.
+
+\begin{theorem}[No homogeneous electromagnetic charge generation]
+\label{thm:no-charge}
+In a closed comoving system with exact total electric-charge conservation, a neutral homogeneous initial state remains neutral.
+Therefore a Hysterical electromagnetic instability cannot generate a nonzero $k=0$ net charge from $Q=0$ without additional charge-nonconserving physics.
+\end{theorem}
+
+\begin{proof}
+Charge conservation integrates to $Q(t)=Q(t_i)$.
+\end{proof}
+
+Finite-wavelength charge separation remains allowed.
+For a frozen-coefficient electromagnetic characteristic polynomial
+\begin{equation}
+P(\lambda)=(\lambda+\gamma_H)(\lambda^2+2H\lambda+\omega_p^2)-\beta_{\mathrm{em}}\sigma_H\omega_p^2,
+\end{equation}
+supercritical feedback $\beta_{\mathrm{em}}\sigma_H>\gamma_H$ with $\omega_p^2>0$ makes $P(0)<0$, hence continuity guarantees a positive real root.
+That is a finite-$k$ segregation instability compatible with zero total charge; it is not creation of cosmic net charge.
+
+\section{Background confrontation}
+\label{sec:background}
+The adiabatic attractor~\eqref{eq:rhoH} supplies a definite one-parameter background once the present density fractions are fixed.
+On a flat late-time FLRW geometry, neglecting radiation,
+\begin{equation}
+\label{eq:E}
+\boxed{
+E^2(a)=\Omega_{m0}a^{-3}
++\Omega_{H0}\frac{\max(a_c^{-3}-a^{-3},0)}{a_c^{-3}-1},
+\qquad a_c=(1+z_c)^{-1}.
+}
+\end{equation}
+Here $\Omega_{H0}$ is matched to the observed dark-energy fraction today; $z_c$ is the single shape parameter.
+This is a phenomenological confrontation of the \emph{shape} $1-(a_c/a)^3$, not a microscopic prediction of $\Omega_{H0}$.
+
+\begin{theorem}[Present equation of state]
+\label{thm:background-diagnostics}
+Under the adiabatic attractor of Theorem~\ref{thm:w}, at $a=1$,
+\begin{equation}
+\boxed{w_{H0}=-1-\frac{1}{(1+z_c)^3-1}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Immediate from~\eqref{eq:w-attr} at $a=1$.
+\end{proof}
+
+The acceleration onset $z_{\mathrm{acc}}$ is defined by $\rho_m+\rho_H(1+3w_H)=0$ on the attractor branch; its numerical values for a Planck-like baseline appear in Table~\ref{tab:background}.
+
+\paragraph{Planck baseline comparison.}
+Adopt the flat Planck 2018 baseline $\Omega_{m0}=0.315$ and $\Omega_{H0}=0.685$ as a literature input~\cite{Planck2018}, and compare~\eqref{eq:E} to flat $\Lambda$CDM with the same fractions.
+Table~\ref{tab:background} reports $w_{H0}$, the acceleration onset $z_{\mathrm{acc}}$, luminosity-distance modulus residuals $\Delta\mu(z)=5\log_{10}(d_{L}/d_{L}^{(\Lambda)})$ at $z=0.5$ and $z=1$, and the maximum relative Hubble residual on $z\in[0,3]$.
+
+\begin{table}[h]
+\centering
+\caption{Adiabatic attractor vs Planck 2018 flat $\Lambda$CDM baseline ($\Omega_{m0}=0.315$). Residuals are \emph{not} a likelihood fit; they quantify shape tension at fixed present fractions.}
+\label{tab:background}
+\begin{tabular}{cccccc}
+\toprule
+$z_c$ & $w_{H0}$ & $z_{\mathrm{acc}}$ & $\Delta\mu(0.5)$ & $\Delta\mu(1)$ & $\max|\Delta E/E|$\\
+\midrule
+$1.0$ & $-1.143$ & $0.93$ & $0.033$ & $0.058$ & $0.113$\\
+$1.5$ & $-1.068$ & $0.76$ & $0.016$ & $0.027$ & $0.063$\\
+$2.0$ & $-1.038$ & $0.70$ & $0.009$ & $0.015$ & $0.038$\\
+$3.0$ & $-1.016$ & $0.66$ & $0.004$ & $0.006$ & $0.017$\\
+$5.0$ & $-1.005$ & $0.64$ & $0.001$ & $0.002$ & $0.005$\\
+$10$ & $-1.001$ & $0.63$ & $<10^{-3}$ & $<10^{-3}$ & $<10^{-3}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Late criticality ($z_c\sim1$) produces several-hundredths-of-a-magnitude distance residuals and a strongly phantom $w_{H0}$---already in tension with a $\Lambda$-like background.
+For $z_c\gtrsim3$--$5$ the background approaches $\Lambda$CDM at the millimagnitude level: the one free shape parameter is then pushed toward early criticality, which is precisely the regime in which Theorem~\ref{thm:eventual} says dilution has long since crossed $G=1$.
+A full SN+BAO+CMB likelihood (floating $H_0$, early-universe physics, and growth) is deferred; the present table is the sharpest background statement available without introducing additional free functions.
+
+\paragraph{Growth caveat.}
+Because $w_H<-1$ at finite $a$, structure-growth and ISW observables can constrain $z_c$ more tightly than distances alone.
+Those probes are not evaluated here; they are listed as the next phenomenological gate.
+
+\paragraph{Series coexistence.}
+Galactic modelling and the Solar-System null test constrain spatially organized, often subcritical, response amplitudes~\cite{boyd2026galactic,boyd2026solar}.
+The homogeneous cosmological channel of this paper is a different sector: a joint posterior over galactic $V_Q$, Solar $V_\odot$, and cosmological $z_c$ is not attempted.
+The logical requirement is coexistence, not identity of amplitudes.
+
+\section{Logical status of the results}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.46\linewidth}p{0.46\linewidth}@{}}
+\toprule
+\textbf{Quantity / claim} & \textbf{Status}\\
+\midrule
+Eventual criticality under gap class~\ref{ass:eventual} & Theorem~\ref{thm:eventual} (TeX general~$\alpha$; Lean: linear-gap $n_c$ / cubic $G(a)$).\\
+Finite-amplitude crossing~\eqref{eq:threshold} & Theorem~\ref{thm:crossing} (TeX IVT; Lean: constant-rate threshold).\\
+Cubic dilution law $G=(a/a_c)^3$ & Specialization $\alpha=1$ of~\ref{ass:eventual} / Ass.~\ref{ass:cubic}.\\
+Closed-form $X(a)$ & Theorem~\ref{thm:closed} (TeX calculus).\\
+$\Phi>0$ after criticality & Prop.~\ref{prop:Phi} (Lean).\\
+Pitchfork branches~\eqref{eq:branches} & Theorem~\ref{thm:pitchfork} (Lean algebra; Perko context).\\
+Odd/even leading forms & Theorems~\ref{thm:odd-normal},~\ref{thm:even-coupling} (symmetry; Remarks~\ref{rem:odd-normal-lean},~\ref{rem:even-coupling-lean}).\\
+Quadratic closure $\rho_H=C\rho_m\phi^2$ & Modelling assumption~\ref{ass:closure}.\\
+Attractor $\rho_H^*$ identity; $w_H<-1$ & Theorems~\ref{thm:attractor},~\ref{thm:w} (Lean algebra).\\
+$w_H$ formula from $d\rho_H/d\ln a$ & TeX proof; Lean ports $w_{\mathrm{eff}}<-1$.\\
+Critical density $n_c=\Gamma_*/K$ & Theorems~\ref{thm:eventual},~\ref{thm:critical-density} (Lean).\\
+Perfect-fluid identity~\eqref{eq:perfect-fluid} & Literature hypothesis (Remark~\ref{rem:fluid}).\\
+Stress / $\Lambda_H>0$ under sign assumptions & Theorems~\ref{thm:stress},~\ref{thm:Lambda} (Lean algebra).\\
+Divergence identity & Prop.~\ref{prop:divergence} (Remark~\ref{rem:divergence}).\\
+Pole matching $q=p\Rightarrow\rho_{H,\infty}=N_p/K_p$ & Theorem~\ref{thm:pole-match} (asymptotic algebra; Lean: matched-power case).\\
+Neutral threshold $n_c=\Gamma_*/K$ & Theorem~\ref{thm:neutral-threshold} (TeX Jacobian; Lean: $n_c$ identity).\\
+Reciprocal projection $\rho_H=mnqY$ & Physical modelling assumption~\ref{ass:projection}.\\
+$\rho_{H,\infty}=mn_c$; local $B=3$ & Cor.~\ref{cor:amplitude} (Lean algebra + $G\to1$ limit).\\
+No homogeneous EM charge from $Q=0$ & Theorem~\ref{thm:no-charge} (Lean).\\
+Background shape vs Planck baseline & Phenomenological Table~\ref{tab:background} (literature $\Omega_{m0}$).\\
+Observed $\rho_\Lambda$ magnitude from $K,\Gamma_*$ & Microscopic target, not derived.\\
+SN/BAO/CMB likelihood; growth/ISW & Deferred.\\
+Joint galactic / Solar / cosmological posterior & Deferred coexistence programme.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+\label{sec:conclusion}
+Homogeneous expansion plus a density-vanishing relaxation gap forces a unique criticality boundary at finite $a_c$; it is the gap law, not homogeneity alone, that does the work.
+Once supercritical, accumulated growth forces every finite intermediate amplitude to be crossed; a cubic pitchfork plus quadratic gravitational closure converts that instability into a density approaching a positive constant; a minimal fluid completion supplies constant negative pressure; and a slow-pole closure keeps the physical order parameter bounded while fixing $\rho_{H,\infty}=m n_c$ inside the model.
+A one-parameter background confrontation against a Planck flat $\Lambda$CDM baseline then shows that late criticality is background-tense, while $z_c\gtrsim3$--$5$ is presently allowed at the millimagnitude level---strengthening the dilution story without pretending to a parameter-free derivation of $\Omega_{H0}$.
+The remaining scientific burden is concentrated: derive $K$ and $\Gamma_*$ from a specified cosmological open-system generator, then run a joint expansion+growth likelihood and a coexistence check against the galactic and Solar constraints of the companion papers.
+
+\bibliographystyle{plain}
+\bibliography{paper_6_refs}
+\end{document}

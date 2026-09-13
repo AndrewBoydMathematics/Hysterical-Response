@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{Synopsis: Late-Universe Acceleration from Hysterical Response}\\[0.35em]
+\large Eventual criticality, vacuum attractor, and a one-parameter background test}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This is a short guide to the late-universe cosmological response paper.
+It assumes the response-theory synopsis.
+Each section says \emph{why} the claim matters, then states the result.
+Proofs and the full status table live in the full paper.
+\end{abstract}
+
+\section{Why a late-universe continuation}
+Galactic modelling organizes the residual gravitational response spatially.
+It does not by itself produce a homogeneous vacuum-like term.
+The question here is whether dilution on a homogeneous background can force criticality and then a $\Lambda$-like leftover.
+
+\section{Eventual criticality (homogeneity is not enough)}
+Paper~1's closed-loop gain is $G_H=\chi_R\chi_H$, critical at $G_H=1$.
+On a homogeneous FLRW background with conserved $n\propto a^{-3}$, if the slow gap vanishes as $\gamma=K n^\alpha$ ($\alpha>0$) with slowly varying positive residue $\Gamma_*$, then
+\[
+G(n)=\frac{\Gamma_*}{K n^\alpha}
+\]
+is strictly decreasing from $\infty$ to $0$ as $n$ runs from $0$ to $\infty$.
+
+\begin{theorem}[Eventual dilution criticality]
+There is a unique $n_c=(\Gamma_*/K)^{1/\alpha}$ and a unique $a_c$ such that the expanding universe is subcritical for $a<a_c$ and supercritical for $a>a_c$.
+\end{theorem}
+
+Homogeneity supplies a single $n(a)$; the gap law forces the crossing.
+A density-independent gap need never become critical.
+For $\alpha=1$ one recovers the modelling law $G=(a/a_c)^3$ used below.
+
+\section{Finite-amplitude crossing}
+Once linearly unstable, enough integrated growth forces every intermediate amplitude to be visited.
+
+\begin{theorem}[Cosmological finite-amplitude crossing]
+If $\dot X=\lambda(t)X$ and $\int\lambda\ge\ln(X_*/X_i)$ with $X_*>X_i>0$, then some $t_*$ has $X(t_*)=X_*$.
+\end{theorem}
+
+\section{Nonlinear attractor}
+A cubic pitchfork has stable branches $\phi_*^2=(r_0/u)(G-1)$ for $G>1$.
+With the modelling closure $\rho_H=C\rho_m\phi^2$ and $\rho_m\propto a^{-3}$,
+\[
+\rho_H^*(a)=A(a_c^{-3}-a^{-3})\longrightarrow A a_c^{-3},
+\qquad
+w_H=-1-\frac{1}{G-1}\to-1
+\]
+from below.
+Present density ratios calibrate only $C r_0/u$ once $z_c$ is chosen.
+
+\section{Covariant positivity and slow-pole closure}
+The same attractor in density variables gives $\rho_H=A(n_c-n)$ and, under a minimal fluid action, $p_H=-\rho_{H,\infty}$.
+A slow-pole closure with reciprocal projection sharpens this to $\rho_{H,\infty}=m n_c$ and local slope $B=3$.
+
+\section{Background confrontation}
+Fixing today's $\Omega_{m0},\Omega_{H0}$ to a Planck 2018 flat baseline, the attractor has one free shape parameter $z_c$.
+Late criticality ($z_c\sim1$) produces distance-modulus residuals of several hundredths of a magnitude versus $\Lambda$CDM; $z_c\gtrsim3$--$5$ approaches $\Lambda$CDM at the millimagnitude level.
+That is a one-parameter shape test, not a derivation of $\Omega_{H0}$ from $K$ and $\Gamma_*$.
+
+\section{Gravity versus electromagnetism}
+Homogeneous gravitational mass-energy need not neutralize.
+Exact electric-charge conservation forbids generating a nonzero homogeneous net charge from $Q=0$.
+
+\section{What is not claimed}
+No microscopic Standard-Model evaluation of $K,\Gamma_*$; no full SN/BAO/CMB likelihood; no joint galactic/Solar/cosmological posterior; no claim that observed acceleration has been shown to be Hysterical Response.
+\end{document}
