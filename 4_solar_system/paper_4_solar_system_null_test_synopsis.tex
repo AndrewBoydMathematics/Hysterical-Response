@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\AU}{\mathrm{AU}}
+\newcommand{\Msun}{M_\odot}
+
+\title{\textbf{Synopsis: Solar-System Null Test of the Hysterical Response}\\[0.35em]
+\large What the bound says (without the orbital algebra)}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This is a short guide to the Solar-System null test of the Hysterical Response.
+It assumes the response-theory and galactic-modelling papers.
+Each section says \emph{why} the claim matters, then states the result.
+Orbital algebra and observational detail live in the full paper.
+\end{abstract}
+
+\section{Why a Solar-System null test}
+Galactic modelling supplies $g_{\mathrm{resp}}=CQ/r$ for response-supported systems.
+That does not force the Sun into the same regime: the Solar amplitude $V_\odot^{2}=CQ_\odot$ is a separate, system-dependent quantity.
+The question here is only how large $V_\odot$ can be before Saturn-scale ephemerides object.
+
+\section{Point-source specialization}
+Outside a localized Solar source, the same far-field law reads
+\[
+  g_{\mathrm{resp}}=\frac{V_\odot^{2}}{r},
+  \qquad
+  \epsilon(r)=\frac{V_\odot^{2}r}{GM_\odot}.
+\]
+The fractional correction grows with radius, so outer planets bite hardest.
+An equivalent enclosed mass is $M_{\mathrm{resp}}(<r)=V_\odot^{2}r/G$.
+
+\section{Perihelion signature}
+A purely radial $1/r$ acceleration produces a retrograde perihelion drift.
+
+\begin{proposition}[Perihelion shift of a logarithmic response]
+\[
+\Delta\varpi
+=-\frac{2\pi V_\odot^{2} a}{GM_\odot}
+\frac{\sqrt{1-e^{2}}}{1+\sqrt{1-e^{2}}}
+\]
+per orbit, reducing to $-\pi V_\odot^{2}a/GM_\odot$ for $e\to0$.
+\end{proposition}
+
+(The Gauss reduction to the true-anomaly integrand is a literature input; the remaining integral algebra is Lean-checked.)
+
+\section{Saturn ceiling}
+Translating the Pitjeva--Pitjev Saturn perihelion uncertainty $4.7\times10^{-6}$ arcsec\,yr$^{-1}$ through that formula yields
+\[
+  V_\odot<0.141\,\mathrm{m\,s^{-1}}
+\]
+at the quoted one-sigma level.
+An enclosed-mass consistency scale from the same literature sits near $V_\odot\lesssim0.086\,\mathrm{m\,s^{-1}}$.
+
+\section{Benchmark inside the window}
+For $V_\odot=0.01\,\mathrm{m\,s^{-1}}$, Saturn sees
+$g_{\mathrm{resp}}\sim7\times10^{-17}\,\mathrm{m\,s^{-2}}$ and
+$\dot\varpi_{\mathrm{resp}}\sim-2.4\times10^{-6}$ arcsec per century---below the quoted limit.
+Cassini $\gamma$ is an independent relativistic consistency condition, not a direct $V_\odot$ measurement.
+A Saturn-centric amplitude $V_{\mathrm{Sat}}$ needs a dedicated Grand Finale re-fit.
+
+\section{What is and is not claimed}
+The far-field shape is inherited.
+The perihelion formula is a theorem of the stated Gauss integrand.
+The numerical ceiling is an observational translation, not a detection.
+A nonzero subcritical window remains open; closing it requires explicit $V_\odot^{2}/r$ ephemeris fits.
+
+\end{document}
