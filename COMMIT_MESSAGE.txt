@@ -1,4 +1,0 @@
-﻿Publish Paper 1 (Hysterical Response maths) critic-ready snapshot.
-
-Sync full paper + synopsis (TeX/PDF/bib) and Paper1 Lean specs including
-incoming drive, Neumann mixing, and gravitational positivity at the saturated node.
