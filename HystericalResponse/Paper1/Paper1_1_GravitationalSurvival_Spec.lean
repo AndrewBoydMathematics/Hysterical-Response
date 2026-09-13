@@ -3,11 +3,15 @@ import Mathlib
 /-!
 TeX: `1_hysterical_response/paper_1_hysterical_response.tex`
 Section: **Hysterical neutrality and gravitational survival**
-(`cor:gravity-survival`, finite-system inequalities).
+(`cor:gravity-survival`, finite-system inequalities; positive-channel witness
+feeding `cor:gravity-positivity` after supercritical saturation in Paper1_2).
 
 Route: branchwise neutrality + weight bound → nongravitational vanishing;
-positive weights + monopole lower bound → gravitational survival *permission*
-(not a macroscopic amplitude derivation).
+positive weights + monopole lower bound → strictly positive gravitational
+channel response under those hypotheses (survival *permission* relative to
+neutrality, and a positive-channel lower bound — not a claim that Nature
+has entered the supercritical regime, and not a macroscopic amplitude
+derivation).
 -/
 
 open scoped BigOperators
@@ -84,7 +88,9 @@ theorem positive_gravity_bound
 
 /-- Hence, under the same hypotheses, the gravitational Hysterical response is
 strictly positive. Relative to the Neutrality Theorem this is a *permission*
-witness: vanishing is not forced when a positive channel is present. -/
+witness: vanishing is not forced when a positive channel is present.
+It is also the finite positive-channel lower bound used when packaging
+gravitational positivity at a saturated node (TeX `cor:gravity-positivity`). -/
 theorem positive_gravity_survives
     (s : Finset α) (w g : α → ℝ) (w0 g0 : ℝ)
     (hw0 : 0 < w0) (hg0 : 0 < g0)
@@ -135,5 +141,18 @@ theorem cor_gravity_failure
     (hweight_lower : w0 ≤ ∑ i ∈ s, w i) :
     0 < HResponse s w g :=
   cor_gravity_survival s w g w0 g0 hw0 hg0 hw_nonneg hg_lower hweight_lower
+
+/-- Positive-channel algebraic witness: under the same hypotheses as
+`cor_gravity_survival`, the response is bounded away from zero from below.
+TeX cites this channel hypothesis inside `cor:gravity-positivity`. -/
+theorem cor_positive_channel_lower_bound
+    (s : Finset α) (w g : α → ℝ) (w0 g0 : ℝ)
+    (hw0 : 0 < w0) (hg0 : 0 < g0)
+    (hw_nonneg : ∀ i ∈ s, 0 ≤ w i)
+    (hg_lower : ∀ i ∈ s, g0 ≤ g i)
+    (hweight_lower : w0 ≤ ∑ i ∈ s, w i) :
+    w0 * g0 ≤ HResponse s w g ∧ 0 < HResponse s w g :=
+  ⟨positive_gravity_bound s w g w0 g0 hw0 hg0 hw_nonneg hg_lower hweight_lower,
+    positive_gravity_survives s w g w0 g0 hw0 hg0 hw_nonneg hg_lower hweight_lower⟩
 
 end Paper1_1

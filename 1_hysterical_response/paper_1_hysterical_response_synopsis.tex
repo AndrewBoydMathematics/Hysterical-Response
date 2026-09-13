@@ -60,6 +60,7 @@ Once the reduced dynamics settle, the leftover force is
 \end{equation}
 Here $F$ is the usual force observable of the interaction already under study, $\mathcal L$ is the open-system generator (relaxation / decoherence), and $\mathcal S$ is a \emph{residual drive}: an additive source in the linearized master equation $\dot{\delta\rho}=\mathcal L\,\delta\rho+\mathcal S$ that keeps feeding the reduced state after ordinary coherent interference has been washed out.
 Its detailed operator form is system-dependent; the theorems take an admissible $\mathcal S$ as input.
+The next section gives the Everett picture of where that drive comes from.
 The same formula written as $F_{\mathrm{resp}}=-\Tr[F\mathcal L^{-1}\mathcal S]$ is not a second object---$F_H$ is just that response once it is identified as the Hysterical component of the interaction.
 Geometry still comes from ordinary Newtonian densities when we need masses and distances.
 
@@ -85,6 +86,35 @@ even though $B$ and $C$ look identical one at a time.
 That is the concrete picture of a residual drive: not ``an extra force from every unrealized particle position,'' but a kick that can depend on how alternatives of different particles are correlated.
 The abstract $\mathcal S$ in~\eqref{eq:FH} is whatever open-system source encodes that leftover-feeding structure in a given model; the theorems keep it general.
 
+\section{Incoming particles and the leftover drive}
+\label{sec:synopsis-incoming}
+Picture many Everett alternatives (pointer branches).
+Outgoing particles and environmental scattering wash out interference between those branches---that is decoherence.
+Joos and Zeh already showed that this washing-out runs at a rate set by the flux of environmental particles; later work sharpened the same flux$\times$cross-section scaling.
+So the forgetting rate tracks an outgoing / monitored scale $J_{\mathrm{out}}$.
+
+Incoming particles can put information back in.
+In the large-$n$ Everett toy used here, a single arrival cannot reshuffle the populations of many branches at leading order, so it does not change the diagonal of $\rho$.
+Whatever it contributes therefore sits off the diagonal: a coherence / correlation kick.
+That kick is the residual drive $\mathcal S$.
+Its strength tracks the incoming rate $J_{\mathrm{in}}$.
+
+\noindent\textit{Toy picture.}
+Outgoing which-path bits split Everett alternatives (toward the classical diagonal).
+Incoming unentangled information can be as large in magnitude, but it need not prefer any one branch: a shared $\lvert\phi\rangle$ on both branches is entanglement \emph{between} them, not a population reshuffle.
+That is why the drive is off-classical and why the steady leftover tracks $J_{\mathrm{in}}/J_{\mathrm{out}}$---incoming feed over outgoing forgetting.
+
+The open-systems literature already uses driven equations of the form $\dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S$ for continuously fed, dissipative systems.
+The full paper identifies that $\mathcal S$ with unentangled arrivals, proves it is off-diagonal in the large-$n$ toy, and notes that the steady leftover after decoherence then scales as $J_{\mathrm{in}}/J_{\mathrm{out}}$.
+
+Important: $\mathcal S$ is the \emph{drive}, not the leftover itself.
+Under exponential stability the driven equation has a unique steady state
+\begin{equation}
+  \delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S,
+\end{equation}
+and that steady leftover is globally exponentially stable.
+It vanishes if and only if $\mathcal S=0$: a nonzero residual drive produces a unique nonzero stable steady leftover (the thing whose force pairing is $F_H$).
+
 \section{Does the answer depend on which basis we write in?}
 ``Off-diagonal force'' sounds basis-dependent: rename the axes and the diagonals move.
 The environment already picks which descriptions count as approximately classical.
@@ -98,7 +128,7 @@ If you passively rewrite every piece of the description (state, force, dynamics,
 Changing the actual physical state, or swapping which classicalization map the environment uses, can change the answer: those are active / model changes, not mere renamings of axes.
 
 \section{How do you actually compute a response?}
-If disturbances die exponentially, the steady leftover state is the time-integral of how those disturbances would have evolved---the Laplace picture of a stable semigroup.
+Once that leftover drive is in hand, exponential stability turns the unique stable steady leftover into a Laplace integral $\delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S$.
 That turns the abstract inverse $\mathcal L^{-1}$ into an explicit integral and a usable bound on the response size.
 
 \begin{theorem}[Resolvent response]
@@ -106,7 +136,8 @@ Under exponential stability,
 \begin{equation}
   -\mathcal L^{-1}X=\int_0^\infty e^{t\mathcal L}X\,\dd t,
 \end{equation}
-so again $F_H=F_{\mathrm{resp}}=-\Tr[F\mathcal L^{-1}\mathcal S]$.
+so $\delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S$ and $F_H=F_{\mathrm{resp}}=-\Tr[F\mathcal L^{-1}\mathcal S]$.
+Nonzero $\mathcal S$ yields a unique nonzero exponentially stable steady leftover.
 \end{theorem}
 
 If independent channels do not talk to each other, their contributions add.
@@ -136,8 +167,15 @@ Gravity is not bound by the Neutrality Theorem when the outside gravitational fo
 ``Nondegenerate gravitational channel'' means the composite keeps a nonzero external gravitational monopole (or equivalent retained coupling) rather than an accidental cancellation; under that hypothesis one may \emph{expect} $F_H\neq0$, still as physics rather than a proved amplitude.
 \end{corollary}
 
+\begin{corollary}[Gravitational positivity at a stable saturated node]
+If the closed-loop gravitational order parameter sits in the supercritical pitchfork (or equivalent saturated closed-loop) end-state, there are stable fixed points with $Y\neq0$, typically a positive node and its negative twin.
+Under the usual positive-channel / positive-alignment hypotheses, leftover force on the positive branch is strictly positive: $F_H>0$ at that stable node (and $|F_H|$ is bounded away from zero).
+This does \emph{not} prove that ordinary gravity ever goes critical or gets seeded into that regime---only what the saturated mathematics packages once it is there.
+\end{corollary}
+
 A smooth ``Hysterical field'' $\Phi_H$ is the continuum packaging of that gravitational leftover after coarse graining: define $\mathbf g_H=-\nabla\Phi_H$ and an effective density from $\nabla^2\Phi_H$.
 It is not a new microscopic force carrier; it is the retained IR response written as a potential.
+Galactic modelling continues that same leftover into a spatial halo without inventing a messenger particle.
 
 \section{When cancellation fails: tipping into instability}
 The Neutrality Theorem assumes the response stays under control.
@@ -149,6 +187,7 @@ Around exact neutrality, a single spectral number for the closed-loop dynamics d
 
 \begin{theorem}[Scalar Hysterical Instability]
 In a simple scalar model there is an explicit inequality for when growth wins; noise can start it, and ordinary nonlinearities can saturate it and pick a sign.
+In the supercritical saturated end-state the odd pitchfork supplies stable nonzero $\pm$ nodes; positive-channel alignment then makes leftover force strictly positive at the positive node.
 \end{theorem}
 
 The exact test is the closed-loop gain: whether leftover response feeding back into the ordinary interaction sits below, at, or above the threshold where the quiet point loses stability (gain less than, equal to, or greater than one).
@@ -198,9 +237,10 @@ Lean specs & yes (machine-checked) & Formal statements and proofs for the full p
 
 \section{Conclusion}
 Something history-dependent sits on ordinary forces after decoherence.
+Incoming particles can replenish that leftover as an off-classical drive in a large-$n$ Everett picture: outgoing bits split branches, while shared incoming information refills entanglement between them rather than preferring one population; the steady size tracks incoming feed over outgoing forgetting.
 Passive renaming of the basis leaves that leftover force unchanged.
 When the outside force of a composite vanishes and the response stays calm, the leftover vanishes with it---so electromagnetism, colour, and the weak force can be hysterically quiet, while gravity can keep a macroscopic response.
-Push the feedback too hard and the quiet point can go unstable: dilute ``soup'' behaves more quantumly and can tip, while dense ``meatballs'' behave more classically and tend to damp the leftover locally.
+Push the feedback too hard and the quiet point can go unstable: dilute ``soup'' behaves more quantumly and can tip, while dense ``meatballs'' behave more classically and tend to damp the leftover locally; once saturated in the supercritical regime, a stable positive node carries strictly positive leftover force under positive-channel alignment (whether gravity actually enters that regime is deferred).
 For weak-field gravity, semiclassical and quantum-gravitational routes share the infrared story once their retained potentials agree.
 
 \end{document}

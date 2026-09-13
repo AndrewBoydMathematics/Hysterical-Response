@@ -6,12 +6,17 @@ Section: **Critical instability**
 
 Route: gain / closed-loop Jacobian → `thm:master` → `cor:reciprocal` →
 `cor:subcrit` → `thm:scalar` → `cor:threshold` → `prop:noise` →
-supercritical pitchfork.
+supercritical pitchfork → `cor:gravity-positivity` (stable positive node).
 
 Proved here: spectral abscissa trichotomy for `thm:master`; reciprocal
 scalar/mode criterion; scalar Routh–Hurwitz / `λ₊` sign; threshold
 hitting-time identity; variance ODE for `prop:noise`; pitchfork
-linearization rates; eigenvector transfer for matrix `J = -Γ(I-K)`.
+linearization rates and stable ± saturated nodes; gravitational positivity
+at the positive saturated node under positive alignment; eigenvector
+transfer for matrix `J = -Γ(I-K)`.
+
+Not proved: that ordinary gravity ever becomes supercritical (deferred
+physical / seeding hypothesis).
 
 Literature: `literature_finite_dim_linear_ode_stability` (Perko) for reading
 `α(J)` as finite-dimensional linear ODE stability of a general (possibly
@@ -778,12 +783,91 @@ theorem prop_noise
     prop_noise_variance_ic D lam,
     prop_noise_variance_solves_ode (ne_of_gt hlam) t⟩
 
-/-- TeX: supercritical pitchfork fixed points + linearization stability. -/
+/-- TeX: prop:pitchfork — supercritical pitchfork fixed points + linearization stability. -/
 theorem prop_supercritical_pitchfork
     {r u Y : ℝ} (hu : 0 < u) (hr : 0 < r) (hY : Y ^ 2 = r / u) :
     pitchforkDrift r u Y = 0 ∧ pitchforkLinearization r u Y < 0 :=
   ⟨supercritical_pitchfork hu hr hY,
     (pitchfork_branches_stable_when_r_pos hu hr hY).1⟩
+
+/-- Explicit positive saturated node `Y₊ = √(r/u)` when `r,u > 0`. -/
+theorem pitchfork_positive_stable_node
+    {r u : ℝ} (hu : 0 < u) (hr : 0 < r) :
+    let Y := Real.sqrt (r / u)
+    0 < Y ∧ pitchforkDrift r u Y = 0 ∧ pitchforkLinearization r u Y < 0 := by
+  dsimp
+  set Y := Real.sqrt (r / u) with hYdef
+  have hYsq : Y ^ 2 = r / u := by
+    rw [hYdef, Real.sq_sqrt (div_nonneg (le_of_lt hr) (le_of_lt hu))]
+  have hYpos : 0 < Y := by
+    rw [hYdef]
+    exact Real.sqrt_pos.mpr (div_pos hr hu)
+  exact ⟨hYpos, prop_supercritical_pitchfork hu hr hYsq⟩
+
+/-- Odd Z₂ twin: the negative branch is also a stable saturated fixed point. -/
+theorem pitchfork_negative_stable_twin
+    {r u : ℝ} (hu : 0 < u) (hr : 0 < r) :
+    let Y := Real.sqrt (r / u)
+    pitchforkDrift r u (-Y) = 0 ∧ pitchforkLinearization r u (-Y) < 0 := by
+  dsimp
+  set Y := Real.sqrt (r / u) with hYdef
+  have hYsq : Y ^ 2 = r / u := by
+    rw [hYdef, Real.sq_sqrt (div_nonneg (le_of_lt hr) (le_of_lt hu))]
+  have hneg : (-Y) ^ 2 = r / u := by
+    simpa [neg_sq] using hYsq
+  exact prop_supercritical_pitchfork hu hr hneg
+
+/-- Linear positive-alignment map from order parameter to leftover force. -/
+def alignedForce (κ Y : ℝ) : ℝ := κ * Y
+
+/-- TeX: cor:gravity-positivity — at the stable positive saturated node, with
+positive channel alignment `κ > 0`, leftover force is strictly positive.
+Does **not** claim gravity is supercritical; that remains a physical input. -/
+theorem cor_gravity_positivity
+    {r u κ : ℝ} (hu : 0 < u) (hr : 0 < r) (hκ : 0 < κ) :
+    let Y := Real.sqrt (r / u)
+    pitchforkDrift r u Y = 0 ∧
+      pitchforkLinearization r u Y < 0 ∧
+      0 < Y ∧
+      0 < alignedForce κ Y := by
+  dsimp
+  have hnode := pitchfork_positive_stable_node (r := r) (u := u) hu hr
+  dsimp at hnode
+  refine ⟨hnode.2.1, hnode.2.2, hnode.1, ?_⟩
+  simpa [alignedForce] using mul_pos hκ hnode.1
+
+/-- Same packaging with an explicit cubic remainder: odd force law
+`F_H = κ Y + c Y³` on the positive node stays positive when
+`|c| (r/u) < κ`. -/
+theorem cor_gravity_positivity_with_cubic
+    {r u κ c : ℝ} (hu : 0 < u) (hr : 0 < r) (hκ : 0 < κ)
+    (hc : |c| * (r / u) < κ) :
+    let Y := Real.sqrt (r / u)
+    let FH := κ * Y + c * Y ^ 3
+    pitchforkDrift r u Y = 0 ∧
+      pitchforkLinearization r u Y < 0 ∧
+      0 < Y ∧
+      0 < FH := by
+  dsimp
+  set Y := Real.sqrt (r / u) with hYdef
+  set FH := κ * Y + c * Y ^ 3
+  have hnode := pitchfork_positive_stable_node (r := r) (u := u) hu hr
+  dsimp at hnode
+  have hYsq : Y ^ 2 = r / u := by
+    rw [hYdef, Real.sq_sqrt (div_nonneg (le_of_lt hr) (le_of_lt hu))]
+  refine ⟨hnode.2.1, hnode.2.2, hnode.1, ?_⟩
+  have hfactor : FH = Y * (κ + c * Y ^ 2) := by
+    simp [FH]; ring
+  have hbound : |c * Y ^ 2| < κ := by
+    have : |c * Y ^ 2| = |c| * Y ^ 2 := by
+      rw [abs_mul, abs_of_nonneg (sq_nonneg Y)]
+    rw [this, hYsq]
+    exact hc
+  have hinner : 0 < κ + c * Y ^ 2 := by
+    have habs := abs_lt.mp hbound
+    linarith
+  have : 0 < Y * (κ + c * Y ^ 2) := mul_pos hnode.1 hinner
+  simpa [hfactor] using this
 
 end
 

@@ -57,7 +57,7 @@ Mathematical theorems stated in this paper are formally verified in Lean~4 in th
 \begin{abstract}
 We develop the open-system mathematics of the Hysterical Response: the residual response of an already-existing interaction under exponentially stable reduced dynamics.
 After setting the response functional and Newtonian channel geometry, we prove basis covariance relative to a physical classicalization map, so that ``off-diagonal'' language is representation-relative while the scalar response is invariant.
-We then give the constructive resolvent formulae, prove the Hysterical Neutrality Theorem and a gravitational survival corollary, classify neutral/critical/unstable closed-loop regimes, and show that semiclassical and quantum-gravitational routes share the same weak-field infrared phenomenology when they retain the same potential.
+We then give the constructive resolvent formulae, prove the Hysterical Neutrality Theorem and a gravitational survival corollary, package gravitational positivity at a stable supercritical saturated node, classify neutral/critical/unstable closed-loop regimes, and show that semiclassical and quantum-gravitational routes share the same weak-field infrared phenomenology when they retain the same potential.
 \end{abstract}
 \tableofcontents
 \newpage
@@ -322,7 +322,7 @@ On the stable response subspace,
 Here $F$ is an existing interaction observable.
 The source $\mathcal S_H$ is \emph{system-dependent}: its construction, support, and normalization depend on the interaction, environment, coarse-graining, and state under study.
 It may be fed by the off-classical sector, replenishment, correlations, or other open-system structure; no new fundamental force observable is introduced.
-The present paper develops the response calculus for an admissible $\mathcal S_H$; deriving a concrete source for a given microscopic model is a separate modeling task.
+The present paper develops the response calculus for an admissible $\mathcal S_H$; Sections~\ref{sec:incoming-drive}--\ref{sec:everett-toy} derive the driven equation and an off-classical source for unentangled incoming particles in a large-$n$ Everett toy, while continuum normalizations remain model-dependent.
 
 \begin{assumption}[Covariant source construction]
 If the entire physical description is passively transformed by $U$, the response source transforms as
@@ -467,7 +467,8 @@ The theorem resolves the representation problem but deliberately leaves the foll
 \begin{enumerate}
 \item the microscopic derivation of $\Delta_{\rm cl}$ or the pointer algebra for a given environment;
 \item how accurately the classicalization map is idempotent when decoherence is only approximate;
-\item the concrete construction and normalization of the system-dependent source $\mathcal S_H$ in particular interactions and states;
+\item the concrete construction and normalization of the system-dependent source $\mathcal S_H$ in particular interactions and states (Section~\ref{sec:incoming-drive}--\ref{sec:everett-toy} give the unentangled-incoming / large-$n$ Everett class; continuum amplitudes remain open);
+
 \item the magnitude and spectrum of the associated Hysterical susceptibility;
 \item whether the response is neutral, critical, or unstable under the instability criterion of Section~\ref{sec:instability};
 \item whether a surviving response remains macroscopic after coarse graining.
@@ -476,18 +477,212 @@ None of these is an arbitrary-basis ambiguity.
 
 \section{Constructive response theory}
 \label{sec:constructive}
+
+\subsection{Unentangled incoming particles and the driven response equation}
+\label{sec:incoming-drive}
+The driven linear response equation used throughout this paper is not an independent postulate.
+We derive it for a generic open quantum system that decoheres while incorporating incoming degrees of freedom that arrive unentangled with the system.
+
+\begin{assumption}[Decoherence toward a classical reference]
+\label{ass:decoherence-ref}
+Let $\mathcal L_D$ generate a quantum dynamical semigroup on the trace class, and let $\rho_0$ be a classical reference state for a linear idempotent classicalization map $\Delta_{\mathrm{cl}}$:
+\begin{equation}
+  \Delta_{\mathrm{cl}}\rho_0=\rho_0,\qquad \mathcal L_D\rho_0=0.
+\end{equation}
+Interpret $\mathcal L_D$ as the reduced generator of outgoing / monitored exchange (decoherence and relaxation toward the pointer sector).
+\end{assumption}
+
+\begin{assumption}[Unentangled incorporation]
+\label{ass:unentangled-in}
+An incoming degree of freedom with state $\sigma_{\mathrm{in}}$ is incorporated unentangled from the system,
+\begin{equation}
+  \rho\;\longmapsto\;\rho\otimes\sigma_{\mathrm{in}},
+\end{equation}
+then coupled by a joint unitary (or CPTP) interaction and reduced by tracing out the discarded outgoing registers.
+The induced system map
+\begin{equation}
+  \mathcal E(\rho)=\Tr_{\mathrm{in}}\!\bigl[U(\rho\otimes\sigma_{\mathrm{in}})U^\dagger\bigr]
+\end{equation}
+is linear and completely positive for fixed $\sigma_{\mathrm{in}}$.
+(As elsewhere in the paper, at incorporation we take the product state $\rho\otimes\sigma_{\mathrm{in}}$; subsequent dynamics may entangle before the partial trace.)
+\end{assumption}
+
+\begin{assumption}[Poisson arrivals]
+\label{ass:poisson-arrivals}
+Between arrivals the reduced state evolves under $\mathcal L_D$.
+Arrivals occur at mean rate $\nu\ge0$, yielding the piecewise-deterministic / jump-diffusion generator
+\begin{equation}
+  \dot\rho=\mathcal L_D\rho+\nu\bigl(\mathcal E(\rho)-\rho\bigr)
+  \label{eq:full-accrete-decohere}
+\end{equation}
+on the system state.
+\end{assumption}
+
+\begin{theorem}[Driven deviation equation]
+\label{thm:driven-deviation}
+Under Assumptions~\ref{ass:decoherence-ref}--\ref{ass:poisson-arrivals}, write $\rho=\rho_0+\delta\rho$.
+Then
+\begin{equation}
+  \dot{\delta\rho}=\mathcal L\,\delta\rho+\mathcal S,
+  \label{eq:driven-dev}
+\end{equation}
+where
+\begin{equation}
+  \mathcal L=\mathcal L_D+\nu(\mathcal E-I),\qquad
+  \mathcal S=\nu\bigl(\mathcal E(\rho_0)-\rho_0\bigr).
+  \label{eq:L-S-split}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute $\rho=\rho_0+\delta\rho$ into~\eqref{eq:full-accrete-decohere} and use linearity of $\mathcal L_D$ and $\mathcal E$ together with $\mathcal L_D\rho_0=0$:
+\begin{align*}
+  \dot{\delta\rho}
+  &=\mathcal L_D(\rho_0+\delta\rho)+\nu\bigl(\mathcal E(\rho_0+\delta\rho)-(\rho_0+\delta\rho)\bigr)\\
+  &=\mathcal L_D\delta\rho+\nu\bigl(\mathcal E(\delta\rho)-\delta\rho\bigr)+\nu\bigl(\mathcal E(\rho_0)-\rho_0\bigr)\\
+  &=\mathcal L\,\delta\rho+\mathcal S.
+\end{align*}
+\end{proof}
+
+Thus the additive source $\mathcal S$ is precisely the mean kick that one unentangled arrival imparts to the classical reference $\rho_0$, while $\mathcal L$ collects decoherence together with the linearized arrival map.
+If $\mathcal E(\rho_0)=\rho_0$, then $\mathcal S=0$ and~\eqref{eq:driven-dev} reduces to homogeneous relaxation of deviations.
+
+\begin{remark}[Literature status of the driven equation]
+\label{rem:lit-driven}
+Affine / inhomogeneous open-system equations of the schematic form $\dot\rho=\mathcal L\rho+\mathcal S$ (equivalently $\dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S$ after centering on a reference) are standard in the driven--dissipative and linear-response literature~\cite{breuerPetruccione2002,gardinerZoller2004}.
+What is derived here is not the existence of that form, but its identification with unentangled arrivals plus decoherence, and (below) the large-$n$ Everett reason for an off-classical $\mathcal S$.
+\end{remark}
+
+\subsection{Incoming / outgoing fluxes and the $J_{\mathrm{in}}/J_{\mathrm{out}}$ scaling}
+\label{sec:jin-jout}
+Write $J_{\mathrm{in}}$ for a characteristic incoming particle rate (so $J_{\mathrm{in}}\propto\nu$ in Assumption~\ref{ass:poisson-arrivals}) and $J_{\mathrm{out}}$ for a characteristic outgoing / monitored exchange rate that sets the decoherence scale in $\mathcal L_D$.
+
+\begin{proposition}[Source scales with incoming flux]
+\label{prop:S-Jin}
+Under Theorem~\ref{thm:driven-deviation},
+\begin{equation}
+  \mathcal S=J_{\mathrm{in}}\,\mathcal S_1,
+  \qquad
+  \mathcal S_1:=\frac{\nu}{J_{\mathrm{in}}}\bigl(\mathcal E(\rho_0)-\rho_0\bigr),
+\end{equation}
+whenever $J_{\mathrm{in}}\propto\nu>0$.
+In particular $\|\mathcal S\|_1\propto J_{\mathrm{in}}$ at fixed per-particle kick $\mathcal E(\rho_0)-\rho_0$.
+Thus $\mathcal S$ itself tracks \emph{incoming} flux, not the ratio $J_{\mathrm{in}}/J_{\mathrm{out}}$.
+\end{proposition}
+
+\begin{assumption}[Outgoing flux sets decoherence scale]
+\label{ass:Jout-decoherence}
+The stable response rate of $\mathcal L_D$ (and hence of $\mathcal L$ when arrivals are not faster than decoherence) is of order the outgoing / monitored particle scale:
+\begin{equation}
+  \gamma\sim J_{\mathrm{out}}.
+\end{equation}
+\end{assumption}
+
+\begin{remark}[Literature status of $\gamma\sim J_{\mathrm{out}}$]
+\label{rem:lit-jout}
+This scaling is standard in environmental decoherence.
+In collisional decoherence, the localization rate is proportional to the environmental particle flux times an effective cross section~\cite{joosZeh1985,gallisFleming1990,hornbergerSipe2003} (surveyed in~\cite{schlosshauer2007}).
+In emission / loss Lindblad models the same jump parameter $\gamma$ that damps coherences sets the mean outgoing particle flux~\cite{breuerPetruccione2002,gardinerZoller2004}.
+Assumption~\ref{ass:Jout-decoherence} records that shared scale; it does not assert the numerical identity ``decoherence rate $=$ particle current.''
+\end{remark}
+
+\begin{corollary}[Steady leftover scales as $J_{\mathrm{in}}/J_{\mathrm{out}}$]
+\label{cor:jin-over-jout}
+Under Theorem~\ref{thm:driven-deviation}, Proposition~\ref{prop:S-Jin}, Assumption~\ref{ass:Jout-decoherence}, and the exponential stability bound of Lemma~\ref{lem:resolvent},
+\begin{equation}
+  \norm{\delta\rho_{\mathrm{ss}}}_1
+  =\norm{\mathcal L^{-1}\mathcal S}_1
+  \lesssim\frac{M}{\gamma}\norm{\mathcal S}_1
+  \sim\frac{J_{\mathrm{in}}}{J_{\mathrm{out}}},
+\end{equation}
+and likewise $|F_H|\lesssim (M/\gamma)\norm{F}_\infty\norm{\mathcal S}_1$ scales as $J_{\mathrm{in}}/J_{\mathrm{out}}$ at fixed per-particle kick and force norm.
+\end{corollary}
+
+\begin{remark}[Lean status]
+Lean packages the resolvent scaling as \texttt{cor\_jin\_over\_jout}, with $\gamma\sim J_{\mathrm{out}}$ taken as the tagged physics hypothesis \texttt{physics\_jout\_sets\_decoherence\_scale}.
+\end{remark}
+
+\subsection{Finite-dimensional Everett toy: large-$n$ off-diagonal feed}
+\label{sec:everett-toy}
+We now specialize to a finite-dimensional Everett interpretational toy that explains why $\mathcal S$ is a \emph{coherence} / off-classical drive rather than a reshuffling of branch populations.
+
+Let $\dim\mathcal H=n<\infty$, and let $\{\ket{i}\}_{i=1}^n$ be a decoherence-selected Everett pointer basis, with
+\begin{equation}
+  \Delta_{\mathrm{cl}}\rho=\sum_{i=1}^n\ket{i}\bra{i}\rho\ket{i}\bra{i}.
+\end{equation}
+Diagonal entries are the populations of the $n$ alternatives; off-diagonal entries are coherences between them.
+Outgoing coupling to environment registers implements $\mathcal L_D$ and drives the reduced state toward the diagonal sector.
+An incoming particle is a finite ancilla prepared in $\sigma_{\mathrm{in}}$, incorporated as in Assumption~\ref{ass:unentangled-in}.
+
+\begin{assumption}[Large-$n$ diagonal protection]
+\label{ass:large-n-diag}
+In the Everett pointer basis, for large $n$, an unentangled incoming incorporation does not change the diagonal part of the system state at leading order: the information it contributes is not a $O(1)$ redistribution of branch populations.
+Equivalently, on the classical reference,
+\begin{equation}
+  \Delta_{\mathrm{cl}}\bigl(\mathcal E(\rho_0)\bigr)=\Delta_{\mathrm{cl}}\rho_0=\rho_0.
+  \label{eq:diag-protect}
+\end{equation}
+\end{assumption}
+
+\noindent\textit{Interpretation.}
+With many alternatives, a single incoming degree of freedom cannot preferentially repopulate one Everett branch over another at macroscopic order; any population shift is diluted across the pointer basis.
+The new quantum information therefore appears in the off-diagonal (coherence / correlation) sector.
+
+\noindent\textit{Toy picture (outgoing bits versus incoming entanglement).}
+In a finite-dimensional pointer / Hadamard toy, each bit of which-path information carried away by an outgoing environmental degree of freedom splits alternatives: the reduced dynamics is driven toward the classical diagonal, and interference between Everett branches is suppressed.
+An unentangled incoming degree of freedom can restore as much quantum information in magnitude, but not by selecting one branch over another.
+Schematically, a shared ancilla state $\lvert\phi\rangle$ attached symmetrically,
+\begin{equation}
+  \lvert\phi\rangle\otimes\bigl(\lvert\mathrm{branch}_1\rangle+\lvert\mathrm{branch}_2\rangle\bigr)
+  \;\longrightarrow\;
+  \lvert\phi\rangle\lvert\mathrm{branch}_1\rangle+\lvert\phi\rangle\lvert\mathrm{branch}_2\rangle,
+\end{equation}
+puts the new information into \emph{entanglement / coherence between} the branches: both alternatives ``see'' the same $\phi$, so neither pointer population is preferentially fed.
+That is precisely an off-classical drive of the kind Assumption~\ref{ass:large-n-diag} isolates, and it is the toy reason the residual source scales with incoming flux $J_{\mathrm{in}}$ while decoherence / outgoing monitoring scales with $J_{\mathrm{out}}$.
+The picture is interpretational bookkeeping for the large-$n$ toy---not a continuum QFT derivation, and not a claim that every outgoing interaction is a literal one-bit Hadamard split.
+
+\begin{theorem}[Off-classical residual source]
+\label{thm:offdiag-source}
+Under Theorem~\ref{thm:driven-deviation} and Assumption~\ref{ass:large-n-diag},
+\begin{equation}
+  \Delta_{\mathrm{cl}}\mathcal S=0.
+\end{equation}
+Hence $\mathcal S=\nu(\mathcal E(\rho_0)-\rho_0)$ is purely off-diagonal in the Everett pointer basis: an additive residual drive of off-classical structure, not a diagonal population source.
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:L-S-split} and~\eqref{eq:diag-protect},
+\[
+  \Delta_{\mathrm{cl}}\mathcal S
+  =\nu\Delta_{\mathrm{cl}}\bigl(\mathcal E(\rho_0)-\rho_0\bigr)
+  =\nu\bigl(\Delta_{\mathrm{cl}}\mathcal E(\rho_0)-\Delta_{\mathrm{cl}}\rho_0\bigr)
+  =0,
+\]
+using linearity of $\Delta_{\mathrm{cl}}$.
+\end{proof}
+
+\begin{remark}[What the toy justifies]
+\label{rem:toy-scope}
+The toy justifies the split used in~\eqref{eq:driven-dev}: decoherence / outgoing loss sits in $\mathcal L_D\subset\mathcal L$, while unentangled incoming quantum information that cannot move the large-$n$ diagonal feeds $\mathcal S$ in the off-classical sector.
+The Hadamard / shared-$\phi$ picture above is the interpretational content of that split: outgoing bits distinguish branches; incoming bits, when unentangled and non-preferential, refill inter-branch entanglement.
+Together with Sec.~\ref{sec:jin-jout}, the steady leftover then scales as $J_{\mathrm{in}}/J_{\mathrm{out}}$.
+It does not claim that every microscopic environment is exactly Poisson with product ancillas, nor that~\eqref{eq:diag-protect} holds beyond the stated large-$n$ modelling regime.
+Concrete normalizations of $\mathcal S_H$ in continuum gravity remain system-dependent.
+\end{remark}
+
 \subsection{Exact open-system response on a general Hilbert space}
 Let $\mathcal L$ generate a strongly continuous quantum dynamical semigroup on the trace class.
 Let $\rho_0$ be a stationary reference state, $\mathcal L\rho_0=0$, and write $\rho=\rho_0+\delta\rho$.
 
 \begin{assumption}[Stable trace-zero response]
+\label{ass:stable-response-subspace}
 On an invariant trace-zero subspace $\mathcal X\subset\mathcal T_1(\mathcal H)$ assume
 \begin{equation}
   \norm{e^{t\mathcal L}X}_1\le M e^{-\gamma t}\norm{X}_1,
   \qquad X\in\mathcal X,\quad M\ge 1,\quad \gamma>0,
 \end{equation}
 and let the source $\mathcal S\in\mathcal X$.
-The driven perturbation obeys $\dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S$.
+Under the unentangled-incoming construction of Theorem~\ref{thm:driven-deviation}, the driven perturbation obeys $\dot{\delta\rho}=\mathcal L\delta\rho+\mathcal S$ with $\mathcal L$ and $\mathcal S$ as in~\eqref{eq:L-S-split}; more generally the same driven equation may be taken as the linear-response modelling hypothesis on $\mathcal X$.
 \end{assumption}
 
 \begin{theorem}[Resolvent response]\label{thm:resolvent-response}
@@ -509,6 +704,46 @@ and, for any separately specified diagnostic dephasing $\Delta$,
 Exponential stability gives Bochner convergence of the integral.
 The force identities follow by linearity of the trace pairing.
 \end{proof}
+
+\begin{theorem}[Nonzero drive yields a unique stable nonzero steady leftover]
+\label{thm:stable-steady}
+Under Assumption~\ref{ass:stable-response-subspace}, consider the driven linear equation
+\begin{equation}
+  \dot{\delta\rho}=\mathcal L\,\delta\rho+\mathcal S
+  \qquad(\mathcal S\in\mathcal X).
+\end{equation}
+Then:
+\begin{enumerate}
+\item $\delta\rho_{\mathrm{ss}}:=-\mathcal L^{-1}\mathcal S$ is the unique steady state in $\mathcal X$
+  (i.e.\ the unique solution of $\mathcal L\,\delta\rho+\mathcal S=0$).
+\item Writing $\delta\rho(t)=\delta\rho_{\mathrm{ss}}+\varepsilon(t)$, one has $\dot\varepsilon=\mathcal L\varepsilon$, so
+  \begin{equation}
+    \norm{\varepsilon(t)}_1\le M e^{-\gamma t}\norm{\varepsilon(0)}_1.
+  \end{equation}
+  Hence $\delta\rho_{\mathrm{ss}}$ is globally exponentially asymptotically stable on $\mathcal X$.
+\item $\delta\rho_{\mathrm{ss}}=0$ if and only if $\mathcal S=0$.
+  In particular, a nonzero residual drive $\mathcal S\neq0$ produces a unique nonzero stable steady leftover $\delta\rho_{\mathrm{ss}}\neq0$ (and therefore a candidate Hysterical force $F_H=-\Tr(F\mathcal L^{-1}\mathcal S)$ that vanishes only if the force pairing with that leftover vanishes).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1)~Existence: $\mathcal L\delta\rho_{\mathrm{ss}}+\mathcal S=-\mathcal S+\mathcal S=0$ by construction of $\mathcal L^{-1}$ on the stable subspace.
+Uniqueness: if $\mathcal L\delta_1+\mathcal S=\mathcal L\delta_2+\mathcal S=0$, then $\mathcal L(\delta_1-\delta_2)=0$.
+Exponential stability forces $\ker\mathcal L=\{0\}$ on $\mathcal X$ (a nonzero kernel vector would be a nondecaying orbit), so $\delta_1=\delta_2$.
+
+(2)~Substitute $\delta\rho=\delta\rho_{\mathrm{ss}}+\varepsilon$ into the driven equation and use (1):
+$\dot\varepsilon=\mathcal L\varepsilon$.
+The bound is Assumption~\ref{ass:stable-response-subspace}.
+
+(3)~If $\mathcal S=0$ then $\delta\rho_{\mathrm{ss}}=0$.
+Conversely, $\delta\rho_{\mathrm{ss}}=0$ means $\mathcal L^{-1}\mathcal S=0$; applying $\mathcal L$ (or using injectivity of $\mathcal L^{-1}$ on $\mathcal X$) yields $\mathcal S=0$.
+\end{proof}
+
+\begin{remark}[Drive versus state]
+\label{rem:S-not-state}
+The residual source $\mathcal S$ is the \emph{drive}, not the steady state.
+The stable steady leftover is $\delta\rho_{\mathrm{ss}}=-\mathcal L^{-1}\mathcal S$; nonzero $\mathcal S$ implies nonzero $\delta\rho_{\mathrm{ss}}$ under the standing invertibility on $\mathcal X$.
+\end{remark}
 
 \begin{remark}[Literature hypothesis: $C_0$ resolvent--Laplace identity]
 \label{rem:lit-resolvent}
@@ -567,6 +802,7 @@ $\mathcal S=\sum_a J_a S_a$ with $S_a\in\mathcal X_a$, then
 \end{theorem}
 
 \begin{corollary}[Weak channel mixing]
+\label{cor:weak-channel-mixing}
 If $\mathcal L=\mathcal L_0+V$, $\mathcal L_0$ is block diagonal, the inverses are taken on the stable response subspace, and $\norm{\mathcal L_0^{-1}V}<1$, then
 \begin{equation}
   \mathcal L^{-1}=\sum_{n=0}^\infty\bigl(-\mathcal L_0^{-1}V\bigr)^n\mathcal L_0^{-1},
@@ -577,6 +813,10 @@ with
   \le\frac{\norm{\mathcal L_0^{-1}}^2\norm{V}}{1-\norm{\mathcal L_0^{-1}V}}.
 \end{equation}
 \end{corollary}
+
+\begin{remark}[Lean status]
+Lean proves the operator Neumann series and remainder bound on a Banach space of continuous linear endomorphisms (\texttt{cor\_weak\_channel\_mixing}, \texttt{cor\_weak\_channel\_mixing\_norm\_bound}), together with the scalar majorant identity used in the estimate.
+\end{remark}
 
 \subsection{Random-phase arrivals}
 For
@@ -802,7 +1042,10 @@ When a gravitational response channel is also nondegenerate (nonzero force contr
 \end{corollary}
 
 \begin{remark}
-This is only a corollary of escaping the neutrality hypothesis---not a derivation of amplitude or macroscopic normalization.
+Corollary~\ref{cor:gravity-survival} is only escape from the neutrality hypothesis---permission, not a derivation of amplitude or macroscopic normalization.
+Under the positive-weight / monopole lower-bound hypotheses of the companion Lean specification, the same channel algebra already yields a strictly positive finite response witness; that is still a conditional lower bound, not a claim that Nature has entered the supercritical regime.
+Strict positivity of leftover force at a stable saturated fixed point is packaged later as Corollary~\ref{cor:gravity-positivity}, once the closed-loop order parameter sits on the supercritical pitchfork (or equivalent saturated end-state).
+Whether ordinary gravity ever crosses into that regime remains a physical input / deferred hypothesis, not proved here.
 \end{remark}
 
 \subsection{Ontology: response of an existing interaction}
@@ -1095,13 +1338,29 @@ The linear theorem establishes loss of stability but not the final state.  A gen
  \label{eq:pitch}
 \end{equation}
 
-\begin{proposition}[Supercritical pitchfork]
+\begin{proposition}[Supercritical pitchfork]\label{prop:pitchfork}
 For the cubic truncation of \eqref{eq:pitch}, $r<0$ has one stable fixed point $Y=0$.  For $r>0$, $Y=0$ is unstable and two stable fixed points appear:
 \begin{equation}
  \boxed{Y_\pm=\pm\sqrt{r/u}.}
 \end{equation}
 The associated potential is $V(Y)=-rY^2/2+uY^4/4$.
+In particular the positive branch $Y_+=\sqrt{r/u}$ is a linearly stable nonzero fixed point, and oddness supplies the negative twin $Y_-=-Y_+$.
 \end{proposition}
+
+\begin{corollary}[Gravitational positivity at a stable saturated node]\label{cor:gravity-positivity}
+Assume the closed-loop gravitational order parameter obeys the supercritical odd normal form of Proposition~\ref{prop:pitchfork} with $r>0$ and $u>0$, so the saturated end-state contains the stable fixed points $Y_\pm=\pm\sqrt{r/u}$.
+\textbf{Modeling assumption.} On the response sector of interest the measured leftover force is odd in the order parameter and positively aligned on the positive branch: $F_H=\kappa Y+O(Y^3)$ with $\kappa>0$ (equivalently, the positive-channel pairing of Corollary~\ref{cor:gravity-survival}'s Lean witness), so the linearization at $Y_+$ does not cancel the sign of $Y_+$.
+Then at the stable positive node,
+\begin{equation}
+ \boxed{F_H\big|_{Y=Y_+}>0,}
+\end{equation}
+while the twin node yields $F_H|_{Y=Y_-}<0$.  In particular $|F_H|$ is bounded away from zero at either saturated node.
+\end{corollary}
+\begin{remark}[What is not claimed]
+Corollary~\ref{cor:gravity-positivity} does \emph{not} assert that ordinary gravity is supercritical, that a cosmological or galactic seed drives $r$ through zero, or that $F_H(t)>0$ for all $t$ from $t=-\infty$.
+It packages only the end-state mathematics: once the system sits in the supercritical saturated regime and the positive branch (or positive-channel pairing) is selected, gravitational Hysterical leftover force is strictly positive at that stable fixed point.
+Crossing into the regime remains a physical hypothesis deferred beyond this paper.
+\end{remark}
 
 With additive noise,
 \begin{equation}
@@ -1169,6 +1428,7 @@ Gravity & positive mass-energy; no known opposite-sign ordinary mass sector & ne
 
 \begin{corollary}[Gravitational survival from failure of neutrality]\label{cor:gravity-failure}
 Gravity escapes Theorem~\ref{thm:neutrality} for ordinary positive-mass composites whenever the externally visible gravitational force fails to neutralize, so a nonzero Hysterical response is permitted and one may expect $F_H\neq0$ when a concrete nondegenerate channel supplies a nonzero measured pairing.
+Once such a channel sits in the supercritical saturated regime of Proposition~\ref{prop:pitchfork}, Corollary~\ref{cor:gravity-positivity} upgrades permission to strict positivity of $F_H$ at the stable positive node under the stated positive-alignment hypothesis.
 \end{corollary}
 
 The resulting architecture is therefore
@@ -1223,10 +1483,11 @@ The mathematical results of this paper are:
  \item the scalar instability condition $\alpha\sigma>\Gamma\gamma$ and its exact growth exponent;
  \item finite threshold time for nonzero unstable projection;
  \item stochastic excitation of an unstable mode without a preferred sign;
- \item generic pitchfork saturation (Lean); the finite-temperature $Y=\tanh(GY)$ fixed-point formula is an explicit physical realization, not a separately Lean-certified theorem.
+ \item generic pitchfork saturation with stable nonzero $\pm$ nodes (Lean); the finite-temperature $Y=\tanh(GY)$ fixed-point formula is an explicit physical realization, not a separately Lean-certified theorem;
+ \item gravitational positivity at the stable positive saturated node under positive-channel / positive-alignment hypotheses (Lean \texttt{cor\_gravity\_positivity}), without proving that gravity enters the supercritical regime.
 \end{enumerate}
 
-Interaction universality is not on this list: within the response framework it is Definition~\ref{def:univ}. The following remain physical inputs or modeling questions rather than consequences of the theorem: whether a chosen open-system representation faithfully captures a particular microscopic quantum field theory; the values and signs of its susceptibilities; the dependence of the relevant Liouvillian spectrum on density, temperature, and cosmological epoch; whether a given system actually crosses the critical surface; the nonlinear macroscopic amplitude after a particular physical instability; and the empirical claim that ordinary gravity lacks a macroscopic positive-mass neutralizing sector in the regime of interest.
+Interaction universality is not on this list: within the response framework it is Definition~\ref{def:univ}. The following remain physical inputs or modeling questions rather than consequences of the theorem: whether a chosen open-system representation faithfully captures a particular microscopic quantum field theory; the values and signs of its susceptibilities; the dependence of the relevant Liouvillian spectrum on density, temperature, and cosmological epoch; whether a given system actually crosses the critical surface (gravitational seeding / criticality); the nonlinear macroscopic amplitude after a particular physical instability beyond the normal-form packaging; and the empirical claim that ordinary gravity lacks a macroscopic positive-mass neutralizing sector in the regime of interest.
 
 
 \section{Infrared equivalence}
@@ -1357,20 +1618,22 @@ Decoherence erases coherent interference among quantum alternatives from the red
 That leftover is covariant under passive renaming of the basis once the environment's classical map transforms with everything else.
 When a whole body is force-neutral from the outside and the response stays under control, the leftover vanishes with the outside force---so electromagnetism, colour, and the weak interaction can be hysterically quiet on large scales.
 Gravity keeps a nonzero outside force for ordinary positive-mass bodies, so the Neutrality Theorem leaves a gravitational leftover in play.
-If that leftover feeds back hard enough, the quiet neutral point can tip into growth instead of decay.
+If that leftover feeds back hard enough, the quiet neutral point can tip into growth instead of decay; in the supercritical saturated end-state the odd pitchfork supplies stable nonzero nodes, and under positive-channel alignment the positive node carries strictly positive leftover force.
 For the weak-field infrared story, semiclassical and quantum-gravitational accounts share the predictions once they keep the same leftover potential.
+Subsequent galactic modelling continues that gravitational Hysterical Response into a spatial halo; it does not introduce a new force carrier.
 
-What remains for physics or further modelling includes how strong the gravitational leftover is, how the environment chooses its classical map, and whether real systems sit near a critical tipping point.
+What remains for physics or further modelling includes how strong the gravitational leftover is, how the environment chooses its classical map, and whether real systems actually enter or sit near a supercritical tipping regime.
 
 \subsection*{Lean status and literature hypotheses}
 Companion Lean specifications live under \texttt{HystericalResponse/Paper1/}, structured as the TeX section route (modules and theorem names follow the paper; the umbrella import file is the map).
 They are faithful ports of the TeX proofs at the stated algebraic / Banach abstraction; \texttt{lake build} of the companion umbrella module is the machine check.
-In particular the constructive response lemmas, neutrality inheritance, reciprocal/mode closed-loop criteria, scalar $\lambda_\pm$ signs, threshold hitting time, noise variance ODE, pitchfork linearization rates, and infrared Lipschitz/linear observable continuity are Lean-proved.
+In particular the unentangled-incoming driven-deviation and off-classical-source identities, the $J_{\mathrm{in}}/J_{\mathrm{out}}$ resolvent scaling wrapper, the unique stable steady leftover for nonzero drive (including the exponential envelope for deviations), constructive response lemmas including the weak-mixing operator Neumann series and remainder bound, neutrality inheritance, gravitational survival / positive-channel lower bounds, reciprocal/mode closed-loop criteria, scalar $\lambda_\pm$ signs, threshold hitting time, noise variance ODE, supercritical pitchfork saturation with stable $\pm$ nodes and gravitational positivity at the positive saturated node under positive alignment, and infrared Lipschitz/linear observable continuity are Lean-proved.
 The following are \emph{not} claimed as Lean-proved originals:
 \begin{itemize}
   \item the unbounded $C_0$ generator resolvent--Laplace identification of Remark~\ref{rem:lit-resolvent}~\cite{pazy1983,engelNagel2000};
+  \item collisional decoherence rates $\propto$ environmental flux~\cite{joosZeh1985,gallisFleming1990,hornbergerSipe2003} and the standard status of driven / inhomogeneous master equations~\cite{breuerPetruccione2002,gardinerZoller2004} (Remarks~\ref{rem:lit-driven}--\ref{rem:lit-jout});
   \item the Jordan-mode linear ODE stability dictionary used when reading Theorem~\ref{thm:master}'s spectral abscissa $\alpha(J)$ as asymptotic stability of $\dot y=Jy$ for a general finite-dimensional generator~\cite{perko2001} (the elementary $\alpha$ trichotomy and the reciprocal/scalar reductions are proved directly);
-  \item physical inputs such as applicability of a chosen open-system model to Nature, and the system-dependent construction of $\mathcal S_H$.
+  \item physical inputs such as applicability of a chosen open-system model to Nature, the large-$n$ diagonal-protection modelling hypothesis, the identification $\gamma\sim J_{\mathrm{out}}$, and continuum normalizations of $\mathcal S_H$.
 \end{itemize}
 
 \begin{remark}[Unrelated]
@@ -1415,6 +1678,27 @@ Environment-induced superselection rules,
 M.~Schlosshauer,
 \textit{Decoherence and the Quantum-to-Classical Transition},
 Springer, Berlin, 2007.
+
+\bibitem{joosZeh1985}
+E.~Joos and H.~D.~Zeh,
+The emergence of classical properties through interaction with the environment,
+\textit{Zeitschrift f\"ur Physik B Condensed Matter} \textbf{59} (1985) 223--243.
+
+\bibitem{gallisFleming1990}
+G.~E.~Gallis and G.~N.~Fleming,
+Environmental and spontaneous localization,
+\textit{Physical Review A} \textbf{42} (1990) 38--48.
+
+\bibitem{hornbergerSipe2003}
+K.~Hornberger and J.~E.~Sipe,
+Collisional decoherence reexamined,
+\textit{Physical Review A} \textbf{68} (2003) 012105.
+
+\bibitem{gardinerZoller2004}
+C.~W.~Gardiner and P.~Zoller,
+\textit{Quantum Noise}, 3rd~ed.,
+Springer Series in Synergetics,
+Springer, Berlin, 2004.
 
 \bibitem{perko2001}
 L.~Perko,
