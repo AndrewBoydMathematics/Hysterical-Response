@@ -24,6 +24,10 @@ The same construction applies to every interaction once it is written as $(F,\ma
 - **Gravitational positivity** — gravity need not neutralize; a stable supercritical saturated node can carry a positive leftover response.
 - **Hysterical Instability (Hysteria)** — when closed-loop gain crosses unity, an odd collective mode goes supercritical (pitchfork / branch selection).
 - **Spontaneous symmetry breaking** — a conjugation $\mathbb{Z}_2$ can break spontaneously under Hysteria, with concurrent odd portals converting the breaking into branch-conditioned asymmetries.
+- **BTFR zero point** — on the mature galactic attractor, the absolute acceleration scale is fixed by cosmological-horizon KMS memory:
+  $$
+  a_0 = \frac{H_0 c}{2\pi}.
+  $$
 
 These drafts are AI-assisted at this stage; theorems are accompanied by Lean implementations. Synopses give a proof-free skim of each technical paper. Material will be updated and eventually published in human-written form.
 
@@ -32,8 +36,8 @@ These drafts are AI-assisted at this stage; theorems are accompanied by Lean imp
 | Paper | What it is for |
 |-------|----------------|
 | **Hysterical Response** | Core open-system theory: $F_H$, neutrality, gravitational survival, and Hysteria. |
-| **Galactic Modelling** | Response halo and galactic scaling (BTFR, size–mass, oblate geometry). |
-| **BTFR Zero Point** | Cosmological-horizon memory fixing the BTFR zero point $a_0=H_0 c/2\pi$. |
+| **Galactic Modelling** | Response halo and galactic scaling (BTFR exponent, size–mass, oblate geometry); leaves $a_0$ as a coupling combination. |
+| **$a_0$ / BTFR Zero Point** | Closes that scale: cosmological-horizon memory gives $a_0=H_0 c/2\pi$ (the $2\pi$ is horizon regularity, not a MOND fit). |
 | **Milky Way Fit** | Milky Way realization / fit of the response halo. |
 | **Solar-System Null Test** | Local null test of the response against solar-system constraints. |
 | **Early-Universe Hysteria** | Early-universe specialization of Hysterical Instability (timing / growth). |
@@ -53,7 +57,7 @@ These drafts are AI-assisted at this stage; theorems are accompanied by Lean imp
 flowchart TD
   Response[ResponseTheory]
   Galactic[GalacticModelling]
-  BTFR[BTFRZeroPoint]
+  BTFR[a0BTFRZeroPoint]
   MW[MilkyWayFit]
   Solar[SolarSystemNull]
   Early[EarlyUniverseHysteria]
