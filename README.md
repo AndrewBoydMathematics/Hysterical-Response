@@ -9,7 +9,7 @@ $$
 The **hysteric response** is the off-diagonal part of a force observable under that drive:
 
 $$
-F_H = -\operatorname{Tr}\bigl(F\,\mathcal{L}^{-1}\mathcal{S}\bigr)
+F_H = -\mathrm{Tr}\bigl(F\,\mathcal{L}^{-1}\mathcal{S}\bigr)
 $$
 
 No new mediator is added: $F_H$ is a component of the response of an already-existing interaction $F$.
