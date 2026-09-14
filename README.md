@@ -1,9 +1,83 @@
-## Hysterical Repsonse
+# Hysterical Response
 
-Here are some very rough drafts of some papers detailing a "Hysterical Response" that occurs in open quantum systems, along with some studies of its effects in existing physical systems. The papers are very apologetically AI-written at this stage, but I will write human written papers once the results are stabilised. Regardless, all theorems come with a Lean implementation, to validate their correctness.
+Open quantum systems with incoming matter are driven:
 
-Right now, these results being made publicly available is more important than the neatness of presentation. 
+\[
+\dot\rho = \mathcal L\rho + \mathcal S
+\]
 
-For the more casual readers, there are synopses provided that should take you through the core findings of each paper.
+The **hysteric response** is the off-diagonal part of a force observable under that drive:
 
-These papers will be updated and corrected, and eventually published officially.
+\[
+F_H = -\operatorname{Tr}\!\bigl(F\,\mathcal L^{-1}\mathcal S\bigr)
+\]
+
+No new mediator is added: \(F_H\) is a component of the response of an already-existing interaction \(F\).
+
+## Universality
+
+The same construction applies to every interaction once it is written as \((F,\mathcal L,\mathcal S)\). There is no proliferating family of microscopic “Hysteria fields”; whether a channel is neutralized, critical, or unstable is decided by susceptibility and closed-loop dynamics.
+
+## Main results
+
+- **Neutrality Theorem** — under controlled susceptibility, ordinary neutrality of an interaction implies neutralization of its hysteric response.
+- **Gravitational positivity** — gravity need not neutralize; a stable supercritical saturated node can carry a positive leftover response.
+- **Hysterical Instability (Hysteria)** — when closed-loop gain crosses unity, an odd collective mode goes supercritical (pitchfork / branch selection).
+- **Spontaneous symmetry breaking** — a conjugation \(\mathbb Z_2\) can break spontaneously under Hysteria, with concurrent odd portals converting the breaking into branch-conditioned asymmetries.
+
+These drafts are AI-assisted at this stage; theorems are accompanied by Lean implementations. Synopses give a proof-free skim of each technical paper. Material will be updated and eventually published in human-written form.
+
+## Papers
+
+| Paper | What it is for |
+|-------|----------------|
+| **Motivation (primer)** | Conceptual setup: why an open-system response appears, without the theorem package. |
+| **Hysterical Response** | Core open-system theory: \(F_H\), neutrality, gravitational survival, and Hysteria. |
+| **Galactic Modelling** | Response halo and galactic scaling (BTFR, size–mass, oblate geometry). |
+| **Milky Way Fit** | Milky Way realization / fit of the response halo. |
+| **Solar-System Null Test** | Local null test of the response against solar-system constraints. |
+| **Early-Universe Hysteria** | Early-universe specialization of Hysterical Instability (timing / growth). |
+| **Late-Universe Acceleration** | Late-universe acceleration / attractor from hysterical response. |
+| **Z₂ Branch Asymmetry** | Master branch-asymmetry theorem and catalogue of odd channels. |
+| **Cyclic Cosmology** | Hysterical conformal cyclic cosmology and active IR crossover. |
+| **Horizon Response** | Horizon hysterical response / Hawking–Tolman package. |
+| **Nonsingular Collapse** | Nonsingular gravitational collapse via Hysteria / remnant. |
+| **EW Cooling Baryogenesis** | Cooling-universe electroweak concurrency ⇒ asymmetric baryogenesis. |
+| **Hysterical Universe** | Qualitative cycle stitching the technical companions together. |
+
+*(Two earlier specialized asymmetry companions are archived; their live content lives in **Z₂ Branch Asymmetry** and **EW Cooling Baryogenesis**.)*
+
+## Dependency chain
+
+```mermaid
+flowchart TD
+  Primer[MotivationPrimer]
+  Response[ResponseTheory]
+  Galactic[GalacticModelling]
+  MW[MilkyWayFit]
+  Solar[SolarSystemNull]
+  Early[EarlyUniverseHysteria]
+  Late[LateUniverseAcceleration]
+  Branch[Z2BranchAsymmetry]
+  CCC[CyclicCosmology]
+  Horizon[HorizonResponse]
+  Collapse[NonsingularCollapse]
+  Cooling[EWCoolingBaryogenesis]
+  Universe[HystericalUniverse]
+  Primer -.-> Response
+  Response --> Galactic
+  Galactic --> MW
+  Galactic --> Solar
+  Response --> Early
+  Response --> Late
+  Response --> Branch
+  Response --> CCC
+  Response --> Horizon
+  Response --> Collapse
+  Branch --> Cooling
+  Early --> Universe
+  Late --> Universe
+  Branch --> Universe
+  Cooling --> Universe
+  CCC --> Universe
+```
