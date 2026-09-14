@@ -31,7 +31,6 @@ These drafts are AI-assisted at this stage; theorems are accompanied by Lean imp
 
 | Paper | What it is for |
 |-------|----------------|
-| **Motivation (primer)** | Conceptual setup: why an open-system response appears, without the theorem package. |
 | **Hysterical Response** | Core open-system theory: $F_H$, neutrality, gravitational survival, and Hysteria. |
 | **Galactic Modelling** | Response halo and galactic scaling (BTFR, size–mass, oblate geometry). |
 | **BTFR Zero Point** | Cosmological-horizon memory fixing the BTFR zero point $a_0=H_0 c/2\pi$. |
@@ -52,7 +51,6 @@ These drafts are AI-assisted at this stage; theorems are accompanied by Lean imp
 
 ```mermaid
 flowchart TD
-  Primer[MotivationPrimer]
   Response[ResponseTheory]
   Galactic[GalacticModelling]
   BTFR[BTFRZeroPoint]
@@ -66,7 +64,6 @@ flowchart TD
   Collapse[NonsingularCollapse]
   Cooling[EWCoolingBaryogenesis]
   Universe[HystericalUniverse]
-  Primer -.-> Response
   Response --> Galactic
   Galactic --> BTFR
   Galactic --> MW
