@@ -83,7 +83,7 @@ Under the infrared ballistic realization and linear Poisson closure of~\cite{boy
   \qquad V_Q^{2}=CQ,
 \end{equation}
 so response-dominated circular orbits are flat.
-Mature systems on the capacity--filling attractor obey the BTFR exponent $V_Q^{4}\propto\Mb$; writing the empirical normalization as $V_Q^{4}=Ga_0\Mb$~\cite{mcgaugh2012,lelli2016} supplies the absolute scale used below.
+Mature systems on the capacity--filling attractor obey the BTFR exponent $V_Q^{4}\propto\Mb$; the absolute scale $V_Q^{4}=Ga_0\Mb$ with $a_0=H_0c/2\pi$ is the zero-point theorem of~\cite{boyd2026galactic}, used numerically below at the standard BTFR calibration~\cite{mcgaugh2012,lelli2016}.
 The first nonspherical correction for a planar axisymmetric source is an oblate quadrupole with
 \begin{equation}
   \qeff^{-2}(R)=1+\frac{s}{R^{2}}+O(R^{-4}),
@@ -203,12 +203,16 @@ At the Solar circle this yields
 
 \section{Normalization and the Solar circle}
 \label{sec:solar}
-Paper~2 derives the BTFR \emph{exponent} $v_{\mathrm{f}}^{4}\propto\Mb$ from the capacity attractor but leaves the absolute zero point in $C$, $A$, and $y_{\ast}$.
-Here we adopt the empirical BTFR scale as that zero-point input,
+Paper~2 derives the BTFR \emph{exponent} $v_{\mathrm{f}}^{4}\propto\Mb$ from the capacity attractor and the absolute zero point
+\begin{equation}
+  a_0=\frac{H_0c}{2\pi}
+\end{equation}
+from cosmological-horizon memory of the residual channel~\cite{boyd2026galactic}.
+Here we adopt that derived scale as the normalization input,
 \begin{equation}
 V_Q^4=Ga_0\Mb,
 \end{equation}
-with $a_0=1.20\times10^{-10}\,\mathrm{m\,s^{-2}}$~\cite{mcgaugh2012,lelli2016} (physical/empirical input, not a Paper~2 theorem).
+with the numerical value $a_0=1.20\times10^{-10}\,\mathrm{m\,s^{-2}}$ matching the standard BTFR calibration~\cite{mcgaugh2012,lelli2016} (equivalently $H_0c/2\pi$ for $H_0\simeq70\,\mathrm{km\,s^{-1}\,Mpc^{-1}}$).
 For the adopted baryonic mass,
 \begin{equation}
 V_Q=180.4\,\kms.
@@ -385,7 +389,7 @@ $g_{\mathrm{resp}}=CQ/r$, BTFR exponent, $\qeff$ quadrupole & Inherited theorems
 Angular mid-plane identity~\eqref{eq:angular} & Literature hypothesis (\texttt{literature\_axisym\_angular\_kernel}).\\
 $g_R=\mathcal C Q(<R)/R$ for thin axisymmetric sources & Radial algebra after that identity (Prop.~\ref{prop:axisym-radial}; Lean).\\
 $V_{\rm resp}^2=V_Q^2\mathcal T_d(R/R_d)$ & Literature cumulative kernel + proved enclosed-charge algebra.\\
-$V_Q^4=Ga_0\Mb$ & Phenomenological BTFR normalization (physical/empirical input).\\
+$V_Q^4=Ga_0\Mb$ with $a_0=H_0c/2\pi$ & Inherited zero-point theorem from~\cite{boyd2026galactic}; numerical $a_0$ from BTFR/$H_0$ calibration.\\
 Baryonic parameters, $V_b(R_0)$ & Observationally motivated inputs; not predicted.\\
 Mass-weighted multi-component $\mathcal T(R)$ & Computational realization of the production source.\\
 $V_c(R_0)=240.6\,\kms$ & Prediction conditional on baryons + BTFR normalization.\\

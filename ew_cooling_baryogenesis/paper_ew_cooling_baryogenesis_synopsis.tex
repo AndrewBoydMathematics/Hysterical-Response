@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\newcommand{\Td}{T_{\diamond}}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{\textbf{Synopsis: Asymmetric Baryogenesis from Electroweak Hysterical Instability in a Cooling Universe}\\[0.35em]
+\large A Standard Model residual mechanism at $t\sim10^{-11}\,\mathrm{s}$}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+The paper provides a mechanism for asymmetric baryogenesis: cosmological cooling
+drives the electroweak Hysterical residual through a unique criticality $\Td$;
+the concurrent epoch is exactly $\mathcal C=(T_*,\Td)$, nonempty iff $\Td>T_*$;
+a CP-odd roll yields $\eta_B\neq0$ on the selected branch at
+$t\sim10^{-11}\,\mathrm{s}$.
+No extra inequality $\Td>T_c$ is assumed.
+\end{abstract}
+
+\section{Claim}
+Asymmetric baryogenesis from the Standard Model electroweak residual under
+cooling---no new force carrier.
+
+\section{Forced cooling criticality}
+\begin{theorem}[Forced reciprocal criticality under cooling]
+For $k_X=\alpha_X T^2$, $k_Y=\alpha_Y T^2$, $g\neq0$, and
+$\Td=(g^2/(\alpha_X\alpha_Y))^{1/4}$,
+$\Delta=\alpha_X\alpha_Y T^4-g^2$ is positive for $T>\Td$, zero at $\Td$, and
+negative for $0<T<\Td$.
+High-$T$ cooling necessarily begins subcritical and crosses criticality once.
+\end{theorem}
+
+\section{Sharp concurrency}
+\begin{theorem}[Concurrent epoch]
+$T\in\mathcal C$ if and only if $T_*<T<\Td$.
+Equivalently $\mathcal C\neq\emptyset$ iff $\Td>T_*$
+(criticality before freeze-out).
+\end{theorem}
+
+\section{Baryogenesis}
+\begin{theorem}[Electroweak Hysterical baryogenesis]
+If $\Td>T_*$, a CP-odd roll through $\mathcal C=(T_*,\Td)$ with portal
+$YW\widetilde W$ yields
+\[
+\eta_B[Y_+]=-\eta_B[Y_-]\neq0.
+\]
+\end{theorem}
+Radiation-era timing with lattice edges: $t_\diamond\sim10^{-11}\,\mathrm{s}$.
+
+\section{Conclusion}
+Cooling forces unique $\Td$; concurrency is exactly $\Td>T_*$; a CP-odd roll yields
+asymmetric baryogenesis at $t\sim10^{-11}\,\mathrm{s}$.
+\[
+\text{EW residual}+T\!:\!\infty\to0
+\;\Longrightarrow\;
+\eta_B[Y_+]=-\eta_B[Y_-]\neq0
+\text{ at the electroweak epoch.}
+\]
+\end{document}

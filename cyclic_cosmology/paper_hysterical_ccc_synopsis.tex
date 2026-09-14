@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+
+\title{\textbf{Synopsis: Hysterical Conformal Cyclic Cosmology}\\[0.35em]
+\large Infrared electromagnetic criticality and an active big-bang crossover}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This is a short guide to the Hysterical Conformal Cyclic Cosmology (HCCC) paper.
+Each section says \emph{why} the claim matters, then states the result.
+Proofs and the full status table live in the full paper.
+\end{abstract}
+
+\section{Why an electromagnetic late-universe continuation}
+The late-universe gravitational response forces dilution criticality and a vacuum-like
+attractor.
+Charge conservation still forbids creating homogeneous net charge from neutrality, but
+finite-wavenumber electromagnetic response remains allowed.
+The question here is whether that infrared electromagnetic channel can drive an
+\emph{active} conformal crossover---a big-bang-like event for the next aeon---in the
+geometric spirit of Penrose's conformal cyclic cosmology, but with a dynamical phase
+transition rather than a passive identification.
+
+\section{Linear infrared instability}
+For a helical electromagnetic--response mode with physical wavenumber $q$ in de~Sitter
+freezing, the characteristic polynomial is
+\[
+p_q(\lambda)=(\lambda+\gamma)\bigl((\lambda+2H)^2+q^2\bigr)-A(\lambda+2H).
+\]
+
+\begin{theorem}[Zero-mode stationary threshold]
+$p_0(0)=0$ if and only if $A=2H\gamma$.
+\end{theorem}
+
+\begin{theorem}[Infrared-first stationary criticality]
+For positive parameters, the stationary gain decreases in $q^2$; the $q=0$ mode reaches
+the stationary threshold first.
+\end{theorem}
+
+\begin{theorem}[Infrared unstable band]
+$p_q(0)<0$ if and only if $q^2<2HA/\gamma-4H^2$.
+When $A>2H\gamma$ this is a nonempty infrared band, and $p_q(0)<0$ guarantees a positive
+real eigenvalue.
+\end{theorem}
+
+Near threshold the growth rate is maximal at $q=0$: an infrared onset, not an ultraviolet
+catastrophe.
+
+\section{Photon pump (modelling)}
+A scalar response with Maxwell kinetic function $I(h)$ yields the mode equation
+$u_k''+(k^2-I''/I)u_k=0$.
+A non-adiabatic $h$ therefore pumps finite-$k$ photons.
+Efficiency, backreaction, and saturation are open dynamical problems, not theorems.
+
+\section{Reciprocal conformal matching}
+Across a crossover with reciprocal conformal factors $\Omega_+\Omega_-=C_0$, four-dimensional
+Maxwell theory transports fixed $F_{\mu\nu}$ while densities scale as $\rho=\Omega^{-4}\hat\rho$.
+
+\begin{theorem}[Cold outgoing / hot incoming]
+Finite conformal radiation density appears cold on the outgoing side and hot on the
+incoming side; with unit reciprocity, $\rho_+/\rho_-=a_-^{8}$.
+\end{theorem}
+
+\begin{theorem}[Reciprocal de~Sitter $\to$ radiation]
+Unit reciprocity maps outgoing $a_-\sim 1/(H_-|\eta|)$ to incoming $a_+\sim H_-\eta$, hence
+$a_+\propto t_+^{1/2}$.
+\end{theorem}
+
+The hot incoming branch is the big-bang-like content of the next aeon.
+
+\section{Active versus passive CCC}
+Penrose CCC and HCCC share the conformal aeon-bridge geometry.
+CCC is passive after matter becomes irrelevant; HCCC is active: an infrared Hysterical
+electromagnetic phase transition produces the conformal radiation seed.
+Whether our observed Big Bang was such a crossover is a physical hypothesis, not a theorem.
+
+\section{What is not claimed}
+No derivation of the saturated amplitude $\hat\rho_{\mathrm{EM}}(\Sigma)$; no complete
+Einstein--Maxwell--response junction; no entropy/thermalisation proof; no observational CCC
+ring or Hawking-point claim; no claim that Nature realises HCCC.
+\end{document}

@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{literaturehypothesis}[theorem]{Literature Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\FH}{F_H}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{\textbf{Synopsis: Horizon Hysterical Response}\\[0.35em]
+\large Analytic agreement with Hawking radiation and Tolman temperature}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+Short guide to the horizon-response paper: HRT agrees analytically with Hawking and
+Tolman under the membrane/open-system embedding; Hawking and Tolman each touched that
+response from complementary sides.
+\end{abstract}
+
+\section{Claim}
+Hysterical Response is the residual open-system response
+$\FH=-\Tr(F\mathcal L^{-1}\mathcal S)$ of an already-existing interaction.
+At a nonextremal horizon, with the exterior packaged as a dissipative membrane,
+\begin{equation}
+\text{HRT horizon response}
+\;+\;
+\text{embedding and horizon regularity}
+\quad\Longrightarrow\quad
+\text{Hawking asymptotics and Tolman }T_{\mathrm{loc}}.
+\end{equation}
+
+\section{Hawking agreement}
+\begin{literaturehypothesis}[Euclidean period]
+Regularity fixes $\beta_H=2\pi/\kappa$.
+\end{literaturehypothesis}
+
+\begin{theorem}[Hawking temperature]
+$T_H=\kappa/(2\pi)$; Schwarzschild gives $T_H=1/(8\pi M)$.
+\end{theorem}
+
+\begin{theorem}[Hawking occupation]
+Detailed balance at $\beta_H$ yields $n_\omega=1/(e^{\beta_H\omega}-1)$ and the
+greybody-filtered asymptotic flux.
+\end{theorem}
+
+\begin{theorem}[Effective-method agreement with Hawking]
+Under the membrane/open-system embedding and horizon KMS/FDR, the HRT calculation
+agrees analytically with Hawking's asymptotic thermal prediction: same $T_H$, Planck
+factor, and greybodies.
+\end{theorem}
+
+\section{Tolman agreement}
+\begin{theorem}[Tolman local temperature]
+For static observers at $r>2M$ with $T_\infty=T_H$,
+$T_{\mathrm{loc}}(r)=T_H/\sqrt{1-2M/r}$.
+\end{theorem}
+
+\begin{theorem}[Effective-method agreement with Tolman]
+The same static-Killing scale continued by Tolman's law agrees with HRT's exterior
+thermal profile.
+\end{theorem}
+
+No static Tolman temperature exists for $r<2M$.
+
+\section{Why they touched HRT}
+Hawking computed the fluctuation branch at a causal dissipative boundary.
+Tolman computed the static equilibrium profile of that thermal scale.
+HRT joins both; the Euclidean period remains shared geometric input.
+
+\section{Evaporation}
+\begin{theorem}[Integrated mass loss]
+$\dot M=-C/M^2$ integrates to $M^3=M_0^3-3Ct$.
+\end{theorem}
+
+\end{document}

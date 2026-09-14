@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem,caption}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{\textbf{Synopsis: Spontaneous $\mathbb Z_2$ Symmetry Breaking via Hysterical Instability}\\[0.35em]
+\large Master theorem and a catalogue of odd channels}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+The paper proves a channel-agnostic branch-asymmetry theorem and catalogues
+interesting $\mathbb Z_2$ portals.
+It does not claim Hysterical causation for any observed asymmetry.
+Weak parity as a branch-selected remnant of a symmetric parent Lagrangian is
+speculation only.
+\end{abstract}
+
+\section{Master theorem}
+If a supercritical odd Hysterical mode $Y$ couples through an odd neutral portal
+to an activity kernel $K\ge0$, and washout-weighted transport $\Phi$ is odd and
+strictly positive on nontrivial nonnegative sources, then on opposite histories
+\[
+\eta[Y_+]=-\eta[Y_-]\neq0
+\]
+whenever overlap ($K>0$ and $\dot Y\neq0$ concurrently) holds.
+The $W\widetilde W$ and $R\widetilde R$ channels are named instances of this theorem.
+
+\section{Catalogue}
+A five-column ledger lists symmetries with odd coordinate, neutral portal,
+early-universe activity, and whether Nature shows a broken yield.
+Highlights: strong CP and dark $\mathbb Z_2$ have portals without broken yields;
+baryon/CP do show broken yields; weak parity is already chiral in the SM
+Lagrangian.
+
+\section{Weak-parity speculation}
+Optionally, a left--right / mirror-symmetric parent Lagrangian could be reduced
+to the observed chiral SM by Hysterical selection of one hand.
+That is an interpretive gloss, not a theorem.
+
+\section{Conclusion}
+\[
+\text{odd supercritical }Y
+\xrightarrow{\text{portal + overlap}}
+\eta[Y_+]=-\eta[Y_-]\neq0.
+\]
+\end{document}

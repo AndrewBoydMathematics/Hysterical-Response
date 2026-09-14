@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\definecolor{navy}{HTML}{17365D}
+\definecolor{rust}{HTML}{9E3D22}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=navy,citecolor=navy}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Hysterical electromagnetic response}
+\rhead{Working note}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlist{nosep,leftmargin=*}
+% Runtime-safe fallback: use Computer Modern Roman for rare TS1 glyph requests.
+\DeclareFontFamily{TS1}{cmr}{}
+\DeclareFontShape{TS1}{cmr}{m}{n}{<->cmr10}{}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dd}{\mathrm{d}}
+
+\title{\textbf{Infrared Electromagnetic Criticality and a Conformal Crossover}\\[4pt]
+\large Experiments, analytic findings, and formalisation targets}
+\author{Working note prepared from the preceding investigation}
+\date{14 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study a minimal linear electromagnetic--response model in an asymptotically de Sitter background, its nonlinear gauge-invariant completion, and a reciprocal conformal matching between consecutive aeons.  The linear characteristic polynomial is obtained exactly.  Under positive parameters, loss of stability through a zero eigenvalue occurs first at zero physical wavenumber, and the unstable band is infrared.  A scalar-dependent Maxwell kinetic function can subsequently amplify finite-wavenumber photons.  Four-dimensional Maxwell theory transports regular conformal field data across a conformal boundary, while reciprocal scale factors map an outgoing de Sitter asymptotic law to an incoming radiation-era scale-factor law.  We distinguish algebraic consequences from dynamical assumptions: the construction does not yet derive the nonlinear saturation amplitude, the conformal-factor normalization, entropy production, or a complete semiclassical crossover.
+\end{abstract}
+
+\section{Status of the claims}
+
+The calculations support a conditional mechanism, not a completed cosmological theory.  It is useful to separate three levels:
+\begin{center}
+\begin{tabular}{@{}p{0.19\linewidth}p{0.72\linewidth}@{}}
+\toprule
+\textbf{Status} & \textbf{Statement}\\
+\midrule
+Derived & The characteristic polynomial, the stationary threshold, monotonic decrease of the stationary gain with $q^2$, the infrared unstable band, and reciprocal scale-factor asymptotics.\\
+Model-dependent & A scalar response $h$ with $I(h)^2F^2$ coupling can pump electromagnetic modes; oscillations can yield Hill/Mathieu resonance.\\
+Open & Whether the instability reaches the required conformal radiation amplitude, whether backreaction thermalises, and whether a regular solution of the gravitational matching problem fixes the reciprocal normalization.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Linear electromagnetic experiment}
+
+For one helical Fourier mode with physical wavenumber $q=k/a$ and helicity $s\in\{-1,+1\}$, consider
+\begin{align}
+ \dot E&=-2HE+s qB+\alpha h,\\
+ \dot B&=-2HB-s qE,\\
+ \dot h&=\sigma E-\gamma h.
+\end{align}
+Here $H>0$ is treated as constant, $gamma>0$ is the response relaxation rate, and only the product $A:=\alpha\sigma$ enters the spectrum.  The Jacobian is
+\[
+J=\begin{pmatrix}-2H&sq&\alpha\\-sq&-2H&0\\\sigma&0&-\gamma\end{pmatrix}.
+\]
+Direct expansion of $\det(\lambda I-J)$ gives
+\begin{equation}\label{eq:char}
+ p_q(\lambda)=(\lambda+\gamma)\bigl((\lambda+2H)^2+q^2\bigr)-A(\lambda+2H).
+\end{equation}
+The helicity cancels, so both helicities have the same spectrum.
+
+At a stationary crossing, $\lambda=0$.  Equation~\eqref{eq:char} yields
+\begin{equation}\label{eq:threshold}
+ A=\gamma\left(2H+\frac{q^2}{2H}\right).
+\end{equation}
+Define the stationary gain
+\[
+G_{\rm EM}(q)=\frac{A}{\gamma(2H+q^2/(2H))}.
+\]
+For $A,H,\gamma>0$,
+\[
+\frac{\partial G_{\rm EM}}{\partial(q^2)}
+=-\frac{A}{2H\gamma\bigl(2H+q^2/(2H)\bigr)^2}<0.
+\]
+Thus the stationary threshold is reached first at $q=0$.  Equivalently,
+\[
+\gamma_c(q)=\frac{2HA}{4H^2+q^2},\qquad
+\gamma_c(q)\leq \gamma_c(0)=\frac{A}{2H}.
+\]
+
+When $A>2H\gamma$, the value $p_q(0)$ is negative precisely for
+\begin{equation}\label{eq:band}
+0\leq q^2<q_c^2,
+\qquad q_c^2=\frac{2HA}{\gamma}-4H^2.
+\end{equation}
+Since $p_q(\lambda)\to+\infty$ as $\lambda\to+\infty$, $p_q(0)<0$ guarantees a positive real root.  Hence~\eqref{eq:band} is a rigorous sufficient instability test and, for a zero-mode stationary crossing, gives the exact infrared band.
+
+\paragraph{Qualification.}
+The zero-eigenvalue test alone does not exclude an earlier Hopf crossing for arbitrary parameters.  Applying the cubic Routh--Hurwitz criterion to~\eqref{eq:char} is required for a global ``first instability'' theorem along any specified parameter path.  The IR-first conclusion proved here concerns the stationary branch and the common experiment in which $\gamma$ decreases through the zero-mode threshold.
+
+\section{Near-threshold growth}
+
+Write $A=2H\gamma(1+\epsilon)$ with $0<\epsilon\ll1$.  Taylor expansion of $p_q(\lambda)=0$ around $(\lambda,q^2,\epsilon)=(0,0,0)$ gives
+\[
+\lambda(q)=\frac{4H^2\gamma\epsilon-\gamma q^2}
+{4H^2+4H\gamma-A}+O(\epsilon^2,\epsilon q^2,q^4).
+\]
+Replacing the denominator by its critical value gives
+\begin{equation}
+\lambda(q)\simeq\frac{\gamma}{2H(2H+\gamma)}(4H^2\epsilon-q^2).
+\end{equation}
+The leading unstable band is $q<2H\sqrt\epsilon$, and the maximum occurs at $q=0$.  This is an infrared onset rather than an ultraviolet catastrophe.
+
+\section{Nonlinear gauge-invariant completion}
+
+A minimal covariant completion uses a scalar response and a field-dependent Maxwell kinetic function,
+\begin{equation}
+S=\int \dd^4x\sqrt{-g}\left[-\frac12(\nabla h)^2-V(h)-\frac14 I(h)^2F_{\mu\nu}F^{\mu\nu}\right].
+\end{equation}
+For example, a post-critical Landau potential
+\[
+V(h)=-\frac12\mu^2h^2+\frac{\lambda_h}{4}h^4,
+\qquad \mu^2,\lambda_h>0,
+\]
+saturates at $|h_\star|=\mu/\sqrt{\lambda_h}$ in the absence of strong backreaction.
+
+In conformal FLRW coordinates and Coulomb gauge, a transverse Fourier mode with canonical variable $u_k=I A_k$ obeys
+\begin{equation}\label{eq:pump}
+u_k''+\left(k^2-\frac{I''}{I}\right)u_k=0.
+\end{equation}
+Consequently, a non-adiabatic homogeneous response is a pump.  A sufficient interval-wise condition for tachyonic growth is $I''/I>k^2$.  If $h$ oscillates about its minimum, the periodic part of $I''/I$ produces a Hill equation and may generate parametric resonance.  This provides a concrete channel from an infrared response instability to finite-$k$ photon occupation.
+
+This is not a proof of reheating.  Efficiency depends on the profile of $I(h)$, expansion, rescattering, strong-coupling constraints, and backreaction.  The electromagnetic energy must be computed self-consistently with the $h$ equation.
+
+\section{Conformal matching experiment}
+
+Let a regular ``bridge'' metric $\hat g$ describe a neighbourhood of the crossover $\Sigma$, and write
+\[
+g^-_{\mu\nu}=\Omega_-^2\hat g_{\mu\nu},\qquad
+g^+_{\mu\nu}=\Omega_+^2\hat g_{\mu\nu}.
+\]
+Assume $\Omega_-\to\infty$, $\Omega_+\to0$, and impose the reciprocal ansatz
+\begin{equation}\label{eq:reciprocal}
+\Omega_+\Omega_-=C_0,\qquad C_0>0.
+\end{equation}
+In four spacetime dimensions, source-free Maxwell equations are conformally invariant when the two-form $F_{\mu\nu}$ is held fixed.  The covariant stress tensor and measured density scale as
+\[
+T_{\mu\nu}=\Omega^{-2}\hat T_{\mu\nu},
+\qquad \rho=\Omega^{-4}\hat\rho.
+\]
+Thus finite nonzero conformal data $\hat\rho$ appear cold on the outgoing side and hot on the incoming side:
+\[
+\rho_-\to0,\qquad \rho_+\to\infty.
+\]
+This is a statement about the relation between two physical metrics and common conformal data; it must not be interpreted as ordinary energy amplification within one metric.
+
+For a spatially flat outgoing de Sitter asymptotic,
+\[
+a_-(\eta)=\frac{1}{H_-|\eta|}+o(|\eta|^{-1}),\qquad \eta\to0^-,
+\]
+unit reciprocity gives, after identifying positive conformal time on the incoming side,
+\[
+a_+(\eta)=\frac{1}{a_-(-\eta)}=H_-\eta+o(\eta).
+\]
+Since $\dd t_+=a_+\dd\eta$, this implies
+\[
+a_+(t_+)\propto t_+^{1/2},
+\]
+the radiation-era FLRW exponent.
+
+\paragraph{Normalization caveat.}
+Reciprocity alone fixes an asymptotic form only up to normalization.  If one additionally assumes a flat radiation-dominated Friedmann equation and writes $a_+=C\eta$, then
+\[
+\hat\rho_\gamma=\frac{3C^2}{8\pi G}.
+\]
+Setting $C=H_-$ by a chosen unit reciprocity gives $\hat\rho_\gamma=3H_-^2/(8\pi G)$.  This equality is therefore a consistency condition involving the conformal gauge and Einstein dynamics, not an independently derived prediction of Maxwell conformal invariance.
+
+\section{What has and has not been closed}
+
+The calculation establishes a coherent conditional chain:
+\begin{align*}
+\text{IR stationary instability}&\longrightarrow h(t)
+\longrightarrow I(h)\text{ pump}\longrightarrow\text{photon production},\\
+&\longrightarrow\text{regular conformal Maxwell data}
+\longrightarrow a_+(t)\propto t^{1/2}.
+\end{align*}
+The remaining make-or-break tasks are:
+\begin{enumerate}
+\item derive the nonlinear saturation value $\hat\rho_{\rm EM}(\Sigma)$ rather than prescribe it;
+\item solve the coupled $h$--Maxwell--Einstein system including backreaction;
+\item specify a regular conformal-factor equation and junction conditions;
+\item demonstrate entropy production and an approximately thermal, isotropic state;
+\item test strong coupling and quantum consistency of $I(h)$ near the crossover.
+\end{enumerate}
+
+\section{Lean formalisation scope}
+
+The accompanying Lean file formalises the algebraic core over $\R$:
+\begin{itemize}
+\item evaluation of the characteristic polynomial at zero;
+\item equivalence of the zero-mode threshold and $A=2H\gamma$;
+\item monotonicity of the stationary critical relaxation rate in $q^2$;
+\item equivalence between the sign test $p_q(0)<0$ and the infrared-band inequality;
+\item reciprocal scale-factor and density-scaling identities;
+\item the cosmic-time exponent obtained from $a=C\eta$.
+\end{itemize}
+It intentionally does not formalise spectral continuity, PDE existence, quantum particle production, or gravitational junction regularity.
+
+\section*{Conclusion}
+
+The strongest defensible result is conditional but sharp: a minimal positive-parameter electromagnetic response has an infrared stationary instability; a scalar kinetic coupling supplies a gauge-invariant route to finite-wavenumber photons; and reciprocal conformal matching maps outgoing de Sitter scale-factor asymptotics to the radiation-era power law.  The central unresolved quantity is the dynamically selected conformal radiation amplitude.  Until it is derived in the fully coupled theory, the proposal is a mathematically structured mechanism rather than a completed cyclic cosmology.
+
+\end{document}

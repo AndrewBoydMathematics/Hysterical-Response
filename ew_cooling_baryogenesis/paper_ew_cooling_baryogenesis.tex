@@ -1,0 +1,461 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{model}[theorem]{Modeling Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Td}{T_{\diamond}}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{\textbf{Asymmetric Baryogenesis from Electroweak Hysterical Instability in a Cooling Universe}\\[0.35em]
+\large A Standard Model residual mechanism with analytic concurrency at $t\sim10^{-11}\,\mathrm{s}$}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+This paper supplies a concrete mechanism for asymmetric baryogenesis in the early
+Universe from the Hysterical residual of the Standard Model electroweak
+interaction---not from a new force carrier.
+Cosmological cooling $T:\infty\to0$ through Debye reciprocal stiffnesses with
+fixed nonzero off-diagonal feedback forces a unique criticality temperature
+$\Td$: the neutral electroweak residual is subcritical for all $T>\Td$ and
+supercritical for all $0<T<\Td$.
+The same Higgs condensate that shuts off sphalerons defines freeze-out $T_*$
+relative to the Debye criticality $\Td$: the concurrent epoch is nonempty if and
+only if criticality precedes freeze-out ($\Td>T_*$), with no further inequality
+assumed.
+A CP-odd roll through that epoch, coupled by $YW\widetilde W$ to electroweak
+topology, produces opposite nonzero baryon yields on the two Hysterical branches:
+$\eta_B[Y_+]=-\eta_B[Y_-]\neq0$.
+That is spontaneous, branch-conditioned asymmetric baryogenesis at the
+electroweak epoch.
+Lattice GeV edges convert the concurrent temperatures into a radiation-era clock
+$t_\diamond\sim10^{-11}\,\mathrm{s}$, in agreement with the standard electroweak
+baryogenesis window.
+The observed magnitude $\eta_B\sim10^{-10}$ is not computed here; the mechanism
+and its analytic concurrency are.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and status}
+\label{sec:scope}
+\paragraph{Claim.}
+We provide a mechanism for asymmetric baryogenesis in the early Universe:
+the Hysterical (off-diagonal) residual of electroweak dynamics, driven supercritical
+by cosmological cooling, concurrently with active Standard Model $B{+}L$
+violation, selects a broken CP-odd branch and sources a nonzero baryon asymmetry
+of definite sign on that branch.
+
+\paragraph{Ontology.}
+The response-theory paper defines the stationary Hysterical response of an
+interaction force observable $F$ by
+\begin{equation}
+\label{eq:FH}
+\boxed{F_H=-\Tr\!\left(F\mathcal L^{-1}\mathcal S\right)}
+\end{equation}
+whenever the inverse is defined on the relevant stable response
+subspace~\cite{boyd2026response}.
+No new force carrier is introduced: $F_H$ is a component of the response of $F$
+itself.
+The electroweak interaction therefore already carries the residual whose
+instability we use.
+In the reciprocal Hessian of the baryon-asymmetry companion, the coupling $g$ is
+that off-diagonal feedback, and the partner coordinate is the electroweak
+condensate / plasma amplitude (this paper).
+
+\paragraph{Mechanism chain.}
+\begin{equation}
+\label{eq:target}
+\boxed{\begin{gathered}
+\text{SM EW residual (Debye reciprocal class)}\\
++\ T:\infty\to0\text{ cosmological cooling}\\
+\Longrightarrow\quad
+\text{unique }\Td,\ \text{high-$T$ subcritical;}\\
+\mathcal C=(T_*,\Td)\neq\emptyset\ \Longleftrightarrow\ \Td>T_*;\\
+\text{CP-odd roll on }\mathcal C+YW\widetilde W\text{ portal}\\
+\Longrightarrow\quad
+\text{asymmetric baryogenesis: }
+\eta_B[Y_+]=-\eta_B[Y_-]\neq0
+\text{ at }t\sim10^{-11}\,\mathrm{s}.
+\end{gathered}}
+\end{equation}
+
+\paragraph{Open phenomenology, not withheld mechanism.}
+What remains open is quantitative: unique SM values of $(\alpha_X,\alpha_Y,g)$ and
+the precise magnitude $\eta_B\sim10^{-10}$.
+Lattice GeV edges of $(T_*,T_c)$ are Standard Model inputs used for the cosmic
+clock, not outputs of Hysterical Response.
+None of that retracts the mechanism: cooling forces criticality; the concurrent
+epoch is characterized exactly by $\Td>T_*$; the portal and branch theorems force
+a nonzero baryon asymmetry on the selected history whenever that epoch is
+nonempty and a CP-odd roll occupies it.
+Late-universe dilution criticality at some gravitational scale factor $a_c$ is a
+different channel~\cite{boyd2026late}; the present paper is the electroweak
+baryogenesis mechanism.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\bfseries}p{0.28\linewidth}p{0.64\linewidth}@{}}
+\toprule
+Item & Status\\
+\midrule
+Mechanism: EW Hysterical cooling $\Rightarrow$ asymmetric baryogenesis & \textbf{Claimed} (this paper).\\
+Forced unique $\Td$ under Debye cooling & Theorem~\ref{thm:cooling} (Lean).\\
+Concurrent epoch $\mathcal C=(T_*,\Td)$; nonempty iff $\Td>T_*$ & Theorem~\ref{thm:overlap} (Lean).\\
+Branch $\eta_B\neq0$ from concurrent roll & Theorem~\ref{thm:ew-asym}.\\
+$t_\diamond\sim10^{-11}\,\mathrm{s}$ matches EW epoch & Sec.~\ref{sec:time}.\\
+Lattice GeV edges & SM literature input~\cite{DOnofrio2014}.\\
+Unique $(\alpha_X,\alpha_Y,g)$ / observed $|\eta_B|$ & Open phenomenology.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Inherited electroweak residual}
+\label{sec:inherited}
+The baryon-asymmetry companion isolates the two-mode reciprocal quadratic form
+\begin{equation}
+\label{eq:F2}
+F_2(X,Y)=\tfrac12 k_X X^2+\tfrac12 k_Y Y^2-gXY,
+\end{equation}
+with Hessian determinant $\Delta=k_Xk_Y-g^2$, and proves that the neutral point is
+subcritical, critical, or supercritical according as $\Delta$ is positive, zero,
+or negative~\cite{boyd2026branch}.
+The coupling $g$ is the off-diagonal feedback of the electroweak residual; $Y$ is
+taken CP-odd and $X$ a CP-even weak-plasma / Higgs-radial partner.
+Nonzero response does not by itself imply instability: that separation remains in
+force~\cite{boyd2026branch}.
+
+\begin{model}[Debye reciprocal stiffnesses under cooling]
+\label{model:debye}
+On a homogeneous thermal background take
+\begin{equation}
+\label{eq:stiff}
+\boxed{
+k_X(T)=\alpha_X T^2,
+\qquad
+k_Y(T)=\alpha_Y T^2,
+\qquad
+g=\mathrm{const}\neq0,
+}
+\end{equation}
+with $\alpha_X,\alpha_Y>0$.
+Write
+\begin{equation}
+\label{eq:Delta}
+\Delta(T):=k_X(T)k_Y(T)-g^2=\alpha_X\alpha_Y T^4-g^2.
+\end{equation}
+(The optional Higgs restabilization term $\beta_Y m_W(T)^2$
+is deferred to Corollary~\ref{cor:restabilize}.)
+\end{model}
+
+Equation~\eqref{eq:stiff} packages Debye-like plasma stiffnesses of the
+\emph{same} electroweak sector whose topology supplies $B{+}L$ violation.
+Cooling is driven by cosmological expansion: we assume a continuous strictly
+decreasing temperature history with
+\begin{equation}
+\label{eq:cooling}
+\lim_{t\to t_{\mathrm{hot}}}T(t)=\infty,
+\qquad
+\lim_{t\to t_{\mathrm{cold}}}T(t)=0
+\end{equation}
+on an interval of cosmic time (physical input: radiation-era FLRW thermal history).
+
+\section{Forced cooling criticality}
+\label{sec:cooling}
+\begin{theorem}[Forced reciprocal criticality under cooling]
+\label{thm:cooling}
+Fix $\alpha_X,\alpha_Y>0$ and $g\neq0$ in Model~\ref{model:debye}.
+Define
+\begin{equation}
+\label{eq:Td}
+\boxed{\Td:=\left(\frac{g^2}{\alpha_X\alpha_Y}\right)^{1/4}>0.}
+\end{equation}
+Then:
+\begin{enumerate}[label=(\roman*)]
+\item $\Delta(\Td)=0$ (critical);
+\item $\Delta(T)>0$ (subcritical) for all $T>\Td$;
+\item $\Delta(T)<0$ (supercritical) for all $0<T<\Td$;
+\item $\Td$ is the unique positive root of $\Delta(T)=0$.
+\end{enumerate}
+In particular, every continuous cooling history~\eqref{eq:cooling} that begins at
+sufficiently high temperature is necessarily subcritical and crosses criticality
+exactly once, at the unique temperature $\Td$.
+\end{theorem}
+
+\begin{proof}
+Substitute~\eqref{eq:Td} into~\eqref{eq:Delta}:
+$\Delta(T)=\alpha_X\alpha_Y\bigl(T^4-\Td^{\,4}\bigr)$.
+The sign of $\Delta(T)$ for $T>0$ is the sign of $T-\Td$, and $\Delta(\Td)=0$.
+Uniqueness of the positive root is immediate from strict monotonicity of
+$T\mapsto T^4$ on $(0,\infty)$.
+\end{proof}
+
+\begin{remark}[Converse to open-coefficient placement]
+\label{rem:converse}
+For every target temperature in an open interval one can
+\emph{choose} $g$ to place Debye criticality there (dual of Theorem~\ref{thm:cooling};
+Lean: open-placement package).
+Theorem~\ref{thm:cooling} is the converse direction: for any fixed nonzero
+off-diagonal coupling, cooling from infinity \emph{forces} a unique crossing.
+\end{remark}
+
+\begin{corollary}[Optional Higgs restabilization]
+\label{cor:restabilize}
+If one restores $k_Y(T)=\alpha_Y T^2+\beta_Y m_W(T)^2$ with $\beta_Y>0$ and a
+mean-field $m_W$ that vanishes above a condensate scale $T_c$ and grows below it,
+then $\Delta$ may return through zero at some $T_{\mathrm{re}}<\Td$.
+Existence of such a bounded supercritical band is an open condition on
+$(\alpha_X,\alpha_Y,\beta_Y,g)$ (Lean: Higgs-restabilization witness).
+Above $T_c$ the extra term vanishes, so Theorem~\ref{thm:cooling} continues to
+control the symmetric-phase crossing.
+\end{corollary}
+
+\section{Condensate-coupled activity and analytic overlap}
+\label{sec:window}
+Electroweak topology and the Hysterical residual belong to the same interaction.
+The Higgs condensate scale that defines the electroweak crossover is therefore
+\emph{not} an external bolt-on to the reciprocal Hessian: it is the same thermal
+order parameter that (i)~truncates Debye stiffnesses above the crossover and
+(ii)~raises the sphaleron barrier below it.
+
+\begin{assumption}[Shared condensate scale]
+\label{ass:condensate}
+There is a crossover temperature $T_c>0$ such that the electroweak condensate
+(and hence $m_W$) vanishes for all $T\ge T_c$ and is nonzero for $T<T_c$.
+There is a freeze-out temperature $0<T_*<T_c$ below which the sphaleron rate
+falls below the Hubble expansion.
+Standard Model electroweak topology is active for every $T>T_*$; in particular
+it is active throughout the symmetric phase $T\ge T_c$~\cite{DOnofrio2014}.
+\end{assumption}
+
+Assumption~\ref{ass:condensate} is Standard Model thermal dynamics.
+It does \emph{not} insert the lattice GeV numbers; those appear only in
+Sec.~\ref{sec:time} for a numerical clock.
+
+\begin{definition}[Concurrent residual--topology set]
+\label{def:concurrent}
+Under Model~\ref{model:debye} and Assumption~\ref{ass:condensate}, write
+\begin{equation}
+\label{eq:concurrent}
+\mathcal C:=\bigl\{T>0:\ \Delta(T)<0\ \text{and}\ T>T_*\bigr\}.
+\end{equation}
+Elements of $\mathcal C$ are temperatures at which the electroweak residual is
+linearly supercritical while electroweak topology is still active.
+\end{definition}
+
+\begin{theorem}[Concurrent epoch: sharp characterization]
+\label{thm:overlap}
+Assume Model~\ref{model:debye} and Assumption~\ref{ass:condensate}, and let
+$\Td$ be as in Theorem~\ref{thm:cooling}.
+Then for every $T>0$,
+\begin{equation}
+\label{eq:C-iff}
+\boxed{T\in\mathcal C\quad\Longleftrightarrow\quad T_*<T<\Td.}
+\end{equation}
+Equivalently $\mathcal C=(T_*,\Td)$ as an open interval (empty if $\Td\le T_*$).
+In particular
+\begin{equation}
+\label{eq:nonempty}
+\boxed{\mathcal C\neq\emptyset\quad\Longleftrightarrow\quad\Td>T_*.}
+\end{equation}
+No independent inequality on $(\alpha_X,\alpha_Y,g)$ is assumed: nonempty
+concurrency is exactly the statement that Debye criticality precedes sphaleron
+freeze-out.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:cooling}, for $T>0$ one has $\Delta(T)<0$ if and only if
+$T<\Td$.
+By Assumption~\ref{ass:condensate}, topological activity holds if and only if
+$T>T_*$.
+Intersecting these conditions yields~\eqref{eq:C-iff}, and taking the interval
+nonempty yields~\eqref{eq:nonempty}.
+\end{proof}
+
+\begin{remark}[Symmetric-phase special case]
+\label{rem:symmetric}
+If in addition $\Td>T_c$, then $(T_c,\Td)\subseteq\mathcal C$ and concurrency
+occupies the whole remaining symmetric phase above the crossover.
+That is a special case of~\eqref{eq:nonempty}, not an extra hypothesis required
+for the mechanism.
+\end{remark}
+
+\begin{corollary}[Criticality before freeze-out]
+\label{cor:open-half}
+For fixed $\alpha_X,\alpha_Y>0$ and $T_*>0$, one has $\Td>T_*$ if and only if
+$|g|>\sqrt{\alpha_X\alpha_Y}\,T_*^{2}$.
+\end{corollary}
+
+\section{Asymmetric baryogenesis from the concurrent epoch}
+\label{sec:asymmetry}
+Whenever $\Td>T_*$, Theorem~\ref{thm:overlap} supplies a nonempty concurrent
+interval $(T_*,\Td)$---the arena in which baryogenesis occurs.
+A physically realized CP-odd electroweak residual $Y$ couples to electroweak
+topology by
+\begin{equation}
+\label{eq:portal}
+\mathcal L_{\rm int}=\frac{c_H}{f_H}\,Y\,W^a_{\mu\nu}\widetilde W^{a\mu\nu},
+\qquad \frac{c_H}{f_H}\neq0,
+\end{equation}
+as in the portal construction~\cite{boyd2026branch,Domcke2020}.
+A rolling history induces a Chern--Simons chemical potential proportional to
+$\dot Y$; detailed balance biases topological rates; the anomaly converts that
+bias into a baryon source odd in $Y$.
+Spontaneous selection of a supercritical branch $Y_\pm$ therefore produces a
+baryon excess of definite sign on that history---asymmetric baryogenesis, with
+the opposite sign on the opposite branch.
+
+\begin{theorem}[Electroweak Hysterical baryogenesis]
+\label{thm:ew-asym}
+Assume Model~\ref{model:debye}, Assumption~\ref{ass:condensate}, the
+portal~\eqref{eq:portal}, and $\Td>T_*$ (equivalently $\mathcal C\neq\emptyset$).
+Let $Y_\pm$ be opposite CP-odd histories whose washout-weighted source has
+nonzero support on $\mathcal C=(T_*,\Td)$, on a common even thermal background
+with $\eta_B(t_i)=0$.
+Then
+\begin{equation}
+\label{eq:eta}
+\boxed{\eta_B[Y_+]=-\eta_B[Y_-]\neq0.}
+\end{equation}
+This is the baryogenesis mechanism of the present paper: cooling-driven
+electroweak residual instability concurrent with active SM $B{+}L$ violation,
+converted by~\eqref{eq:portal} into a branch-conditioned baryon
+asymmetry~\cite{boyd2026branch}.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:overlap} gives $\mathcal C=(T_*,\Td)\neq\emptyset$.
+A roll with nonzero overlap against topology on that epoch is the concurrency
+package for the $W\widetilde W$ instance of the
+master branch-asymmetry theorem~\cite{boyd2026branch}.
+Those theorems supply~\eqref{eq:eta}.
+\end{proof}
+
+No preferred global sign is required in the underlying equations: labelling of
+$Y_+$ versus $Y_-$ is arbitrary~\cite{boyd2026branch}.
+Our Universe realizes one branch; the mechanism explains why that branch carries
+$\eta_B\neq0$.
+
+\section{Cosmic time of the mechanism}
+\label{sec:time}
+The concurrent temperatures are already fixed by Theorem~\ref{thm:overlap} once
+$\Td>T_*$.
+Inserting Standard Model lattice edges converts them into a cosmic clock and
+places the mechanism in the standard electroweak baryogenesis window.
+
+\begin{assumption}[Radiation-era temperature--time law]
+\label{ass:radiation}
+In a radiation-dominated FLRW universe with approximately constant effective
+relativistic degrees of freedom $g_*$,
+\begin{equation}
+\label{eq:Tt}
+\boxed{t\simeq\frac{2.42}{\sqrt{g_*}}\,\left(\frac{\mathrm{MeV}}{T}\right)^{\!2}\,\mathrm{s}}
+\end{equation}
+\cite{KolbTurner1990}.
+\end{assumption}
+
+\begin{assumption}[Lattice electroweak edges]
+\label{ass:lattice}
+On the lattice~\cite{DOnofrio2014},
+\begin{equation}
+\label{eq:lattice}
+T_c\simeq159.5\,\mathrm{GeV},
+\qquad
+T_*\simeq131.7\,\mathrm{GeV}.
+\end{equation}
+\end{assumption}
+
+\begin{corollary}[Baryogenesis at $t\sim10^{-11}\,\mathrm{s}$]
+\label{cor:tdiamond}
+Under Assumptions~\ref{ass:radiation}--\ref{ass:lattice} and $\Td>T_*$, the
+mechanism of Theorem~\ref{thm:ew-asym} operates on $\mathcal C=(T_*,\Td)$ at
+electroweak temperatures, hence at
+\begin{equation}
+\label{eq:tdiamond}
+\boxed{t_\diamond:=t(\Td)\sim10^{-11}\,\mathrm{s}}
+\end{equation}
+whenever $\Td$ is within a few factors of the electroweak scale.
+Explicitly, with $g_*\sim\mathcal O(10^2)$ and
+$T\sim150\,\mathrm{GeV}=1.5\times10^5\,\mathrm{MeV}$,
+\[
+t\sim\frac{2.42}{10}\,\bigl(1.5\times10^5\bigr)^{-2}\,\mathrm{s}
+\sim10^{-11}\,\mathrm{s}.
+\]
+This matches the standard cosmic age of the electroweak epoch
+($\sim10\,\mathrm{ps}$), as required for an electroweak-scale baryogenesis
+mechanism.
+\end{corollary}
+
+\section{Logical status of the results}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.50\linewidth}@{}}
+\toprule
+\textbf{Quantity / claim} & \textbf{Status}\\
+\midrule
+Asymmetric baryogenesis mechanism (EW Hysterical cooling) & \textbf{Claimed.}\\
+$F_H$ residual of the electroweak interaction & Definitional~\cite{boyd2026response}.\\
+Forced unique $\Td$ under Debye cooling & Theorem~\ref{thm:cooling} (Lean).\\
+Higgs restabilization band & Corollary~\ref{cor:restabilize}.\\
+Shared condensate; activity for $T>T_*$ & Assumption~\ref{ass:condensate} (SM).\\
+$\mathcal C=(T_*,\Td)$; nonempty iff $\Td>T_*$ & Theorem~\ref{thm:overlap} (Lean).\\
+$\Td>T_*\Leftrightarrow|g|>\sqrt{\alpha_X\alpha_Y}\,T_*^{2}$ & Corollary~\ref{cor:open-half}.\\
+Branch $\eta_B\neq0$ (baryogenesis on the selected history) & Theorem~\ref{thm:ew-asym}.\\
+$t_\diamond\sim10^{-11}\,\mathrm{s}$ in the EW window & Corollary~\ref{cor:tdiamond}.\\
+Lattice GeV edges & SM literature~\cite{DOnofrio2014}.\\
+Extra inequality $\Td>T_c$ & Not required (Remark~\ref{rem:symmetric}).\\
+Unique SM $(\alpha_X,\alpha_Y,g)$ & Open phenomenology.\\
+Observed magnitude $|\eta_B|\sim10^{-10}$ & Open phenomenology.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+\label{sec:conclusion}
+Asymmetric baryogenesis in the early Universe is realized here as a property of
+the Standard Model electroweak interaction under cosmological cooling.
+The electroweak Hysterical residual---off-diagonal feedback in the response of
+that same force---is forced through a unique criticality $\Td$ as $T:\infty\to0$.
+Sharing the SM freeze-out scale $T_*$ with the Debye Hessian gives the sharp
+concurrency law $\mathcal C=(T_*,\Td)\neq\emptyset$ if and only if $\Td>T_*$:
+criticality before freeze-out, with no further inequality assumed.
+A CP-odd roll through that epoch sources
+\begin{equation}
+\eta_B[Y_+]=-\eta_B[Y_-]\neq0
+\end{equation}
+at $t_\diamond\sim10^{-11}\,\mathrm{s}$, the standard electroweak cosmic time.
+
+What remains for phenomenology is the magnitude of $\eta_B$ and the precise
+microscopic values of the Debye coefficients---not the existence of the mechanism,
+nor an ad hoc placement of $\Td$ above $T_c$.
+
+\bibliographystyle{plain}
+\bibliography{paper_refs}
+\end{document}

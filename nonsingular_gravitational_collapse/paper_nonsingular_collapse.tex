@@ -1,0 +1,408 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem,caption}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{model}[theorem]{Modeling Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\GM}{GM}
+\newcommand{\FH}{F_H}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{\textbf{Nonsingular Gravitational Collapse via Hysterical Instability}\\[0.35em]
+\large Hysterical Response Theory proves a stable finite-radius remnant}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+Classical spherical collapse reaches a central singularity~\cite{OppenheimerSnyder1939},
+and singularity theorems convert trapped surfaces into incompleteness under energy
+conditions~\cite{Penrose1965}.
+Hysterical Response Theory (HRT) identifies the Hysterical force as the residual /
+off-classical response of \emph{ordinary gravity} itself,
+$\FH=-\Tr(F\mathcal L^{-1}\mathcal S)$, not a new carrier~\cite{boyd2026response}.
+Gravity escapes Hysterical neutrality, and closed-loop response becomes unstable when
+the gain crosses unity.
+Here we apply that package to spherical collapse after horizon formation.
+The single geometric input is causal failure of residual shell cancellation across the
+horizon: the gravitational response left in the vacated exterior remains attractive
+toward that wake, hence outward relative to the collapsing surface.
+Identifying the wake acceleration with the radial HRT response, and invoking
+HRT criticality under increasing curvature, yields an outward $H(R)$ that dominates
+Newtonian self-gravity near $R=0$.
+The reduced radial dynamics then admit a finite-radius steady remnant that is linearly
+asymptotically stable under positive damping.
+Thus HRT proves nonsingular spherical collapse in the reduced radial model: collapse
+ends at $R_\ast>0$ rather than $R=0$.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and status}
+\label{sec:scope}
+The response-theory paper defines Hysterical Response as the residual component of an
+already-existing interaction under open-system dynamics~\cite{boyd2026response}:
+\begin{equation}
+\label{eq:FH}
+\boxed{\FH:=-\Tr\!\bigl(F\,\mathcal L^{-1}\mathcal S\bigr).}
+\end{equation}
+No new force is added: $\FH$ is a component of the response of the underlying force
+observable $F$.
+For gravity, the Hysterical Neutrality Theorem does not force $\FH\to0$ (gravitational
+survival), and the Neutrality--Instability Theorem supplies a supercritical phase when
+the closed-loop gain crosses unity.
+
+The present paper's claim is correspondingly strong:
+\begin{equation}
+\label{eq:claim}
+\boxed{\begin{gathered}
+\text{Hysterical Response Theory}
+\;+\;
+\text{spherical symmetry}
+\;+\;
+\text{horizon residual-cancellation failure}\\
+\Longrightarrow\quad
+\text{nonsingular spherical collapse (stable finite-radius remnant).}
+\end{gathered}}
+\end{equation}
+Classical singularity theorems are not contradicted as pure GR statements; the dynamical
+law for the gravitational residual after horizon formation is different once HRT is
+included.
+
+Four logical layers must be kept separate.
+\begin{center}
+\begin{tabular}{@{}>{\bfseries}p{0.28\linewidth}p{0.64\linewidth}@{}}
+\toprule
+Prior HRT theorem & $\FH$ definition; gravitational survival; neutrality--instability
+(cited from~\cite{boyd2026response}).\\
+Physical input & Horizon causes causal failure of residual shell cancellation.\\
+Modeling assumption & Spherical reduction to areal radius $R(t)$; linear radial damping.\\
+Theorem (this paper) & Wake identification; remnant existence/stability; nonsingular
+collapse packaging.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Inherited Hysterical Response Theory}
+\label{sec:hrt}
+We work throughout in the gravitational channel of~\cite{boyd2026response}.
+
+\begin{definition}[Gravitational Hysterical acceleration]
+\label{def:gH}
+Let $F$ be the gravitational force observable of the underlying Newtonian/GR-reduced
+channel, $\mathcal L$ the stable open-system generator, and $\mathcal S$ an admissible
+response source.
+The Hysterical force is~\eqref{eq:FH}.
+For a test mass $m_t$ at areal radius $R$, write
+\begin{equation}
+\label{eq:gH}
+\mathbf g_H(R):=\frac{1}{m_t}\FH(R)
+\end{equation}
+for the corresponding acceleration (continuum packaging $\mathbf g_H=-\nabla\Phi_H$ as
+in~\cite{boyd2026response}).
+\end{definition}
+
+\begin{proposition}[Gravitational survival; prior]
+\label{prop:survival}
+Ordinary positive-mass gravity is not response-visibly neutralized, so the Neutrality
+Theorem does not force $\FH\to0$~\cite{boyd2026response}.
+A nonzero gravitational Hysterical leftover is permitted.
+\end{proposition}
+
+\begin{proposition}[Hysterical instability; prior]
+\label{prop:instab}
+Under the closed-loop response hypotheses of~\cite{boyd2026response}, if the spectral
+abscissa of the linearized gain Jacobian is positive (equivalently, reciprocal gain
+exceeds unity), the neutral/controlled phase is linearly unstable.
+In particular a closing Liouvillian gap $\gamma_0\to0^+$ with positive residue produces
+a divergent Hysterical susceptibility and drives the channel through criticality.
+\end{proposition}
+
+\begin{remark}[Off-diagonal means residual]
+\label{rem:offdiag}
+``Off-diagonal'' / off-classical language in~\cite{boyd2026response} is pointer-relative:
+$\FH$ is the residual response of ordinary gravity, not a separate interaction.
+\end{remark}
+
+\section{Horizon residual cancellation and the wake}
+\label{sec:wake}
+Classical spherical gravity obeys the shell theorem: exterior shells cancel for an
+interior observer, and only interior mass sources $g(r)$~\cite{boyd2026response}.
+The Hysterical residual is history-dependent and off-classical, so that cancellation is
+an organizational property of the response, not an automatic identity once the matter
+that maintained it has departed.
+
+\begin{assumption}[Horizon residual-cancellation failure]
+\label{ass:horizon}
+Consider spherically symmetric matter of mass $M>0$ with areal radius $R(t)>0$.
+After the matter crosses an event horizon, residual mutual cancellation among
+gravitational shells fails causally for the Hysterical response channel:
+the interior can no longer reorganize the exterior residual that was left in the region
+previously occupied by the matter.
+\end{assumption}
+
+\begin{theorem}[Outward Hysterical wake]
+\label{thm:wake}
+Assume Definition~\ref{def:gH}, Proposition~\ref{prop:survival}, and
+Assumption~\ref{ass:horizon}.
+Let $\mathbf g_H^{\mathrm{wake}}$ be the gravitational Hysterical acceleration sourced by
+the residual response remaining in the vacated exterior region.
+Then, on the collapsing surface,
+\begin{enumerate}
+\item $\mathbf g_H^{\mathrm{wake}}$ is nonzero;
+\item $\mathbf g_H^{\mathrm{wake}}$ is attractive toward the exterior wake;
+\item relative to the outward normal of the collapsing sphere, the radial component
+\begin{equation}
+\label{eq:Hdef}
+H(R):=\hat r\cdot\mathbf g_H^{\mathrm{wake}}(R)
+\end{equation}
+is a strictly positive outward acceleration.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Assumption~\ref{ass:horizon} the exterior residual is not cancelled by the
+causally disconnected interior, so gravitational survival (Proposition~\ref{prop:survival})
+applies to a nonzero leftover pairing: $\mathbf g_H^{\mathrm{wake}}\neq0$.
+Attraction toward the wake is the sign of the underlying gravitational channel
+(positive-mass residual response of ordinary gravity).
+The wake lies outside the collapsing surface, so attraction toward it is radially
+outward: $H(R)>0$.
+\end{proof}
+
+\begin{assumption}[Criticality under increasing curvature]
+\label{ass:crit}
+During continued collapse, increasing curvature drives the gravitational Hysterical
+channel through the unstable phase of Proposition~\ref{prop:instab} (closing gap /
+gain crossing unity).
+Consequently the wake acceleration $H$ strengthens as $R$ decreases, and there exist
+radii $0<R_{\mathrm{in}}<R_{\mathrm{out}}$ such that
+\begin{equation}
+\label{eq:sign}
+H(R_{\mathrm{out}})<\frac{\GM}{R_{\mathrm{out}}^{2}}
+\qquad\text{and}\qquad
+H(R_{\mathrm{in}})>\frac{\GM}{R_{\mathrm{in}}^{2}},
+\end{equation}
+with $H$ continuous on $(0,\infty)$ and differentiable at equilibria used below.
+\end{assumption}
+
+\begin{remark}[What Ass.~\ref{ass:crit} uses from HRT]
+\label{rem:crit}
+The instability mechanism is Theorem material from~\cite{boyd2026response}.
+That curvature supplies the concrete gap-closing for spherical collapse is the modeling
+link stated in Assumption~\ref{ass:crit}.
+\end{remark}
+
+\section{Reduced radial dynamics}
+\label{sec:radial}
+\begin{model}[Spherical radial reduction]
+\label{mod:radial}
+Under spherical symmetry the surface dynamics reduce to the areal radius $R(t)>0$.
+Net outward acceleration is
+\begin{equation}
+\label{eq:F}
+F(R)\;:=\;H(R)-\frac{\GM}{R^{2}},
+\end{equation}
+with $H$ from Theorem~\ref{thm:wake} and $\GM/R^{2}$ the ordinary inward Newtonian
+self-gravity.
+The reduced radial dynamics are
+\begin{equation}
+\label{eq:ode}
+\ddot R \;=\; F(R)\;-\;\gamma\,\dot R,
+\end{equation}
+with damping $\gamma\ge 0$ from dissipative open-system relaxation in the radial channel.
+\end{model}
+
+\begin{remark}[ODE status]
+\label{rem:ode}
+Equation~\eqref{eq:ode} is the spherical reduction of Newtonian self-gravity plus the
+HRT wake acceleration of Theorem~\ref{thm:wake}, with linear damping.
+It is not an independent force law: $H$ is gravitational $\FH$.
+\end{remark}
+
+\section{Existence of a remnant equilibrium}
+\label{sec:existence}
+\begin{lemma}[Intermediate-value zero]
+\label{lem:ivt}
+Let $a<b$ be positive reals and let $f:[a,b]\to\R$ be continuous.
+If $f(a)>0$ and $f(b)<0$, then there exists $c\in(a,b)$ with $f(c)=0$.
+\end{lemma}
+
+\begin{proof}
+Apply the intermediate value theorem to $f$ on $[a,b]$.
+\end{proof}
+
+\begin{theorem}[Existence of a finite-radius remnant]
+\label{thm:existence}
+Assume Theorem~\ref{thm:wake}, Assumption~\ref{ass:crit}, and Modeling
+Assumption~\ref{mod:radial}.
+Then there exists $R_\ast\in(R_{\mathrm{in}},R_{\mathrm{out}})$ such that
+\begin{equation}
+\label{eq:balance}
+H(R_\ast)=\frac{\GM}{R_\ast^{2}},
+\end{equation}
+equivalently $F(R_\ast)=0$, and $R(t)\equiv R_\ast$ is a steady solution of~\eqref{eq:ode}.
+\end{theorem}
+
+\begin{proof}
+By~\eqref{eq:sign}, $F(R_{\mathrm{in}})>0$ and $F(R_{\mathrm{out}})<0$ with $F$ continuous
+on $[R_{\mathrm{in}},R_{\mathrm{out}}]$.
+Lemma~\ref{lem:ivt} yields $R_\ast$ with $F(R_\ast)=0$.
+\end{proof}
+
+\section{Linear stability and dissipative attraction}
+\label{sec:stability}
+Linearising~\eqref{eq:ode} about $R_\ast$ gives
+\begin{equation}
+\label{eq:lin}
+\delta\ddot R \;=\; F'(R_\ast)\,\delta R\;-\;\gamma\,\delta\dot R.
+\end{equation}
+
+\begin{lemma}[Restoring slope]
+\label{lem:slope}
+If $H'(R_\ast)<-2\GM/R_\ast^{3}$, then $F'(R_\ast)<0$.
+\end{lemma}
+
+\begin{proof}
+$F'(R)=H'(R)+2\GM/R^{3}$.
+\end{proof}
+
+\begin{proposition}[Undamped restoring oscillation]
+\label{prop:undamped}
+If $\gamma=0$ and $F'(R_\ast)<0$, the linearisation is neutrally oscillatory with
+frequency $\omega=\sqrt{-F'(R_\ast)}$.
+\end{proposition}
+
+\begin{theorem}[Damped attraction]
+\label{thm:damped}
+If $F'(R_\ast)<0$ and $\gamma>0$, every linear solution of~\eqref{eq:lin} decays to
+zero as $t\to\infty$: all complex characteristic roots have negative real part, and the
+standard underdamped, critically damped, and overdamped solution forms tend to zero.
+\end{theorem}
+
+\begin{proof}
+Set $\kappa:=-F'(R_\ast)>0$.
+The characteristic polynomial is $\lambda^{2}+\gamma\lambda+\kappa$.
+Writing $z=x+iy$, the imaginary part forces $y(2x+\gamma)=0$; hence either a real root,
+necessarily negative because sum $-\gamma<0$ and product $\kappa>0$, or
+$x=-\gamma/2<0$.
+Decay of the three standard real solution forms follows by elementary estimates
+(envelope $e^{-(\gamma/2)t}$, or $e^{r t}$ with $r<0$).
+\end{proof}
+
+\begin{corollary}[No focusing to the origin in the linear basin]
+\label{cor:nofocus}
+Under Theorems~\ref{thm:existence} and~\ref{thm:damped}, linearised trajectories satisfy
+$\delta R(t)\to0$, hence $R(t)\to R_\ast>0$.
+\end{corollary}
+
+\section{Nonsingular Gravitational Collapse Theorem}
+\label{sec:main}
+\begin{theorem}[Stable Hysterical Remnant]
+\label{thm:remnant}
+Under Theorem~\ref{thm:wake}, Assumption~\ref{ass:crit}, and Modeling
+Assumption~\ref{mod:radial}:
+\begin{enumerate}
+\item there exists $R_\ast>0$ with $H(R_\ast)=\GM/R_\ast^{2}$;
+\item if $H'(R_\ast)<-2\GM/R_\ast^{3}$ and $\gamma>0$, the remnant is asymptotically
+stable for the linearised damped dynamics.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Combine Theorems~\ref{thm:existence},~\ref{lem:slope}, and~\ref{thm:damped}.
+\end{proof}
+
+\begin{theorem}[Nonsingular Gravitational Collapse]
+\label{thm:nonsingular}
+Assume spherical symmetry, the gravitational HRT package of
+Section~\ref{sec:hrt}~\cite{boyd2026response}, Assumption~\ref{ass:horizon},
+Assumption~\ref{ass:crit}, Modeling Assumption~\ref{mod:radial}, the restoring slope
+$H'(R_\ast)<-2\GM/R_\ast^{3}$, and $\gamma>0$.
+Then spherical collapse does not terminate at a central shell-focusing singularity:
+the reduced radial dynamics admit a stable finite-radius remnant $R_\ast>0$ to which
+nearby linearised trajectories converge.
+In that precise sense, Hysterical Response Theory proves nonsingular gravitational
+collapse.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:wake} supplies the outward HRT wake $H$.
+Assumption~\ref{ass:crit} supplies the sign change~\eqref{eq:sign}.
+Theorem~\ref{thm:remnant} then yields the stable remnant, and
+Corollary~\ref{cor:nofocus} excludes linearised focusing to $R=0$.
+\end{proof}
+
+\begin{remark}[Scope of ``proves'']
+\label{rem:proves}
+The theorem is a necessity result inside HRT plus the stated geometric and reduction
+hypotheses.
+It does not claim a full Einstein--HRT PDE derivation of every coefficient, nor an
+observational census of remnants.
+The load-bearing physical input is Assumption~\ref{ass:horizon}; the instability engine
+and the identification $H=\hat r\cdot\mathbf g_H$ are HRT.
+\end{remark}
+
+\section{Logical status of the results}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.48\linewidth}p{0.44\linewidth}@{}}
+\toprule
+\textbf{Quantity / claim} & \textbf{Status}\\
+\midrule
+$\FH=-\Tr(F\mathcal L^{-1}\mathcal S)$; off-classical residual & Prior HRT~\cite{boyd2026response}.\\
+Gravitational survival; neutrality--instability & Prior HRT (Props.~\ref{prop:survival},~\ref{prop:instab}).\\
+Horizon residual-cancellation failure & Physical input (Ass.~\ref{ass:horizon}).\\
+Outward wake $H=\hat r\cdot\mathbf g_H^{\mathrm{wake}}$ & Theorem~\ref{thm:wake} (Lean).\\
+Curvature $\Rightarrow$ critical wake dominance & Ass.~\ref{ass:crit} (HRT mechanism + collapse link).\\
+Spherical radial ODE~\eqref{eq:ode} & Modeling Assumption~\ref{mod:radial}.\\
+Remnant existence / damped stability & Theorems~\ref{thm:existence},~\ref{thm:damped} (Lean).\\
+No-focus linear basin (all standard modes) & Corollary~\ref{cor:nofocus} (Lean).\\
+Stable Hysterical Remnant & Theorem~\ref{thm:remnant} (Lean).\\
+Nonsingular Gravitational Collapse & Theorem~\ref{thm:nonsingular} (Lean).\\
+Full 4D Einstein--HRT PDE & Not claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+\label{sec:conclusion}
+Hysterical Response is the residual response of ordinary gravity.
+After horizon formation, residual shell cancellation fails causally, leaving an exterior
+gravitational wake whose HRT acceleration on the collapsing surface is outward.
+HRT criticality under increasing curvature makes that wake dominate Newtonian
+self-gravity near the classical singular limit.
+The spherical radial reduction then necessarily admits a stable finite-radius remnant.
+
+Thus, under the stated geometric and reduction hypotheses, Hysterical Response Theory
+proves nonsingular spherical collapse: the endpoint is $R_\ast>0$, not $R=0$.
+
+\bibliographystyle{plain}
+\bibliography{paper_refs}
+\end{document}

@@ -1,0 +1,540 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem,caption}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{model}[theorem]{Modeling Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{\textbf{Hysterical Conformal Cyclic Cosmology}\\[0.35em]
+\large Infrared electromagnetic criticality and an active big-bang crossover}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+The late-universe gravitational response of this series forces dilution-driven criticality
+and a vacuum-like attractor.
+Here we isolate a companion late-time channel: infrared electromagnetic response in an
+asymptotically de~Sitter background.
+A minimal helical three-mode linearisation has an exact characteristic polynomial; under
+positive parameters the stationary instability is infrared-first and occupies a finite band
+of physical wavenumber.
+A gauge-invariant scalar--Maxwell kinetic completion then supplies a pump for finite-$k$
+photons.
+Reciprocal conformal matching across a crossover surface maps outgoing de~Sitter scale-factor
+asymptotics to an incoming radiation-era law $a\propto t^{1/2}$, while regular conformal
+Maxwell data appear cold on the outgoing side and hot on the incoming side.
+We call the resulting picture \emph{Hysterical Conformal Cyclic Cosmology} (HCCC):
+geometrically akin to Penrose's conformal cyclic cosmology, but driven by an
+\emph{active} electromagnetic phase transition rather than a passive conformal
+identification.
+That crossover is the big-bang-like event of the next aeon.
+We separate algebraic theorems from modelling closures and from open dynamical questions
+(saturation amplitude, junction regularity, thermalisation).
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and status}
+\label{sec:scope}
+The response-theory paper isolates the Hysterical Response as a residual of an
+already-existing interaction under exponentially stable reduced dynamics~\cite{boyd2026response}.
+The late-universe continuation shows that homogeneous dilution of a conserved density,
+together with a relaxation gap vanishing as a positive power of that density, forces a
+unique criticality scale and a positive vacuum-like attractor~\cite{boyd2026late}.
+That same late-universe paper records a sharp electromagnetic caveat: exact charge
+conservation forbids generating a homogeneous net charge from $Q=0$, while finite-wavenumber
+electromagnetic segregation remains allowed.
+
+The present paper develops that electromagnetic window into a cosmological mechanism.
+In deep late-time de~Sitter, an infrared electromagnetic response channel can become
+supercritical.
+The resulting phase transition pumps conformal radiation data and, under a reciprocal
+conformal matching hypothesis of Penrose--Tod type~\cite{Penrose2006,Penrose2010,Tod2003},
+supplies the initial radiation content of a subsequent aeon.
+The claim is interpretive but sharp:
+\begin{equation}
+\label{eq:claim}
+\boxed{\begin{gathered}
+\text{IR EM Hysterical criticality}
+\;+\;
+\text{photon pump}
+\;+\;
+\text{reciprocal conformal matching}\\
+\Longrightarrow\quad
+\text{active big-bang-like crossover to a new aeon.}
+\end{gathered}}
+\end{equation}
+We call this package Hysterical Conformal Cyclic Cosmology (HCCC).
+It is deliberately compared with Penrose's conformal cyclic cosmology
+(CCC)~\cite{Penrose2006,Penrose2010,Penrose2013CCC}: both identify the remote future of one
+aeon with the Big Bang of the next through conformal geometry.
+The distinguishing thesis is dynamical.
+Standard CCC is \emph{passive}: after massive degrees of freedom become irrelevant, conformal
+invariance licenses a smooth identification across the crossover~\cite{Penrose2010,Tod2003}.
+HCCC is \emph{active}: a Hysterical infrared electromagnetic instability drives a phase
+transition that produces the conformal radiation data of the next aeon.
+
+Four logical layers must be kept separate.
+\begin{center}
+\begin{tabular}{@{}>{\bfseries}p{0.24\linewidth}p{0.68\linewidth}@{}}
+\toprule
+Theorem & Algebraic or elementary-analytic consequence of the stated hypotheses.\\
+Modelling assumption & Scalar--Maxwell kinetic completion; reciprocal conformal ansatz; FLRW asymptotics.\\
+Physical input / literature & Expanding late-time de~Sitter; 4D Maxwell conformal invariance; CCC geometry.\\
+Not claimed & Derivation of the saturation amplitude; full Einstein--Maxwell--response junction;
+entropy production; observational CCC rings/Hawking points; proof that Nature realises HCCC.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Inherited late-universe setting}
+\label{sec:inherited}
+We work on a spatially flat FLRW background with scale factor $a(t)$ and Hubble rate
+$H=\dot a/a>0$.
+In the late-universe gravitational channel of~\cite{boyd2026late}, dilution forces a unique
+criticality scale $a_c$ under a density-vanishing gap law, after which a pitchfork attractor
+yields a positive asymptotic density with $w\to-1$ from below.
+That package is inherited here only as background motivation: once a vacuum-like term
+dominates, the outgoing geometry is asymptotically de~Sitter,
+\begin{equation}
+\label{eq:dS}
+a_-(\eta)=\frac{1}{H_-|\eta|}+o(|\eta|^{-1}),
+\qquad \eta\to 0^-,
+\end{equation}
+in conformal time $\eta$ with constant $H_->0$.
+We do not re-prove eventual gravitational criticality.
+
+The electromagnetic distinction of~\cite{boyd2026late} remains in force.
+Exact charge conservation still forbids a homogeneous net-charge instability from $Q=0$.
+The mechanism below is therefore a field / finite-wavenumber electromagnetic response, not
+creation of cosmic net charge.
+
+\section{Linear infrared electromagnetic instability}
+\label{sec:linear}
+For one helical Fourier mode with physical wavenumber $q=k/a$ and helicity
+$s\in\{-1,+1\}$, consider the three-variable linear response model
+\begin{align}
+\label{eq:linEM}
+\dot E &= -2HE + s q B + \alpha h,\\
+\dot B &= -2HB - s q E,\\
+\dot h &= \sigma E - \gamma h.
+\end{align}
+Here $H>0$ is treated as locally constant (de~Sitter freezing), $\gamma>0$ is the response
+relaxation rate, and only the product $A:=\alpha\sigma$ enters the spectrum.
+The Jacobian is
+\begin{equation}
+\label{eq:J}
+J=\begin{pmatrix}-2H&sq&\alpha\\-sq&-2H&0\\\sigma&0&-\gamma\end{pmatrix}.
+\end{equation}
+
+\begin{proposition}[Characteristic polynomial]
+\label{prop:char}
+The characteristic polynomial of~\eqref{eq:J} is independent of helicity and equals
+\begin{equation}
+\label{eq:char}
+p_q(\lambda)=(\lambda+\gamma)\bigl((\lambda+2H)^2+q^2\bigr)-A(\lambda+2H).
+\end{equation}
+In particular,
+\begin{equation}
+\label{eq:char0}
+p_q(0)=\gamma(4H^2+q^2)-2HA.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Direct expansion of $\det(\lambda I-J)$; the helicity terms cancel in the characteristic
+polynomial.
+Evaluating at $\lambda=0$ gives~\eqref{eq:char0}.
+\end{proof}
+
+\begin{theorem}[Zero-mode stationary threshold]
+\label{thm:zero-mode}
+Assume $H\neq0$.
+Then
+\begin{equation}
+\label{eq:threshold}
+p_0(0)=0\quad\Longleftrightarrow\quad A=2H\gamma.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $q=0$ in~\eqref{eq:char0}.
+\end{proof}
+
+Define the stationary electromagnetic gain
+\begin{equation}
+\label{eq:GEM}
+G_{\mathrm{EM}}(q)=\frac{A}{\gamma\bigl(2H+q^2/(2H)\bigr)}
+\end{equation}
+and the stationary critical relaxation rate
+\begin{equation}
+\label{eq:gammac}
+\gamma_c(q)=\frac{2HA}{4H^2+q^2}.
+\end{equation}
+
+\begin{theorem}[Infrared-first stationary criticality]
+\label{thm:IR-first}
+Assume $A,H,\gamma>0$.
+Then $G_{\mathrm{EM}}(q)$ is strictly decreasing in $q^2$, and
+\begin{equation}
+\gamma_c(q^2)\le\gamma_c(0)=\frac{A}{2H},
+\end{equation}
+with equality only at $q=0$.
+Equivalently, among stationary zero-eigenvalue crossings, the $q=0$ mode reaches criticality
+first as $\gamma$ decreases (or $A$ increases).
+\end{theorem}
+
+\begin{proof}
+Differentiating~\eqref{eq:GEM} in $q^2$ yields a strictly negative quantity for positive
+parameters.
+The comparison for $\gamma_c$ is immediate from~\eqref{eq:gammac} since the denominator is
+minimised at $q=0$.
+\end{proof}
+
+\begin{theorem}[Infrared unstable band]
+\label{thm:band}
+Assume $H,\gamma>0$.
+Then
+\begin{equation}
+\label{eq:band}
+p_q(0)<0
+\quad\Longleftrightarrow\quad
+q^2<\frac{2HA}{\gamma}-4H^2.
+\end{equation}
+In particular, if $A>2H\gamma$, the set of $q$ with $p_q(0)<0$ is a nonempty open infrared band
+$0\le q<q_c$ with
+\begin{equation}
+\label{eq:qc}
+q_c^2=\frac{2HA}{\gamma}-4H^2>0.
+\end{equation}
+Since $p_q(\lambda)\to+\infty$ as $\lambda\to+\infty$, the sign test $p_q(0)<0$ guarantees a
+positive real root of $p_q$.
+\end{theorem}
+
+\begin{proof}
+Rearrange~\eqref{eq:char0}.
+The limit $p_q(\lambda)\to+\infty$ as $\lambda\to+\infty$ is immediate from the cubic leading
+term, so a negative value at $\lambda=0$ forces a positive real root by the intermediate-value
+theorem.
+\end{proof}
+
+\begin{remark}[Stationary versus Hopf]
+\label{rem:hopf}
+The zero-eigenvalue test does not by itself exclude an earlier Hopf crossing for arbitrary
+parameter paths.
+Theorem~\ref{thm:IR-first} is a stationary-branch statement: along the common experiment in
+which $\gamma$ decreases through the zero-mode threshold, infrared modes go unstable first.
+A global first-instability theorem for all paths requires the cubic Routh--Hurwitz criterion
+on~\eqref{eq:char}; we do not claim that stronger result here.
+\end{remark}
+
+\section{Near-threshold growth}
+\label{sec:growth}
+Write $A=2H\gamma(1+\epsilon)$ with $0<\epsilon\ll1$.
+Taylor expansion of $p_q(\lambda)=0$ about $(\lambda,q^2,\epsilon)=(0,0,0)$ yields the leading
+dispersion
+\begin{equation}
+\label{eq:lambda}
+\lambda(q)\simeq\frac{\gamma}{2H(2H+\gamma)}\bigl(4H^2\epsilon-q^2\bigr).
+\end{equation}
+Thus the leading unstable band is $q<2H\sqrt{\epsilon}$, and the maximum growth rate occurs at
+$q=0$.
+
+\begin{proposition}[Infrared onset, algebraic form]
+\label{prop:onset}
+Under the linearised threshold parametrisation $A=2H\gamma(1+\epsilon)$ and the frozen
+denominator approximation of~\eqref{eq:lambda}, one has $\lambda(q)>0$ if and only if
+$q^2<4H^2\epsilon$, with maximal growth at $q=0$.
+\end{proposition}
+
+\begin{proof}
+Immediate from the sign of~\eqref{eq:lambda} for positive $\gamma,H$.
+\end{proof}
+
+This is an infrared onset rather than an ultraviolet catastrophe: the linear instability
+selects the longest available physical wavelengths first.
+
+\section{Nonlinear gauge-invariant completion}
+\label{sec:nonlinear}
+\begin{model}[Scalar--Maxwell kinetic completion]
+\label{mod:I}
+A minimal covariant completion uses a scalar response $h$ and a field-dependent Maxwell
+kinetic function,
+\begin{equation}
+\label{eq:action}
+S=\int\dd^4x\sqrt{-g}\left[
+-\tfrac12(\nabla h)^2-V(h)-\tfrac14 I(h)^2F_{\mu\nu}F^{\mu\nu}
+\right].
+\end{equation}
+A post-critical Landau potential
+\begin{equation}
+V(h)=-\tfrac12\mu^2 h^2+\tfrac{\lambda_h}{4}h^4,
+\qquad\mu^2,\lambda_h>0,
+\end{equation}
+saturates at $|h_\star|=\mu/\sqrt{\lambda_h}$ in the absence of strong backreaction.
+\end{model}
+
+In conformal FLRW coordinates and Coulomb gauge, a transverse Fourier mode with canonical
+variable $u_k=I A_k$ obeys
+\begin{equation}
+\label{eq:pump}
+u_k''+\Bigl(k^2-\frac{I''}{I}\Bigr)u_k=0.
+\end{equation}
+Consequently a non-adiabatic homogeneous response is an electromagnetic pump.
+A sufficient interval-wise condition for tachyonic growth is $I''/I>k^2$.
+If $h$ oscillates about its minimum, the periodic part of $I''/I$ produces a Hill equation and
+may generate parametric resonance.
+
+\begin{remark}[What the pump does not prove]
+\label{rem:pump}
+Equation~\eqref{eq:pump} identifies a concrete channel from an infrared response instability to
+finite-$k$ photon occupation.
+It does not prove reheating.
+Efficiency depends on the profile of $I(h)$, expansion, rescattering, strong-coupling
+constraints, and backreaction.
+The electromagnetic energy must be computed self-consistently with the $h$ equation and with
+Einstein dynamics.
+Those steps are modelling closures and open dynamical problems, not theorems of this paper.
+\end{remark}
+
+\section{Reciprocal conformal matching}
+\label{sec:conformal}
+Let a regular ``bridge'' metric $\hat g$ describe a neighbourhood of a spacelike crossover
+$\Sigma$, and write
+\begin{equation}
+\label{eq:conf}
+g^-_{\mu\nu}=\Omega_-^2\hat g_{\mu\nu},
+\qquad
+g^+_{\mu\nu}=\Omega_+^2\hat g_{\mu\nu}.
+\end{equation}
+Assume $\Omega_-\to\infty$ and $\Omega_+\to0$ as the crossover is approached from the outgoing
+and incoming sides respectively, and impose the reciprocal ansatz
+\begin{equation}
+\label{eq:reciprocal}
+\Omega_+\Omega_-=C_0,
+\qquad C_0>0.
+\end{equation}
+This is the geometric skeleton shared with Penrose CCC~\cite{Penrose2006,Penrose2010,Tod2003}:
+future conformal infinity of one aeon is identified with the Big Bang of the next.
+
+\begin{assumption}[Four-dimensional Maxwell conformal transport]
+\label{ass:maxwell}
+In four spacetime dimensions, source-free Maxwell equations are conformally invariant when the
+two-form $F_{\mu\nu}$ is held fixed~\cite{Wald1984}.
+The covariant stress tensor and measured density then scale as
+\begin{equation}
+\label{eq:Tscale}
+T_{\mu\nu}=\Omega^{-2}\hat T_{\mu\nu},
+\qquad
+\rho=\Omega^{-4}\hat\rho.
+\end{equation}
+\end{assumption}
+
+\begin{theorem}[Cold outgoing / hot incoming]
+\label{thm:hot-cold}
+Under Assumption~\ref{ass:maxwell} and reciprocity~\eqref{eq:reciprocal}, finite nonzero
+conformal radiation density $\hat\rho>0$ satisfies
+\begin{equation}
+\label{eq:hotcold}
+\rho_-=\Omega_-^{-4}\hat\rho\to0,
+\qquad
+\rho_+=\Omega_+^{-4}\hat\rho\to\infty
+\end{equation}
+as $\Omega_-\to\infty$ and $\Omega_+\to0$ with $\Omega_+\Omega_-=C_0$.
+Equivalently, with unit reciprocity $a_+a_-=1$ and fixed $\hat\rho\neq0$,
+\begin{equation}
+\label{eq:ratio8}
+\frac{\rho_+}{\rho_-}=a_-^{8}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The scalings~\eqref{eq:Tscale} give $\rho_\pm=\Omega_\pm^{-4}\hat\rho$.
+Reciprocity forces $\Omega_+=C_0/\Omega_-$, hence
+$\rho_+/\rho_-=(\Omega_-/\Omega_+)^4=\Omega_-^{8}/C_0^{4}$.
+In FLRW units with $a_\pm\propto\Omega_\pm$ and $C_0=1$, this is~\eqref{eq:ratio8}.
+\end{proof}
+
+\begin{remark}[Interpretation]
+\label{rem:hotcold}
+Theorem~\ref{thm:hot-cold} is a relation between two physical metrics and common conformal
+data.
+It must not be read as ordinary energy amplification inside a single metric.
+On the outgoing side the same conformal radiation looks arbitrarily cold; on the incoming side
+it looks arbitrarily hot.
+That hot incoming branch is the big-bang-like content of the next aeon.
+\end{remark}
+
+\begin{theorem}[Reciprocal de~Sitter $\to$ radiation asymptotics]
+\label{thm:radiation}
+Assume the outgoing asymptotic~\eqref{eq:dS} and unit reciprocity $a_+(\eta)=1/a_-(-\eta)$ for
+$\eta>0$ small.
+Then
+\begin{equation}
+\label{eq:aPlus}
+a_+(\eta)=H_-\eta+o(\eta).
+\end{equation}
+Writing $\dd t_+=a_+\dd\eta$ and $a_+=C\eta$ with $C=H_-$, one obtains
+\begin{equation}
+\label{eq:radiation}
+a_+^{2}=2C\,t_+,
+\end{equation}
+hence the radiation-era FLRW exponent $a_+\propto t_+^{1/2}$.
+\end{theorem}
+
+\begin{proof}
+Substitute~\eqref{eq:dS} into the reciprocal ansatz.
+With $a=C\eta$ and $t=\int a\,\dd\eta=C\eta^{2}/2$ one has $a^{2}=2Ct$ by direct algebra.
+\end{proof}
+
+\begin{proposition}[Reciprocal physical momenta]
+\label{prop:mom}
+If $a_+a_-=1$ and $a_-\neq0$, then $k/a_+=k\,a_-$ for any comoving wavenumber $k$.
+Soft outgoing physical momenta are therefore hard on the incoming side.
+\end{proposition}
+
+\begin{proof}
+Immediate from $1/a_+=a_-$.
+\end{proof}
+
+\begin{remark}[Normalization caveat]
+\label{rem:norm}
+Reciprocity alone fixes an asymptotic form only up to normalization.
+If one additionally assumes a flat radiation-dominated Friedmann equation and writes
+$a_+=C\eta$, then $\hat\rho_\gamma=3C^{2}/(8\pi G)$.
+Setting $C=H_-$ by unit reciprocity gives $\hat\rho_\gamma=3H_-^{2}/(8\pi G)$.
+That equality is a consistency condition involving conformal gauge and Einstein dynamics, not
+an independent prediction of Maxwell conformal invariance alone.
+\end{remark}
+
+\section{Active versus passive conformal cyclic cosmology}
+\label{sec:active}
+Penrose's CCC proposes an infinite succession of aeons in which the conformal infinity of one
+aeon is identified with the Big Bang of the next~\cite{Penrose2006,Penrose2010,Penrose2013CCC}.
+The geometric matching---a spacelike crossover, conformal factors diverging/vanishing, and
+transport of zero-rest-mass field data---is the shared spine of CCC and HCCC.
+
+The dynamical reading differs.
+\begin{center}
+\begin{tabular}{@{}>{\bfseries}p{0.22\linewidth}p{0.35\linewidth}p{0.35\linewidth}@{}}
+\toprule
+& Penrose CCC & HCCC (this paper)\\
+\midrule
+Geometry & Conformal aeon bridge & Same reciprocal conformal bridge\\
+Driver & Passive: massless conformal era after matter evaporates & Active: IR EM Hysterical phase transition\\
+Radiation seed & Inherited conformal data / Hawking evaporation products & Photon pump from supercritical response~\eqref{eq:pump}\\
+Big Bang of next aeon & Conformally reinterpreted future infinity & Hot incoming branch of Theorem~\ref{thm:hot-cold}\\
+Status claimed here & Literature geometry & Geometry + IR instability theorems; pump/junction open\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{definition}[Active big-bang-like crossover]
+\label{def:active-bang}
+A crossover $\Sigma$ is \emph{active big-bang-like} when:
+\begin{enumerate}
+\item an outgoing aeon approaches a de~Sitter-like conformal infinity;
+\item an instability produces nonzero conformal radiation data $\hat\rho$ on a neighbourhood of
+$\Sigma$;
+\item reciprocal conformal matching maps those data to an incoming radiation-dominated
+asymptotics with $\rho_+\to\infty$ as in Theorem~\ref{thm:hot-cold}.
+\end{enumerate}
+\end{definition}
+
+Under Modelling Assumption~\ref{mod:I}, Assumption~\ref{ass:maxwell}, and the reciprocal ansatz,
+the infrared electromagnetic mechanism of Sections~\ref{sec:linear}--\ref{sec:conformal}
+supplies a concrete candidate for Definition~\ref{def:active-bang}.
+The phase transition is the physical event; the conformal matching is the geometric
+translation of that event into the language of the next aeon's Big Bang.
+
+\begin{remark}[What is and is not identified with ``our'' Big Bang]
+\label{rem:ourBB}
+HCCC claims that \emph{some} aeon-to-aeon crossover of this type is big-bang-like for the
+incoming side.
+Whether the Big Bang of our observed aeon was produced by a previous Hysterical electromagnetic
+crossover is a physical hypothesis, not a theorem.
+Likewise, observational CCC proposals (concentric low-variance circles, Hawking points) are not
+evaluated here~\cite{Penrose2010,Penrose2013CCC}.
+\end{remark}
+
+\section{Logical status of the results}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.48\linewidth}p{0.44\linewidth}@{}}
+\toprule
+\textbf{Quantity / claim} & \textbf{Status}\\
+\midrule
+Characteristic polynomial~\eqref{eq:char} from $\det(\lambda I-J)$ & Prop.~\ref{prop:char} (Lean: \texttt{prop\_char}, helicity $s^2=1$).\\
+Zero-mode threshold $A=2H\gamma$ & Theorem~\ref{thm:zero-mode} (Lean).\\
+IR-first stationary criticality (incl.\ strict) & Theorem~\ref{thm:IR-first} (Lean: \texttt{thm\_IR\_first\_full}).\\
+Infrared unstable band / sign test / positive root & Theorem~\ref{thm:band} (Lean: \texttt{thm\_band\_full}, IVT).\\
+Near-threshold dispersion sign & Prop.~\ref{prop:onset} (Lean algebra of the frozen-denominator form).\\
+Scalar--Maxwell action / $I(h)$ pump & Modelling Assumption~\ref{mod:I}; not Lean.\\
+Photon production efficiency / reheating & Open dynamical problem.\\
+4D Maxwell conformal invariance & Literature hypothesis~\cite{Wald1984}.\\
+Cold/hot density dichotomy; $\rho_+/\rho_-=a_-^{8}$ & Theorem~\ref{thm:hot-cold} (Lean: unit and $C_0$ forms).\\
+Reciprocal dS$\to$radiation (exact leading / linear ansatz) & Theorem~\ref{thm:radiation} (Lean: \texttt{thm\_radiation\_full}; little-$o$ remainder not re-proved).\\
+Reciprocal momenta & Prop.~\ref{prop:mom} (Lean).\\
+Reciprocal conformal ansatz $\Omega_+\Omega_-=C_0$ & Modelling / CCC geometry input.\\
+Saturation value $\hat\rho_{\mathrm{EM}}(\Sigma)$ & Not derived.\\
+Einstein--Maxwell--response junction regularity & Open.\\
+Entropy production / thermalisation & Open.\\
+Observational CCC signatures & Not claimed.\\
+``Nature realises HCCC'' & Not claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+\label{sec:conclusion}
+The late-universe gravitational package of this series leaves an electromagnetic window:
+finite-wavenumber response can become critical even though homogeneous net charge cannot be
+created from neutrality.
+In an asymptotically de~Sitter background, a minimal helical electromagnetic--response model
+has an infrared-first stationary instability and a finite unstable band.
+A scalar-dependent Maxwell kinetic function then offers a gauge-invariant route from that
+infrared onset to finite-$k$ photons.
+Reciprocal conformal matching---the geometric core shared with Penrose's conformal cyclic
+cosmology---maps outgoing de~Sitter asymptotics to an incoming radiation-era law and converts
+regular conformal radiation data into a hot big-bang-like branch for the next aeon.
+
+The resulting Hysterical Conformal Cyclic Cosmology is therefore CCC-like in conformal
+geometry and distinct in dynamics: the crossover is an active phase transition, not a passive
+conformal identification after the last massive degrees of freedom fade.
+The theorems close the algebraic spine of that claim.
+The scientific burden that remains is dynamical: derive the saturated conformal radiation
+amplitude, solve the coupled response--Maxwell--Einstein system through the junction, and
+demonstrate approximate thermalisation.
+Until those steps are closed, HCCC is a mathematically structured mechanism for an active
+aeon bridge, not a completed cyclic cosmology of Nature.
+
+\bibliographystyle{plain}
+\bibliography{paper_refs}
+\end{document}

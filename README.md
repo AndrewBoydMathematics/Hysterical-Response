@@ -34,6 +34,7 @@ These drafts are AI-assisted at this stage; theorems are accompanied by Lean imp
 | **Motivation (primer)** | Conceptual setup: why an open-system response appears, without the theorem package. |
 | **Hysterical Response** | Core open-system theory: \(F_H\), neutrality, gravitational survival, and Hysteria. |
 | **Galactic Modelling** | Response halo and galactic scaling (BTFR, size–mass, oblate geometry). |
+| **BTFR Zero Point** | Cosmological-horizon memory fixing the BTFR zero point \(a_0=H_0 c/2\pi\). |
 | **Milky Way Fit** | Milky Way realization / fit of the response halo. |
 | **Solar-System Null Test** | Local null test of the response against solar-system constraints. |
 | **Early-Universe Hysteria** | Early-universe specialization of Hysterical Instability (timing / growth). |
@@ -54,6 +55,7 @@ flowchart TD
   Primer[MotivationPrimer]
   Response[ResponseTheory]
   Galactic[GalacticModelling]
+  BTFR[BTFRZeroPoint]
   MW[MilkyWayFit]
   Solar[SolarSystemNull]
   Early[EarlyUniverseHysteria]
@@ -66,6 +68,7 @@ flowchart TD
   Universe[HystericalUniverse]
   Primer -.-> Response
   Response --> Galactic
+  Galactic --> BTFR
   Galactic --> MW
   Galactic --> Solar
   Response --> Early
@@ -80,4 +83,5 @@ flowchart TD
   Branch --> Universe
   Cooling --> Universe
   CCC --> Universe
+  BTFR --> Universe
 ```

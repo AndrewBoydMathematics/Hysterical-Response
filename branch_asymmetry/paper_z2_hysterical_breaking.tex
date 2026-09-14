@@ -1,0 +1,507 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,array,enumitem,caption}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{model}[theorem]{Modeling Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{\textbf{Spontaneous $\mathbb Z_2$ Symmetry Breaking via Hysterical Instability}\\[0.35em]
+\large A master branch-asymmetry theorem and a catalogue of odd channels}
+\author{Andrew Bruce Boyd}
+\date{Working mathematical formulation --- September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+The electroweak baryon and chiral $B\!-\!L$ asymmetries are specializations of one pattern: a supercritical
+odd Hysterical collective mode spontaneously breaks a conjugation
+$\mathbb Z_2$, and a concurrent odd portal converts that breaking into a
+branch-conditioned charge asymmetry.
+This paper isolates the \emph{generic} theorem, independent of the Standard Model
+channel, and then catalogues interesting $\mathbb Z_2$ symmetries in nature under
+a common five-column template
+(symmetry / odd coordinate / neutral portal / early-universe activity /
+broken in nature?).
+We do \emph{not} claim that Hysterical Response caused any particular observed
+asymmetry.
+We do record an interpretive speculation: the chiral Standard Model Lagrangian
+may be the branch-selected remnant of a more symmetric parent theory, with
+weak parity appearing ``already broken'' because our classical patch sits on one
+Hysterical branch.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and status}
+\label{sec:scope}
+\paragraph{What is proved.}
+\begin{equation}
+\label{eq:target}
+\boxed{\begin{gathered}
+\text{supercritical odd Hysterical mode}+
+\text{odd portal}+
+\text{nonzero overlap}\\
+\Longrightarrow\quad
+\eta[Y_+]=-\eta[Y_-]\neq0.
+\end{gathered}}
+\end{equation}
+Here $\eta$ is any washout-weighted yield sourced by an odd density
+$\Sigma[Y]$ with $\Sigma[-Y]=-\Sigma[Y]$.
+Criticality at \emph{some} cosmic scale in the late-universe dilution class is
+already guaranteed~\cite{boyd2026late}; the present paper does not re-prove it.
+
+\paragraph{What is not proved.}
+We do not prove that any particular cosmological asymmetry occurred, that the
+dilution scale $a_c$ overlapped any given portal window, or that the Standard
+Model descended from a $\mathbb Z_2$-symmetric parent Lagrangian.
+The catalogue in Section~\ref{sec:catalogue} records structural candidates and
+observational status; it is not a derivation of Nature's history.
+The weak-parity discussion in Section~\ref{sec:weakP} is labelled speculation.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\bfseries}p{0.30\linewidth}p{0.62\linewidth}@{}}
+\toprule
+Item & Status\\
+\midrule
+Master branch-asymmetry implication~\eqref{eq:target} & Theorem~\ref{thm:master} (Lean).\\
+Odd $\mathbb Z_2$ pitchfork $Y_\pm$ & Inherited~\cite{boyd2026response}; recalled here.\\
+Reciprocal destabilisation criterion & Theorem~\ref{thm:reciprocal-destab} (Lean).\\
+Eventual dilution criticality at some $a_c$ & Late-universe package~\cite{boyd2026late}.\\
+Channel tables / portal identifications & Physical inputs / literature status.\\
+``Hysterical Response caused $X$ in Nature'' & \textbf{Not claimed} for any row.\\
+Weak-parity parent-Lagrangian reading & Speculation (Section~\ref{sec:weakP}).\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Inherited odd response structure}
+\label{sec:inherited}
+The response-theory paper~\cite{boyd2026response} defines
+\begin{equation}
+\label{eq:FH}
+F_H=-\Tr\!\left(F\mathcal L^{-1}\mathcal S\right)
+\end{equation}
+on a stable response subspace, and isolates an exact conjugation symmetry
+\begin{equation}
+\label{eq:conj}
+(Y,h)\mapsto(-Y,-h)
+\end{equation}
+under which the local constitutive maps are odd.
+Near neutrality the closed-loop linearisation is $J=-\Gamma(I-K)$; in the
+reciprocal class, neutrality is unstable when $\lambda_{\max}(K)>1$.
+A generic supercritical scalar normal form is
+\begin{equation}
+\label{eq:normal}
+\dot Y=r_HY-uY^3+O(Y^5),\qquad u>0,\ r_H>0,
+\end{equation}
+with saturated branches
+\begin{equation}
+\label{eq:branches}
+\boxed{Y_\pm=\pm\sqrt{\frac{r_H}{u}}+O(r_H^{3/2}).}
+\end{equation}
+Thus supercriticality spontaneously breaks the odd $\mathbb Z_2$~\eqref{eq:conj}:
+perturbations along the unstable mode select a definite hand $Y_+$ or $Y_-$.
+
+\begin{definition}[Neutral portal]
+\label{def:neutral-portal}
+An effective coupling
+\begin{equation}
+\label{eq:portal}
+\mathcal L_{\rm int}=\frac{c_H}{f_H}\,Y\,\mathcal O,
+\qquad \frac{c_H}{f_H}\neq0,
+\end{equation}
+is a \emph{neutral portal} for the conjugation~\eqref{eq:conj} when the operator
+$\mathcal O$ is odd under the same $\mathbb Z_2$ (so that~\eqref{eq:portal} is
+even as a Lagrangian density) and is available already in the constitutive
+sector used to linearise about $Y=h=0$.
+\end{definition}
+The name records that the portal is part of the near-neutral odd response
+structure, not that $\mathcal O$ is electrically neutral.
+
+\section{Reciprocal destabilisation}
+\label{sec:reciprocal}
+\begin{definition}[Two-mode reciprocal quadratic form]
+\label{def:F2}
+For $k_X,k_Y>0$ and $g\in\mathbb R$,
+\begin{equation}
+F_2(X,Y)=\tfrac12 k_X X^2+\tfrac12 k_Y Y^2-gXY.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Reciprocal Hysterical Destabilisation]
+\label{thm:reciprocal-destab}
+Assume $k_X,k_Y>0$ and $g\neq0$.
+The neutral point $(X,Y)=(0,0)$ of~\ref{def:F2} is linearly asymptotically
+stable, critical, or unstable according as $g^2\lessgtr k_Xk_Y$.
+Equivalently, instability holds precisely when $|g|>\sqrt{k_Xk_Y}$.
+\end{theorem}
+\begin{proof}
+The Hessian determinant is $k_Xk_Y-g^2$.
+With $k_X>0$, positive-definiteness is equivalent to a positive determinant;
+a negative determinant yields eigenvalues of opposite sign, hence instability of
+gradient (or same-linearisation) dynamics.
+\end{proof}
+
+\section{Master branch-asymmetry theorem}
+\label{sec:master}
+\begin{assumption}[Odd source]
+\label{ass:odd-source}
+On a fixed even background (temperature, entropy density, washout rate, \ldots),
+a charge-density source functional obeys
+\begin{equation}
+\Sigma[-Y]=-\Sigma[Y].
+\end{equation}
+\end{assumption}
+
+\begin{assumption}[Weak-bias kernel form]
+\label{ass:kernel}
+In the regime used below,
+\begin{equation}
+\label{eq:Sigma}
+\Sigma[Y](t)=\kappa\,K(t)\,\dot Y(t),
+\qquad \kappa\neq0,\quad K(t)\ge0,
+\end{equation}
+where $K$ is an activity kernel for the portal's processing channel
+(sphaleron rate, chiral-gravity kernel, topological susceptibility, \ldots).
+\end{assumption}
+
+\begin{assumption}[Washout-weighted transport]
+\label{ass:Phi}
+The map from source history to final yield is
+\begin{equation}
+\eta[Y]=\Phi\bigl(\Sigma[Y]\bigr),
+\end{equation}
+where $\Phi$ is odd, sends nonnegative sources to nonnegative yields, and is
+strictly positive on any nonnegative source that is positive on a nonempty set.
+\end{assumption}
+The integrating-factor solution of
+$\dot\eta+\Gamma_W\eta=\Sigma$ with $\eta(t_i)=0$ realises such a $\Phi$ whenever
+the kernel is nontrivial; Lean ports the abstract axioms rather than a
+particular ODE solver.
+
+\begin{theorem}[Master Hysterical branch asymmetry]
+\label{thm:master}
+Assume~\ref{ass:odd-source}--\ref{ass:Phi} with $\kappa>0$, and let
+$Y_-(t)=-Y_+(t)$ on a common even background.
+If the overlap condition
+\begin{equation}
+\label{eq:overlap}
+\exists\,t:\quad K(t)>0\ \text{and}\ \dot Y_+(t)>0
+\end{equation}
+holds (or the same with both signs flipped), then
+\begin{equation}
+\label{eq:master}
+\boxed{\eta[Y_+]=-\eta[Y_-]\neq0.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Under~\eqref{eq:Sigma}, $\Sigma[Y_-]=-\Sigma[Y_+]$.
+Oddness of $\Phi$ gives $\eta[Y_-]=-\eta[Y_+]$.
+Nonnegativity of $K$ and of $\dot Y_+$ on the overlap set, together with
+$\kappa>0$, make $\Sigma[Y_+]$ nonnegative and not identically zero, so
+Assumption~\ref{ass:Phi} forces $\eta[Y_+]>0$, hence both yields are nonzero
+and opposite.
+\end{proof}
+
+\begin{corollary}[Labelling]
+\label{cor:labeling}
+No dynamical law selecting $Y_+$ over $Y_-$ is required.
+Equal weights on the two histories cancel globally while each selected branch
+carries a nonzero asymmetry.
+\end{corollary}
+
+\begin{corollary}[Freeze-out]
+\label{cor:freezeout}
+If $\Sigma=0$ and $\Gamma_W=0$ for all $t\ge t_f$, then
+$\eta(t)=\eta(t_f)$ thereafter.
+\end{corollary}
+
+\begin{remark}[Named channel specializations]
+\label{rem:channels}
+Electroweak baryon asymmetry is Theorem~\ref{thm:master}
+with $\mathcal O=W\widetilde W$ and $K$ built from the sphaleron window
+(realized in the cooling-universe companion~\cite{boyd2026cooling}).
+Chiral $B\!-\!L$ asymmetry is the same theorem with
+$\mathcal O=R\widetilde R$ and a chiral-gravity activity kernel
+(catalogue row in Table~\ref{tab:z2}).
+\end{remark}
+
+\section{Catalogue of interesting $\mathbb Z_2$ channels}
+\label{sec:catalogue}
+Table~\ref{tab:z2} lists odd conjugations that can play the role of~\eqref{eq:conj},
+together with a representative odd coordinate, a neutral portal in the sense of
+Definition~\ref{def:neutral-portal}, whether an early-universe activity window is
+structurally available, and whether Nature shows a broken yield of that type.
+
+Column readings:
+\begin{itemize}
+\item \textbf{Active (EU)}: whether a standard early-universe processing window
+for the portal is known or commonly modelled (not whether it overlapped a
+Hysterical crossing).
+\item \textbf{Broken in Nature?}: observational / phenomenological status of a
+nonzero broken yield or an already-chiral Lagrangian, \emph{not} a claim that
+Hysterical Response caused it.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\linewidth}
+>{\raggedright\arraybackslash}p{0.14\linewidth}
+>{\raggedright\arraybackslash}p{0.18\linewidth}
+>{\centering\arraybackslash}p{0.12\linewidth}
+>{\raggedright\arraybackslash}p{0.28\linewidth}@{}}
+\toprule
+\textbf{Symmetry / $\mathbb Z_2$} &
+\textbf{Odd coordinate} &
+\textbf{Neutral portal} &
+\textbf{Active (EU)} &
+\textbf{Broken in Nature?}\\
+\midrule
+CP &
+CP-odd phase $Y_{\mathrm{CP}}$ &
+$Y F\widetilde F$, $Y G\widetilde G$, $Y W\widetilde W$ &
+Yes (windows) &
+Yes (CKM; $\eta_B$); strong CP tiny\\
+\addlinespace
+C (matter$\leftrightarrow$antimatter) &
+same as CP-odd charge bias &
+anomaly $+$ chemical potential &
+Yes &
+Yes ($\eta_B\neq0$ in our patch)\\
+\addlinespace
+P / weak chirality &
+chiral / mirror order $Y_P$ &
+LR Higgs / chiral gauge portals (BSM parent) &
+Model-dep.\ &
+Yes in SM Lagrangian; see~\S\ref{sec:weakP}\\
+\addlinespace
+T &
+rolling odd history $\dot Y$ &
+same topological portals &
+With CP &
+Yes (Kaon/B factories; tiny)\\
+\addlinespace
+$B$ (baryon) &
+CP-odd $Y$ with $B$ portal &
+$Y W\widetilde W$ $+$ sphalerons &
+Yes ($T_*$--$T_c$) &
+Yes ($\eta_B$); $B$ frozen today\\
+\addlinespace
+$B\!-\!L$ / lepton &
+CP-odd $Y$ &
+$Y R\widetilde R$ (grav.\ anomaly) &
+Conditional &
+Yes if leptogenesis; else unknown\\
+\addlinespace
+Strong CP / $\theta$ &
+$\theta$ / axion-like $Y_\theta$ &
+$Y G\widetilde G$ &
+Yes (QCD) &
+\textbf{No} ($\bar\theta\sim0$)\\
+\addlinespace
+PQ / axion misalignment &
+axion phase &
+$Y G\widetilde G$ &
+Yes &
+Misalignment model-dep.; $\theta$ small\\
+\addlinespace
+Magnetic helicity &
+helical CS number &
+Chern--Simons / chiral MHD &
+Yes (EW/MHD) &
+Unknown (not established)\\
+\addlinespace
+GW helicity &
+chiral tensor amplitude &
+$Y R\widetilde R$ &
+Inflationary models &
+Not established on CMB scales\\
+\addlinespace
+Cosmic birefringence &
+axion--photon phase &
+$Y F\widetilde F$ &
+Possible &
+Consistent with $\sim0$ (contested)\\
+\addlinespace
+CME / axial charge &
+axial $\mu_5$ &
+$E\cdot B$ / topology &
+Heavy-ion / early QGP &
+Lab hints; no proven cosmology\\
+\addlinespace
+Affleck--Dine phase &
+condensate phase &
+$B$- or $L$-carrying AD portal &
+Yes (SUSY/flat directions) &
+Model-dep.\ baryogenesis candidate\\
+\addlinespace
+Asymmetric DM &
+dark odd charge $Y_D$ &
+dark anomaly / shared asymmetry &
+Model-dep.\ &
+Unknown (DM asymmetry unproven)\\
+\addlinespace
+Dark stabilizing $\mathbb Z_2$ &
+dark parity-odd field &
+Higgs portal / kinetic mixing &
+Optional &
+\textbf{No} (kept unbroken for DM)\\
+\addlinespace
+Mirror / left--right $\mathbb Z_2$ &
+mirror-odd Higgs $Y_{LR}$ &
+LR / mirror portals &
+Model-dep.\ &
+No observed mirror twin; see~\S\ref{sec:weakP}\\
+\addlinespace
+R-parity (if SUSY) &
+R-odd superfields &
+R-violating operators (optional) &
+Optional &
+Often assumed unbroken\\
+\addlinespace
+Defect / winding sense &
+net winding $N_w$ &
+odd bias of nucleation rates &
+Model-dep.\ &
+Unknown\\
+\bottomrule
+\end{tabular}
+\caption{Interesting $\mathbb Z_2$ channels for Theorem~\ref{thm:master}.
+``Neutral portal'' means Definition~\ref{def:neutral-portal}.
+No row asserts a Hysterical causation claim.}
+\label{tab:z2}
+\end{table}
+
+\begin{remark}[Three ways a row can fail to fire]
+\label{rem:fail}
+Even with an odd coordinate and neutral portal, Theorem~\ref{thm:master} yields
+nothing if (i)~the mode never goes supercritical, (ii)~the activity kernel $K$
+vanishes throughout the roll (no overlap), or (iii)~later dynamics restores
+$Y\to0$ (as in an axion settling $\bar\theta\to0$).
+Strong CP and dark stabilizing $\mathbb Z_2$ are the cleanest ``portal exists,
+broken yield absent'' rows.
+\end{remark}
+
+\section{Weak parity and a possible parent Lagrangian}
+\label{sec:weakP}
+\paragraph{Status in the Standard Model.}
+Parity is already maximally violated by the chiral electroweak Lagrangian:
+only left-handed fermion doublets couple to $SU(2)_L$.
+That is \emph{not} a missed Hysterical branch in the sense of a still-symmetric
+SM waiting to tip.
+It is an input of the observed Lagrangian.
+
+\paragraph{Speculation (not a theorem).}
+\label{spec:parent}
+One interpretive possibility, compatible with Theorem~\ref{thm:master} but not
+implied by it, is that the ``full'' ultraviolet theory is $\mathbb Z_2$-even under
+a left--right or mirror conjugation, with a parent Lagrangian schematically
+\begin{equation}
+\label{eq:parent}
+\mathcal L_{\mathrm{parent}}
+=
+\mathcal L_{L}+\mathcal L_{R}+\mathcal L_{\mathrm{mix}},
+\end{equation}
+symmetric under $L\leftrightarrow R$ (or sector~$\leftrightarrow$~mirror) when
+the odd Hysterical coordinate vanishes.
+A supercritical odd mode $Y_P$ with neutral portal into the LR / mirror Higgs or
+gauge sector could spontaneously select a broken vacuum in which only one chiral
+block remains light / coupled in the infrared.
+On the selected branch the effective Lagrangian would look like the observed
+chiral SM; on the opposite branch the conjugate chirality would be isolated
+instead.
+In that reading, weak parity is ``already broken'' in our classical patch
+because we inhabit one Hysterical branch of a more symmetric parent theory---the
+same labelling logic as Corollary~\ref{cor:labeling}, applied to chirality
+rather than to $\eta_B$.
+
+\paragraph{What this does and does not claim.}
+\begin{itemize}
+\item \textbf{Does:} offer a structural analogy between Paper~7's
+matter/antimatter labelling and a possible left/right labelling.
+\item \textbf{Does not:} derive the SM from an LR-symmetric parent; fix the
+portal coefficients; or assert that mirror fermions exist in our patch.
+Left--right symmetric models already exist as ordinary BSM
+constructions~\cite{MohapatraSenjanovic1975,Senjanovic1975}; the novelty here is
+only the Hysterical branch-selection gloss, which remains optional.
+\end{itemize}
+
+\begin{model}[Parent chirality as an odd channel]
+\label{model:LR}
+Identify $Y$ in Theorem~\ref{thm:master} with a mirror-odd / LR-odd collective
+coordinate, take $\mathcal O$ to be the corresponding odd Higgs or gauge
+operator in~\eqref{eq:parent}, and let $K$ be nonzero in an early window where
+both chiral blocks are still dynamical.
+Then~\eqref{eq:master} supplies opposite branch-conditioned chiral effective
+theories, without selecting a preferred global hand.
+\end{model}
+
+\section{Logical status}
+\label{sec:status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.50\linewidth}@{}}
+\toprule
+\textbf{Quantity / claim} & \textbf{Status}\\
+\midrule
+Master asymmetry Theorem~\ref{thm:master} & Theorem (Lean).\\
+Reciprocal destabilisation~\ref{thm:reciprocal-destab} & Theorem (Lean).\\
+Catalogue Table~\ref{tab:z2} & Structural / observational ledger.\\
+Named channel recoveries & Instances (Remark~\ref{rem:channels}).\\
+Weak-parity parent Lagrangian & Speculation / Model~\ref{model:LR}.\\
+Causation of any row's broken yield & \textbf{Not claimed.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+\label{sec:conclusion}
+Spontaneous $\mathbb Z_2$ breaking via Hysterical instability is the common
+spine of the baryon and chiral $B\!-\!L$ constructions:
+\begin{equation}
+\boxed{
+\text{odd supercritical }Y
+\ \Longrightarrow\
+Y_\pm
+\ \xrightarrow{\text{odd portal $+$ overlap}}\
+\eta[Y_+]=-\eta[Y_-]\neq0.
+}
+\end{equation}
+Table~\ref{tab:z2} records where Nature may already show such a broken yield,
+where portals exist without a broken yield, and where a discrete symmetry
+appears to be kept intact.
+Whether the chiral Standard Model itself is a branch-selected remnant of a
+symmetric parent Lagrangian is an open interpretive question, not a theorem of
+the response package.
+
+\bibliographystyle{plain}
+\bibliography{paper_refs}
+\end{document}

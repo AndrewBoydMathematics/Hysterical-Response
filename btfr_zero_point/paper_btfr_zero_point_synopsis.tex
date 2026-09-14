@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Mb}{M_{\mathrm{b}}}
+\newcommand{\vf}{v_{\mathrm{f}}}
+
+\title{\textbf{Synopsis: BTFR Zero Point from Cosmological Horizon Memory}\\[0.35em]
+\large What the theorems say (without the proofs)}
+\author{Andrew Bruce Boyd}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\noindent\textit{Computational note.}
+Proofs, exploratory experiments, and paper writing were assisted by generative AI.
+Mathematical theorems stated in this paper are formally verified in Lean~4 in the
+companion specifications, as faithful ports of the TeX arguments at the abstractions
+recorded there, except results explicitly tagged as \emph{literature hypotheses}
+(standard theorems cited from the literature and not re-proved here) or
+\emph{physical inputs} (modeling assumptions outside mathematics).
+
+\begin{abstract}
+Short guide to the zero-point paper: galactic modelling already gives the BTFR
+\emph{exponent}; cosmological-horizon Hysterical memory fixes
+$a_0=H_0c/2\pi$.
+Proofs live in the full paper.
+\end{abstract}
+
+\section{Why a zero point is needed}
+Galactic modelling produces $\vf^{4}=K\Mb$ on a capacity attractor, with
+$K=C^{2}A^{2}/y_{\ast}$.
+Writing $\vf^{4}=Ga_0\Mb$ names $a_0=K/G$ but does not compute it.
+This paper supplies that absolute scale from residual-gravity memory cut off by the
+cosmological horizon.
+
+\section{Horizon memory clock}
+Euclidean regularity at a Killing horizon gives period $\beta=2\pi/\kappa$.
+For the cosmological horizon, $\kappa=H_0$.
+
+\begin{definition}[IR memory acceleration]
+\[
+  a_{\mathrm{IR}}:=\frac{c}{\beta}=\frac{c\kappa}{2\pi}.
+\]
+\end{definition}
+
+\begin{theorem}[Cosmological memory scale]
+\[
+  \boxed{a_{\mathrm{IR}}=\frac{H_0c}{2\pi}.}
+\]
+\end{theorem}
+
+Raw Hubble time would have given $cH_0$; the $2\pi$ is horizon KMS regularity.
+
+\section{Subject independence}
+\begin{proposition}
+$a_{\mathrm{IR}}$ is a property of the residual channel and the FLRW congruence.
+It does not depend on any particular probe's age or a passive basis rename.
+\end{proposition}
+
+\section{Pinning and matching}
+Far-halo flat curves need a tiny loss rate; the softest allowed gravitational gap in
+expansion is the cosmological horizon memory rate (physical assumption).
+On the mature attractor one identifies $a_0=a_{\mathrm{IR}}$ (physical assumption).
+
+\begin{theorem}[BTFR zero point]
+\[
+  \boxed{a_0=\frac{H_0c}{2\pi},}
+  \qquad
+  \vf^{4}=G\frac{H_0c}{2\pi}\,\Mb.
+\]
+\end{theorem}
+
+\begin{corollary}[Numerics]
+At Planck-like $H_0$, this is $\sim10^{-10}\,\mathrm{m\,s^{-2}}$, compatible with the
+empirical BTFR calibration.
+\end{corollary}
+
+\section{Not MOND}
+An effective $a_0$ appears, but the dynamics remain residual ordinary gravity with a
+ballistic halo---not a MOND interpolating function.
+
+\section{What is theorem vs assumption}
+\begin{itemize}
+\item Inherited: BTFR attractor structure from galactic modelling.
+\item Literature: $\beta=2\pi/\kappa$, cosmological $\kappa=H_0$.
+\item Theorem: $a_{\mathrm{IR}}=H_0c/2\pi$; final $a_0=H_0c/2\pi$ given the pins.
+\item Physical inputs: far-halo IR pin; $a_0=a_{\mathrm{IR}}$.
+\item Not claimed: MOND force law; separate microscopic $C$, $A$.
+\end{itemize}
+
+\end{document}
